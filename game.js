@@ -171,7 +171,7 @@ function clearMode() {
 function switchMode(nextIdx) {
     clearMode();
     currentModeIdx = nextIdx;
-    const def = MODE_DEFS[currentModeIdx];
+    const def = ACTIVE_MODES[currentModeIdx];
     modeGroup = new THREE.Group();
     scene.add(modeGroup);
     currentMode = def.build();
@@ -800,6 +800,13 @@ const MODE_DEFS = [
     { name: 'DODGE',   hint: 'WASD — Dodge the blocks',    build: () => new DodgeMode() }
 ];
 
+const IS_MOBILE = window.matchMedia('(pointer: coarse)').matches;
+const ACTIVE_MODES = IS_MOBILE
+    ? [MODE_DEFS[0], MODE_DEFS[3]] // Shooter + Dodge only on mobile
+    : MODE_DEFS;
+
+let modesCompleted = 0;
+
 // ==========================================
 // Engine: Start / Stop
 // ==========================================
@@ -830,6 +837,9 @@ export function startGame() {
     score = 0;
     isTransitioning = false;
     currentModeIdx = 0;
+    modesCompleted = 0;
+    const exitBtn = document.getElementById('game-exit-btn');
+    if (exitBtn) exitBtn.classList.remove('exit-prominent');
     switchMode(0);
 
     gameState = 'playing';
@@ -877,6 +887,12 @@ function startTransition(nextIdx) {
     tapQueue.length = 0;
     hideCountdown();
     countdownPhase = 0;
+
+    modesCompleted++;
+    if (modesCompleted >= 1) {
+        const exitBtn = document.getElementById('game-exit-btn');
+        if (exitBtn) exitBtn.classList.add('exit-prominent');
+    }
 
     if (!transitionEl) {
         switchMode(nextIdx);
@@ -947,7 +963,7 @@ function update(dt) {
 
     // Switch mode at end → smooth transition
     if (modeTime >= MODE_DURATION) {
-        startTransition((currentModeIdx + 1) % MODE_DEFS.length);
+        startTransition((currentModeIdx + 1) % ACTIVE_MODES.length);
         return;
     }
 

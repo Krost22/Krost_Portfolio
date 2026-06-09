@@ -12,7 +12,7 @@ const projects = [
         id: "vr-hotel-cartagena",
         color: "#FF7A59",
         tags: ["Unity", "Meta Quest 3", "PICO 4", "VR"],
-        images: ["Media/SmartRoom.webp", "Media/SmartRoom1.webp"],
+        images: ["Media/SmartRoom/CardImagen.png", "Media/SmartRoom/SmartRoom.webp", "Media/SmartRoom/SmartRoom1.webp"],
         en: {
             title: "VR Hotel Experience (Cartagena)",
             desc: "Developed an immersive Virtual Reality experience for a hotel in Cartagena using Unity. Compatible with standalone headsets like Meta Quest 3 and PICO 4. Implemented interactive systems for room tours and guest simulations, optimizing performance to maintain a stable, high framerate."
@@ -26,7 +26,7 @@ const projects = [
         id: "ar-hotel-cartagena",
         color: "#00D4C8",
         tags: ["Unity", "Android", "ARCore", "AR"],
-        images: [],
+        images: ["Media/AR Hotel/Hotel AR Card.png", "Media/AR Hotel/Main Menu AR Hotel.jpg", "Media/AR Hotel/Screenshot_2026-01-19-16-14-46-602_com.unity.AREMHotels.jpg", "Media/AR Hotel/Screenshot_2026-01-19-16-15-47-462_com.unity.AREMHotels.jpg", "Media/AR Hotel/Screenshot_2026-01-19-16-33-40-598_com.unity.AREMHotels.jpg"],
         en: {
             title: "AR Hotel Experience (Cartagena)",
             desc: "Created an Augmented Reality experience for the same hotel in Cartagena, enabling users to visualize interactive digital elements, virtual guides, and maps superimposed on their real-world environment."
@@ -40,7 +40,8 @@ const projects = [
         id: "vr-multiplayer",
         color: "#FFB84D",
         tags: ["Unity", "Multiplayer", "VR", "C#"],
-        images: [],
+        images: ["Media/VR Multiplayer - Guajira Corp/Guajira Logo horizontal.png", "Media/VR Multiplayer - Guajira Corp/Guajira gameplay.png"],
+        videos: ["Media/VR Multiplayer - Guajira Corp/Montes De Oca Vr Gameplay.mp4"],
         en: {
             title: "VR Multiplayer - Guajira Corp",
             desc: "Built a multiplayer virtual reality project for a corporation in La Guajira. Handled network synchronization, interactive gameplay mechanics, and optimization for mobile VR devices to ensure smooth performance across multiple users."
@@ -54,7 +55,8 @@ const projects = [
         id: "tts-tool",
         color: "#8B7FFF",
         tags: ["Unity Editor", "Tools", "C#"],
-        images: [],
+        images: ["Media/UnityLocalTTS/Unity-Local-TTS.png", "Media/UnityLocalTTS/Unity-Local-TTS 2.png", "Media/UnityLocalTTS/Unity-Local-TTS 3ss.png", "Media/UnityLocalTTS/Unity-Local-TTS Icon.png"],
+        link: "https://github.com/Krost22/Unity-Local-TTS/releases/tag/v1.0.0",
         en: {
             title: "Native TTS Editor Tool",
             desc: "A custom Unity Package tool designed to improve the developer experience by providing native Text-to-Speech (TTS) capabilities directly within the Unity Editor."
@@ -68,7 +70,8 @@ const projects = [
         id: "audio-tool",
         color: "#E855A0",
         tags: ["Unity Editor", "Audio", "Tools"],
-        images: [],
+        images: ["Media/LoopClip/LoopClip Icon.png", "Media/LoopClip/LoopClip.png", "Media/LoopClip/Loopclip 1.png", "Media/LoopClip/LoopClip 2.png", "Media/LoopClip/LoopClip 3.png"],
+        link: "https://github.com/Krost22/Unity-ClipLoop/releases/tag/V1",
         en: {
             title: "Audio Loop & Cut Tool",
             desc: "Developed a specialized Unity tool for music and audio loop generation. Includes features for precise audio cutting and looping directly within the editor environment to streamline sound design workflows."
@@ -82,7 +85,8 @@ const projects = [
         id: "360-tours",
         color: "#4ECDC4",
         tags: ["360 Video", "VR", "Web"],
-        images: [],
+        images: ["Media/360 virtual tours/Terraviva 360 recorridos 360.png"],
+        videos: ["Media/360 virtual tours/Montes De Oca 360 2025-06-12 14-14-30.mp4"],
         en: {
             title: "360 Virtual Tours",
             desc: "Created interactive 360-degree virtual tours targeted for both web platforms and Virtual Reality headsets. Designed to provide realistic walkthroughs and digital presence."
@@ -319,6 +323,7 @@ function updateUI() {
                 img.alt = data.title;
                 img.className = 'project-media-img';
                 img.onerror = () => { img.src = proj.placeholder; };
+                img.addEventListener('click', () => openLightbox(img.src));
                 mediaEl.appendChild(img);
             });
         } else {
@@ -327,6 +332,25 @@ function updateUI() {
             img.alt = data.title;
             img.className = 'project-media-img placeholder-img';
             mediaEl.appendChild(img);
+        }
+        if (proj.videos && proj.videos.length > 0) {
+            proj.videos.forEach(vidSrc => {
+                const video = document.createElement('video');
+                video.src = vidSrc;
+                video.className = 'project-media-video';
+                video.controls = true;
+                video.preload = 'metadata';
+                video.setAttribute('aria-label', data.title + ' video');
+                mediaEl.appendChild(video);
+            });
+        }
+        if (proj.link) {
+            const btn = document.createElement('a');
+            btn.href = proj.link;
+            btn.target = '_blank';
+            btn.className = 'project-download-btn';
+            btn.textContent = currentLang === 'es' ? 'Descargar' : 'Download';
+            mediaEl.appendChild(btn);
         }
     }
 
@@ -373,7 +397,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1;
+renderer.toneMappingExposure = 1.25;
 canvasContainer.appendChild(renderer.domElement);
 
 // LoadingManager for boot screen progress
@@ -382,14 +406,14 @@ let loadedCount = 0;
 let totalToLoad = 0;
 
 // Lighting — cinematic contrast
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
 scene.add(ambientLight);
 
-const keyLight = new THREE.DirectionalLight(0xffffff, 2.0);
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
 keyLight.position.set(3, 5, 6);
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0xbbccff, 0.4);
+const fillLight = new THREE.DirectionalLight(0xbbccff, 0.6);
 fillLight.position.set(-3, 2, 4);
 scene.add(fillLight);
 
@@ -397,12 +421,12 @@ const rimLight = new THREE.DirectionalLight(0xffffff, 0.6);
 rimLight.position.set(-4, 0, -3);
 scene.add(rimLight);
 
-const pointLight = new THREE.PointLight(0xffffff, 1.5, 15);
-pointLight.position.set(0, 0, 2);
+const pointLight = new THREE.PointLight(0xffffff, 0.9, 15);
+pointLight.position.set(0, 0, 3);
 scene.add(pointLight);
 
 // Spotlight targeting active card
-const spotLight = new THREE.SpotLight(0xffffff, 3, 20, Math.PI / 6, 0.5, 1);
+const spotLight = new THREE.SpotLight(0xffffff, 2.2, 20, Math.PI / 6, 0.5, 1);
 spotLight.position.set(0, 4, 8);
 spotLight.target.position.set(0, 0, 0);
 scene.add(spotLight);
@@ -448,7 +472,7 @@ function createCardMaterial(proj) {
     const imageSrc = proj.images && proj.images.length > 0 ? proj.images[0] : proj.placeholder;
 
     const baseOpts = {
-        roughness: 0.25,
+        roughness: 0.35,
         metalness: 0.1,
         side: THREE.DoubleSide,
         alphaMap: roundedAlphaMap,
@@ -457,6 +481,7 @@ function createCardMaterial(proj) {
     };
 
     const texture = textureLoader.load(imageSrc);
+    texture.colorSpace = THREE.SRGBColorSpace;
     return new THREE.MeshStandardMaterial({
         ...baseOpts,
         map: texture
@@ -485,29 +510,54 @@ function createCardBackMaterial(proj) {
     ctx.textBaseline = 'top';
     ctx.fillText(proj.en.title.toUpperCase(), 256, 20);
 
-    // Info fields
-    ctx.fillStyle = '#8b949e';
+    // Divider
+    ctx.beginPath();
+    ctx.moveTo(60, 48);
+    ctx.lineTo(452, 48);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = proj.color + '66';
+    ctx.stroke();
+
+    // Description snippet (localized)
+    const snippet = ((proj[currentLang] && proj[currentLang].desc) || proj.en.desc).slice(0, 140);
+    ctx.fillStyle = '#c9d1d9';
     ctx.font = '13px "Space Grotesk", sans-serif';
     ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
 
-    const infoLines = [];
-    if (proj.date) infoLines.push(`Date: ${proj.date}`);
-    if (proj.role) infoLines.push(`Role: ${proj.role}`);
-    if (proj.company) infoLines.push(`Company: ${proj.company}`);
-    infoLines.push(`Stack: ${proj.tags.join(', ')}`);
-    if (proj.link) infoLines.push(`Link: ${proj.link}`);
+    function wrapText(text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let cy = y;
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                ctx.fillText(line, x, cy);
+                line = words[n] + ' ';
+                cy += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        ctx.fillText(line, x, cy);
+        return cy + lineHeight;
+    }
 
-    let y = 60;
-    infoLines.forEach(line => {
-        ctx.fillText(line, 40, y);
-        y += 24;
-    });
+    wrapText(snippet, 40, 64, 432, 20);
+
+    // Tags
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '12px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(proj.tags.join('  ·  '), 256, 280);
 
     // Click hint
-    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+    ctx.fillStyle = 'rgba(255,255,255,0.10)';
     ctx.font = '11px "Space Grotesk", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Click to flip back', 256, 290);
+    ctx.fillText('Click to flip back', 256, 300);
 
     const texture = new THREE.CanvasTexture(canvas);
     return new THREE.MeshStandardMaterial({
@@ -1301,6 +1351,39 @@ function hapticPulse() {
     if (isTouchDevice && navigator.vibrate) {
         navigator.vibrate(15);
     }
+}
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxClose = document.getElementById('lightbox-close');
+
+function openLightbox(src) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightbox.style.display = 'flex';
+    // force reflow
+    void lightbox.offsetWidth;
+    lightbox.classList.add('active');
+}
+
+function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    setTimeout(() => {
+        lightbox.style.display = 'none';
+        lightboxImg.src = '';
+    }, 300);
+}
+
+if (lightbox) {
+    lightboxClose && lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-backdrop')) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
 }
 
 // Patch navigateTo to trigger sound + haptic
