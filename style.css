@@ -102,6 +102,27 @@ header {
     border-color: var(--accent);
 }
 
+#mute-toggle {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border-radius: 6px;
+    transition: all 0.3s;
+    line-height: 1;
+}
+#mute-toggle:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+}
+#mute-toggle.muted {
+    opacity: 0.5;
+}
+
 /* ===========================
    Canvas (3D Carousel)
    =========================== */
@@ -134,6 +155,11 @@ header {
     transform: translateY(-50%);
     pointer-events: none;
     z-index: 10;
+    transition: opacity 0.4s ease;
+}
+.controls.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .controls button {
@@ -211,6 +237,7 @@ header {
     line-height: 1.15;
     background: linear-gradient(135deg, #fff 0%, var(--accent) 80%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     transition: background 0.5s;
 }
@@ -278,6 +305,46 @@ header {
     color: var(--text-muted);
     font-weight: 500;
     font-size: 0.95rem;
+}
+
+.placeholder-img {
+    opacity: 0.85;
+    filter: saturate(0.7) contrast(1.1);
+}
+
+/* Custom cursor */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.25s, height 0.25s, border-color 0.3s, background 0.25s;
+    mix-blend-mode: difference;
+    opacity: 0;
+}
+.custom-cursor.active {
+    opacity: 1;
+}
+.custom-cursor.hover {
+    width: 48px;
+    height: 48px;
+    background: rgba(156, 213, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+    .custom-cursor {
+        display: none;
+    }
+}
+
+.bottom-sheet-handle {
+    display: none;
 }
 
 /* ===========================
@@ -489,7 +556,8 @@ footer {
     }
 
     #canvas-wrapper {
-        height: 55vh;
+        height: 52vh;
+        touch-action: pan-y;
     }
 
     .controls button {
@@ -502,13 +570,28 @@ footer {
     }
 
     #project-info {
-        padding: 36px 20px 50px;
+        padding: 24px 20px 40px;
+        position: relative;
+        border-radius: 20px 20px 0 0;
+        margin-top: -20px;
+        z-index: 5;
+    }
+    .bottom-sheet-handle {
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin: 0 auto 16px;
     }
     #project-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
     #project-desc {
-        font-size: 1rem;
+        font-size: 0.95rem;
+    }
+    .project-media-img {
+        height: 180px;
     }
 
     .about-section {
@@ -522,4 +605,523 @@ footer {
         font-size: 1.8rem;
         margin-bottom: 30px;
     }
+}
+
+/* ===========================
+   Boot Screen — Game Engine Style
+   =========================== */
+#boot-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden;
+}
+
+.boot-content {
+    width: 100%;
+    max-width: 560px;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+    z-index: 2;
+}
+
+.boot-logo {
+    height: 56px;
+    filter: invert(1);
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.boot-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #A8E063;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0;
+}
+
+.boot-logs {
+    width: 100%;
+    margin: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.boot-log {
+    font-size: 0.75rem;
+    color: #8b949e;
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.boot-log::before {
+    content: '> ';
+    color: #A8E063;
+    font-weight: 600;
+}
+
+.boot-log.ok::after {
+    content: '  OK';
+    color: #A8E063;
+    margin-left: auto;
+    float: right;
+}
+
+.boot-progress-wrap {
+    width: 100%;
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.boot-progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.boot-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #A8E063 0%, #00D4C8 100%);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.boot-progress-text {
+    font-size: 0.7rem;
+    color: #8b949e;
+    text-align: right;
+    letter-spacing: 0.1em;
+}
+
+.boot-start {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0a0a0a;
+    background: #A8E063;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: bootPulse 1.8s ease-in-out infinite;
+}
+
+.boot-start:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(168, 224, 99, 0.4);
+}
+
+@keyframes bootPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(168, 224, 99, 0.3); }
+    50% { opacity: 0.7; box-shadow: 0 0 24px rgba(168, 224, 99, 0.5); }
+}
+
+.boot-skip {
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: #8b949e;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.boot-skip:hover {
+    opacity: 1;
+    border-color: rgba(168, 224, 99, 0.4);
+    color: #A8E063;
+}
+
+.boot-scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+}
+
+/* Glitch transition overlay */
+.boot-glitch {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(168, 224, 99, 0.06) 40%,
+        rgba(0, 212, 200, 0.06) 60%,
+        transparent 100%
+    );
+    animation: glitchSweep 0.6s ease-out forwards;
+}
+
+@keyframes glitchSweep {
+    0% { transform: translateY(-100%); opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Hide main content during boot */
+body.booting #canvas-wrapper,
+body.booting #project-info,
+body.booting header,
+body.booting #about,
+body.booting footer,
+body.booting .custom-cursor {
+    visibility: hidden;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .boot-logo,
+    .boot-title,
+    .boot-log,
+    .boot-start {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .boot-scanlines { display: none; }
+    .boot-start { animation: none; }
+}
+
+/* Mobile boot */
+@media (max-width: 768px) {
+    .boot-content {
+        padding: 24px 20px;
+        max-width: 100%;
+    }
+    .boot-logo { height: 44px; }
+    .boot-title { font-size: 0.75rem; }
+    .boot-log { font-size: 0.7rem; }
+    .boot-start {
+        font-size: 0.78rem;
+        padding: 9px 22px;
+    }
+}
+
+/* ===========================
+   Game Screen — KROST DEFENDER
+   =========================== */
+#game-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: #0a0a0a;
+    display: none;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+#game-screen canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#game-hud {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 28px;
+}
+
+.game-hud-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#game-hud-score {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #A8E063;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 8px rgba(168, 224, 99, 0.3);
+}
+
+#game-hud-high {
+    font-size: 0.75rem;
+    color: #8b949e;
+    letter-spacing: 0.08em;
+}
+
+#game-hud-lives {
+    font-size: 1.3rem;
+    color: #ff5f5f;
+    text-shadow: 0 0 8px rgba(255, 95, 95, 0.3);
+    letter-spacing: 0.15em;
+}
+
+#game-exit-btn {
+    pointer-events: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #8b949e;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 5px 12px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+#game-exit-btn:hover {
+    border-color: rgba(168, 224, 99, 0.4);
+    color: #A8E063;
+}
+
+#game-pause,
+#game-over {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.game-panel {
+    background: rgba(13, 17, 23, 0.95);
+    border: 1px solid rgba(168, 224, 99, 0.2);
+    border-radius: 10px;
+    padding: 36px 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    min-width: 260px;
+    box-shadow: 0 0 40px rgba(168, 224, 99, 0.08);
+}
+
+.game-panel-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #A8E063;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.game-panel-score {
+    font-size: 1rem;
+    color: #F7F8F0;
+    font-weight: 600;
+}
+
+.game-panel-high {
+    font-size: 0.8rem;
+    color: #8b949e;
+    margin-bottom: 8px;
+}
+
+.game-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0a0a0a;
+    background: #A8E063;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 28px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.game-btn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 16px rgba(168, 224, 99, 0.35);
+}
+
+.game-btn-secondary {
+    background: transparent;
+    color: #A8E063;
+    border: 1px solid rgba(168, 224, 99, 0.35);
+}
+.game-btn-secondary:hover {
+    background: rgba(168, 224, 99, 0.08);
+}
+
+.boot-play {
+    background: transparent;
+    color: #A8E063;
+    border: 1px solid rgba(168, 224, 99, 0.4);
+}
+.boot-play:hover {
+    background: rgba(168, 224, 99, 0.1);
+    transform: scale(1.05);
+}
+
+.game-hud-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.game-hud-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+#game-mode-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #A8E063;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(168,224,99,0.25);
+    transition: color 0.3s ease;
+}
+
+#game-mode-timer {
+    width: 80px;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+#game-mode-bar {
+    width: 100%;
+    height: 100%;
+    background: #A8E063;
+    transform-origin: left;
+    border-radius: 2px;
+}
+
+#game-mode-hint {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-size: 0.65rem;
+    color: rgba(168,224,99,0.6);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#game-countdown {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,10,10,0.5);
+    backdrop-filter: blur(2px);
+}
+
+#game-countdown-text {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #A8E063;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 40px rgba(168,224,99,0.3), 0 0 80px rgba(168,224,99,0.1);
+}
+
+#game-transition {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: none;
+    background: #0a0a0a;
+    pointer-events: none;
+}
+
+/* Header "Play minigame" button */
+#play-game-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #0a0a0a;
+    background: #A8E063;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#play-game-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 16px rgba(168, 224, 99, 0.4);
+}
+
+body.game-active header,
+body.game-active #canvas-wrapper,
+body.game-active #project-info,
+body.game-active #about,
+body.game-active footer,
+body.game-active .custom-cursor {
+    display: none !important;
+}
+
+/* Mobile game */
+@media (max-width: 768px) {
+    #game-hud {
+        padding: 14px 16px;
+    }
+    #game-hud-score { font-size: 1.1rem; }
+    .game-panel {
+        padding: 28px 32px;
+        min-width: 220px;
+    }
+    .game-panel-title { font-size: 1.1rem; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .game-btn { transition: none; }
+    #game-hud-score { text-shadow: none; }
 }

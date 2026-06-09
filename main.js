@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
     {
         id: "vr-hotel-cartagena",
-        color: "#9CD5FF",
+        color: "#FF7A59",
         tags: ["Unity", "Meta Quest 3", "PICO 4", "VR"],
         images: ["Media/SmartRoom.webp", "Media/SmartRoom1.webp"],
         en: {
@@ -24,7 +24,7 @@ const projects = [
     },
     {
         id: "ar-hotel-cartagena",
-        color: "#7AAACE",
+        color: "#00D4C8",
         tags: ["Unity", "Android", "ARCore", "AR"],
         images: [],
         en: {
@@ -38,7 +38,7 @@ const projects = [
     },
     {
         id: "vr-multiplayer",
-        color: "#5281A5",
+        color: "#FFB84D",
         tags: ["Unity", "Multiplayer", "VR", "C#"],
         images: [],
         en: {
@@ -52,7 +52,7 @@ const projects = [
     },
     {
         id: "tts-tool",
-        color: "#F7F8F0",
+        color: "#8B7FFF",
         tags: ["Unity Editor", "Tools", "C#"],
         images: [],
         en: {
@@ -66,7 +66,7 @@ const projects = [
     },
     {
         id: "audio-tool",
-        color: "#E5E7DC",
+        color: "#E855A0",
         tags: ["Unity Editor", "Audio", "Tools"],
         images: [],
         en: {
@@ -80,7 +80,7 @@ const projects = [
     },
     {
         id: "360-tours",
-        color: "#AEE0FF",
+        color: "#4ECDC4",
         tags: ["360 Video", "VR", "Web"],
         images: [],
         en: {
@@ -94,7 +94,7 @@ const projects = [
     },
     {
         id: "mobile-games",
-        color: "#355872",
+        color: "#A8E063",
         tags: ["Unity", "Android", "Mobile", "Gameplay"],
         images: [],
         en: {
@@ -160,16 +160,78 @@ function generatePalette(hex) {
     };
 }
 
-projects.forEach(p => p.palette = generatePalette(p.color));
+function generateGeometricPlaceholder(color, seed = 0) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 320;
+    const ctx = canvas.getContext('2d');
+    const c = new THREE.Color(color);
 
-projects[3].palette.bg = '#1a1a1a';
-projects[3].palette.surface = '#2a2a2a';
-projects[3].palette.surface2 = '#3a3a3a';
-projects[3].palette.secondary = '#c0c0c0';
-projects[4].palette.bg = '#1a1a1a';
-projects[4].palette.surface = '#2a2a2a';
-projects[4].palette.surface2 = '#3a3a3a';
-projects[4].palette.secondary = '#c0c0c0';
+    // Dark background derived from color
+    ctx.fillStyle = `rgb(${Math.floor(c.r * 18)}, ${Math.floor(c.g * 18)}, ${Math.floor(c.b * 18)})`;
+    ctx.fillRect(0, 0, 512, 320);
+
+    // Geometric pattern: triangles, squares, hexagons
+    const shapes = 40;
+    for (let i = 0; i < shapes; i++) {
+        const x = ((Math.sin(i * 1.618 + seed) * 0.5 + 0.5) * 0.85 + 0.075) * 512;
+        const y = ((Math.cos(i * 2.718 + seed) * 0.5 + 0.5) * 0.85 + 0.075) * 320;
+        const size = 16 + ((Math.sin(i * 0.7) * 0.5 + 0.5) * 55);
+        const alpha = 0.04 + ((Math.sin(i * 0.3 + seed) * 0.5 + 0.5) * 0.2);
+        const rotation = i * 0.5 + seed;
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+
+        const sides = 3 + (i % 3);
+        ctx.beginPath();
+        for (let j = 0; j < sides; j++) {
+            const angle = (j / sides) * Math.PI * 2;
+            const px = Math.cos(angle) * size;
+            const py = Math.sin(angle) * size;
+            if (j === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+
+        ctx.fillStyle = `rgba(${Math.floor(c.r * 255)}, ${Math.floor(c.g * 255)}, ${Math.floor(c.b * 255)}, ${alpha})`;
+        ctx.fill();
+
+        ctx.strokeStyle = `rgba(${Math.floor(c.r * 255)}, ${Math.floor(c.g * 255)}, ${Math.floor(c.b * 255)}, ${alpha * 0.4})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    // Central glow dot
+    ctx.beginPath();
+    ctx.arc(256, 160, 50, 0, Math.PI * 2);
+    const glowGrad = ctx.createRadialGradient(256, 160, 0, 256, 160, 50);
+    glowGrad.addColorStop(0, `rgba(${Math.floor(c.r * 255)}, ${Math.floor(c.g * 255)}, ${Math.floor(c.b * 255)}, 0.22)`);
+    glowGrad.addColorStop(1, `rgba(${Math.floor(c.r * 255)}, ${Math.floor(c.g * 255)}, ${Math.floor(c.b * 255)}, 0)`);
+    ctx.fillStyle = glowGrad;
+    ctx.fill();
+
+    // Project title watermark
+    ctx.fillStyle = `rgba(255,255,255,0.06)`;
+    ctx.font = 'bold 20px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('KROSTGAMES', 256, 160);
+
+    return canvas.toDataURL('image/png');
+}
+
+projects.forEach((p, i) => {
+    p.palette = generatePalette(p.color);
+    p.placeholder = generateGeometricPlaceholder(p.color, i);
+    p.date = p.date || '';
+    p.role = p.role || '';
+    p.link = p.link || '';
+    p.company = p.company || '';
+});
 
 let currentLang = 'en';
 let currentIndex = 0;
@@ -186,6 +248,7 @@ const contentContainer = document.getElementById('content-container');
 const langToggle = document.getElementById('lang-toggle');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 
 // ==========================================
 // 3. Theme & UI Update
@@ -221,12 +284,19 @@ function updateUI() {
             descEl.textContent = data.desc;
 
             tagsEl.innerHTML = '';
+            const tagSpans = [];
             proj.tags.forEach(t => {
                 const span = document.createElement('span');
                 span.className = 'tag';
                 span.textContent = t;
                 tagsEl.appendChild(span);
+                tagSpans.push(span);
             });
+
+            gsap.fromTo(tagSpans,
+                { opacity: 0, x: -15 },
+                { opacity: 1, x: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', delay: 0.1 }
+            );
 
             gsap.to(contentContainer, {
                 opacity: 1,
@@ -248,13 +318,15 @@ function updateUI() {
                 img.src = imgSrc;
                 img.alt = data.title;
                 img.className = 'project-media-img';
+                img.onerror = () => { img.src = proj.placeholder; };
                 mediaEl.appendChild(img);
             });
         } else {
-            const placeholder = document.createElement('div');
-            placeholder.className = 'no-media-placeholder';
-            placeholder.textContent = currentLang === 'en' ? 'Screenshots & video coming soon' : 'Capturas y video próximamente';
-            mediaEl.appendChild(placeholder);
+            const img = document.createElement('img');
+            img.src = proj.placeholder;
+            img.alt = data.title;
+            img.className = 'project-media-img placeholder-img';
+            mediaEl.appendChild(img);
         }
     }
 
@@ -277,13 +349,15 @@ function updateUI() {
 }
 
 langToggle.addEventListener('click', () => {
+    enableAudio();
+    playClickSound();
     currentLang = currentLang === 'en' ? 'es' : 'en';
     langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
     updateUI();
 });
 
-prevBtn.addEventListener('click', () => navigateTo(currentIndex - 1));
-nextBtn.addEventListener('click', () => navigateTo(currentIndex + 1));
+prevBtn.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(currentIndex - 1); });
+nextBtn.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(currentIndex + 1); });
 
 // ==========================================
 // 4. Three.js Arc Carousel — Infinite Loop
@@ -301,6 +375,11 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1;
 canvasContainer.appendChild(renderer.domElement);
+
+// LoadingManager for boot screen progress
+const loadingManager = new THREE.LoadingManager();
+let loadedCount = 0;
+let totalToLoad = 0;
 
 // Lighting — cinematic contrast
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
@@ -322,6 +401,32 @@ const pointLight = new THREE.PointLight(0xffffff, 1.5, 15);
 pointLight.position.set(0, 0, 2);
 scene.add(pointLight);
 
+// Spotlight targeting active card
+const spotLight = new THREE.SpotLight(0xffffff, 3, 20, Math.PI / 6, 0.5, 1);
+spotLight.position.set(0, 4, 8);
+spotLight.target.position.set(0, 0, 0);
+scene.add(spotLight);
+scene.add(spotLight.target);
+
+function moveSpotlightToCard(idx) {
+    const mesh = carouselItems[idx];
+    if (!mesh) return;
+    gsap.to(spotLight.target.position, {
+        x: mesh.position.x,
+        y: mesh.position.y,
+        z: mesh.position.z,
+        duration: 0.75,
+        ease: "power3.inOut",
+        overwrite: 'auto'
+    });
+    gsap.to(spotLight.position, {
+        x: mesh.position.x * 0.5,
+        duration: 0.75,
+        ease: "power3.inOut",
+        overwrite: 'auto'
+    });
+}
+
 // Shared rounded-rect alpha map for all cards
 function createRoundedAlphaMap() {
     const canvas = document.createElement('canvas');
@@ -339,7 +444,8 @@ function createRoundedAlphaMap() {
 const roundedAlphaMap = createRoundedAlphaMap();
 
 function createCardMaterial(proj) {
-    const textureLoader = new THREE.TextureLoader();
+    const textureLoader = new THREE.TextureLoader(loadingManager);
+    const imageSrc = proj.images && proj.images.length > 0 ? proj.images[0] : proj.placeholder;
 
     const baseOpts = {
         roughness: 0.25,
@@ -350,44 +456,67 @@ function createCardMaterial(proj) {
         alphaTest: 0.5
     };
 
-    if (proj.images && proj.images.length > 0) {
-        const texture = textureLoader.load(proj.images[0]);
-        return new THREE.MeshStandardMaterial({
-            ...baseOpts,
-            map: texture
-        });
-    }
+    const texture = textureLoader.load(imageSrc);
+    return new THREE.MeshStandardMaterial({
+        ...baseOpts,
+        map: texture
+    });
+}
 
+function createCardBackMaterial(proj) {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 320;
     const ctx = canvas.getContext('2d');
 
-    const grad = ctx.createLinearGradient(0, 0, 512, 320);
-    grad.addColorStop(0, '#0f1724');
-    grad.addColorStop(1, proj.color);
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.roundRect(0, 0, 512, 320, 24);
-    ctx.fill();
+    // Dark background with subtle tint from project color
+    ctx.fillStyle = '#0d1117';
+    ctx.fillRect(0, 0, 512, 320);
 
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 24px "Space Grotesk", sans-serif';
+    // Accent border line
+    ctx.strokeStyle = proj.color;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(6, 6, 500, 308);
+
+    // Header
+    ctx.fillStyle = proj.color;
+    ctx.font = 'bold 18px "Space Grotesk", sans-serif';
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.textBaseline = 'top';
+    ctx.fillText(proj.en.title.toUpperCase(), 256, 20);
 
-    const title = proj.en.title;
-    const words = title.split(" ");
-    if (words.length > 3) {
-        ctx.fillText(words.slice(0, 3).join(" "), 256, 140);
-        ctx.fillText(words.slice(3).join(" "), 256, 185);
-    } else {
-        ctx.fillText(title, 256, 160);
-    }
+    // Info fields
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '13px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'left';
+
+    const infoLines = [];
+    if (proj.date) infoLines.push(`Date: ${proj.date}`);
+    if (proj.role) infoLines.push(`Role: ${proj.role}`);
+    if (proj.company) infoLines.push(`Company: ${proj.company}`);
+    infoLines.push(`Stack: ${proj.tags.join(', ')}`);
+    if (proj.link) infoLines.push(`Link: ${proj.link}`);
+
+    let y = 60;
+    infoLines.forEach(line => {
+        ctx.fillText(line, 40, y);
+        y += 24;
+    });
+
+    // Click hint
+    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+    ctx.font = '11px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Click to flip back', 256, 290);
 
     const texture = new THREE.CanvasTexture(canvas);
     return new THREE.MeshStandardMaterial({
-        ...baseOpts,
+        roughness: 0.4,
+        metalness: 0.05,
+        side: THREE.DoubleSide,
+        alphaMap: roundedAlphaMap,
+        transparent: true,
+        alphaTest: 0.5,
         map: texture
     });
 }
@@ -411,7 +540,7 @@ const glowMeshes = [];
 
 // Arc parameters — cinematic wide arc
 const ARC_RADIUS = 5.5;
-const ARC_SPAN_DEG = 128;
+const ARC_SPAN_DEG = isTouchDevice ? 70 : 128;
 const DEPTH_MULT = 1.45;
 const ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / (totalProjects - 1));
 const HALF_SPAN = totalProjects / 2; // 3.5
@@ -463,6 +592,9 @@ function updateCardPositions(animated = false) {
     });
 }
 
+// Count real textures to load for boot progress
+totalToLoad = projects.filter(p => p.images && p.images.length > 0).length;
+
 // Build cards
 projects.forEach((proj, i) => {
     const material = createCardMaterial(proj);
@@ -476,14 +608,69 @@ projects.forEach((proj, i) => {
     mesh.add(glow);
     glowMeshes.push(glow);
 
+    // Back face for flip
+    const backMat = createCardBackMaterial(proj);
+    const backMesh = new THREE.Mesh(cardGeometry.clone(), backMat);
+    backMesh.position.z = -0.04;
+    backMesh.rotation.y = Math.PI;
+    mesh.add(backMesh);
+
     mesh.userData.projectId = i;
+    mesh.userData.isFlipped = false;
 
     scene.add(mesh);
     carouselItems.push(mesh);
 });
 
-// Initial positioning
-updateCardPositions(true);
+// Cinematic entrance — deferred until boot completes
+function runCinematicEntrance() {
+    carouselItems.forEach((mesh, i) => {
+        const wrapped = getWrappedOffset(i, currentOffset);
+        const t = getCardTransform(wrapped);
+
+        mesh.userData.baseScale = t.scale;
+        mesh.renderOrder = 100 - Math.abs(wrapped);
+
+        // Start far back
+        mesh.position.set(t.x, 0, t.z - 15);
+        mesh.scale.set(0.1, 0.1, 1);
+        mesh.rotation.y = t.rotY;
+
+        // Animate to final position with stagger
+        gsap.to(mesh.position, {
+            x: t.x,
+            z: t.z,
+            duration: 1.2,
+            delay: i * 0.08,
+            ease: "power3.out"
+        });
+        gsap.to(mesh.scale, {
+            x: t.scale,
+            y: t.scale,
+            duration: 1.2,
+            delay: i * 0.08,
+            ease: "power3.out"
+        });
+        gsap.to(mesh.rotation, {
+            y: t.rotY,
+            duration: 1.2,
+            delay: i * 0.08,
+            ease: "power3.out",
+            onComplete: () => {
+                if (i === totalProjects - 1) {
+                    // Reveal title after all cards are in place
+                    gsap.fromTo(contentContainer,
+                        { opacity: 0, y: 30 },
+                        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+                    );
+                }
+            }
+        });
+    });
+}
+
+// Hide UI until boot finishes
+contentContainer.style.opacity = '0';
 
 // Particles
 const particlesCount = 1500;
@@ -492,6 +679,8 @@ const posArray = new Float32Array(particlesCount * 3);
 for (let i = 0; i < particlesCount * 3; i++) {
     posArray[i] = (Math.random() - 0.5) * 40;
 }
+const originalPositions = new Float32Array(posArray);
+const particleOffsets = new Float32Array(particlesCount * 3);
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
 const particleMaterial = new THREE.PointsMaterial({
@@ -545,6 +734,8 @@ function navigateTo(targetIdx) {
     const targetOffset = currentOffset + shortest;
 
     animateOffsetTo(targetOffset);
+    moveSpotlightToCard(currentIndex);
+    unflipAllCards();
     updateUI();
 }
 
@@ -553,6 +744,7 @@ function navigateTo(targetIdx) {
 // ==========================================
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+const mouseWorldPos = new THREE.Vector3();
 let hoveredIndex = -1;
 
 canvasContainer.addEventListener('pointermove', (e) => {
@@ -563,6 +755,8 @@ canvasContainer.addEventListener('pointermove', (e) => {
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    raycaster.ray.intersectPlane(plane, mouseWorldPos);
     const intersects = raycaster.intersectObjects(carouselItems);
 
     if (intersects.length > 0) {
@@ -586,17 +780,52 @@ function setCardHover(idx, active) {
     const base = mesh.userData.baseScale || 1;
 
     gsap.to(mesh.scale, {
-        x: base * (active ? 1.05 : 1),
-        y: base * (active ? 1.05 : 1),
-        duration: 0.3,
+        x: base * (active ? 1.08 : 1),
+        y: base * (active ? 1.08 : 1),
+        duration: 0.35,
         ease: "power2.out",
         overwrite: 'auto'
     });
 
     gsap.to(mesh.rotation, {
-        z: active ? 0.008 : 0,
-        duration: 0.3,
+        x: active ? 0.08 : 0,
+        z: active ? 0.015 : 0,
+        duration: 0.35,
         ease: "power2.out"
+    });
+
+    const glow = mesh.children[0];
+    if (glow) {
+        gsap.to(glow.material, {
+            opacity: active ? 0.4 : 0.12,
+            duration: 0.35,
+            ease: "power2.out"
+        });
+    }
+}
+
+function flipCard(idx) {
+    const mesh = carouselItems[idx];
+    if (!mesh) return;
+    const isFlipped = mesh.userData.isFlipped;
+    gsap.to(mesh.rotation, {
+        y: mesh.rotation.y + (isFlipped ? -Math.PI : Math.PI),
+        duration: 0.5,
+        ease: "power2.inOut"
+    });
+    mesh.userData.isFlipped = !isFlipped;
+}
+
+function unflipAllCards() {
+    carouselItems.forEach(mesh => {
+        if (mesh.userData.isFlipped) {
+            gsap.to(mesh.rotation, {
+                y: mesh.rotation.y - Math.PI,
+                duration: 0.4,
+                ease: "power2.inOut"
+            });
+            mesh.userData.isFlipped = false;
+        }
     });
 }
 
@@ -625,7 +854,7 @@ let hasMoved = false;
 let dragVelocity = 0;
 let lastMoveX = 0;
 let lastMoveTime = 0;
-const DRAG_SENSITIVITY = 110;
+const DRAG_SENSITIVITY = isTouchDevice ? 70 : 110;
 
 canvasContainer.addEventListener('pointerdown', (e) => {
     gsap.killTweensOf(offsetAnimProxy);
@@ -663,7 +892,7 @@ canvasContainer.addEventListener('pointerup', (e) => {
     canvasContainer.releasePointerCapture(e.pointerId);
 
     if (!hasMoved) {
-        // Click-to-focus via raycasting
+        // Click-to-focus or flip via raycasting
         const rect = canvasContainer.getBoundingClientRect();
         mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -671,8 +900,12 @@ canvasContainer.addEventListener('pointerup', (e) => {
         const intersects = raycaster.intersectObjects(carouselItems);
         if (intersects.length > 0) {
             const idx = intersects[0].object.userData.projectId;
-            if (idx !== undefined && idx !== currentIndex) {
-                navigateTo(idx);
+            if (idx !== undefined) {
+                if (idx === currentIndex) {
+                    flipCard(idx);
+                } else {
+                    navigateTo(idx);
+                }
                 return;
             }
         }
@@ -724,6 +957,38 @@ function animate() {
 
     particlesMesh.rotation.y = elapsed * 0.008;
 
+    // Particle mouse interaction
+    const interactionRadius = 6;
+    const interactionStrength = 0.06;
+    const mx = mouseWorldPos.x;
+    const my = mouseWorldPos.y;
+    for (let i = 0; i < particlesCount; i++) {
+        const ix = i * 3;
+        const ox = originalPositions[ix];
+        const oy = originalPositions[ix + 1];
+
+        const dx = ox - mx;
+        const dy = oy - my;
+        const distSq = dx * dx + dy * dy;
+
+        if (distSq < interactionRadius * interactionRadius && distSq > 0.01) {
+            const dist = Math.sqrt(distSq);
+            const force = (1 - dist / interactionRadius) * interactionStrength;
+            particleOffsets[ix] += (dx / dist) * force;
+            particleOffsets[ix + 1] += (dy / dist) * force;
+            particleOffsets[ix + 2] += force * 2;
+        }
+
+        particleOffsets[ix] *= 0.94;
+        particleOffsets[ix + 1] *= 0.94;
+        particleOffsets[ix + 2] *= 0.94;
+
+        posArray[ix] = ox + particleOffsets[ix];
+        posArray[ix + 1] = oy + particleOffsets[ix + 1];
+        posArray[ix + 2] = originalPositions[ix + 2] + particleOffsets[ix + 2];
+    }
+    particlesGeometry.attributes.position.needsUpdate = true;
+
     renderer.render(scene, camera);
 }
 
@@ -769,7 +1034,7 @@ projects.forEach((_, i) => {
     const dot = document.createElement('button');
     dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
     dot.setAttribute('aria-label', `Go to project ${i + 1}`);
-    dot.addEventListener('click', () => navigateTo(i));
+    dot.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(i); });
     indicatorsContainer.appendChild(dot);
     indicatorDots.push(dot);
 });
@@ -793,9 +1058,515 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ==========================================
+// 8. Procedural Sound (Web Audio API)
+// ==========================================
+const muteToggle = document.getElementById('mute-toggle');
+let audioCtx = null;
+let isMuted = true;
+let audioInitialized = false;
+
+const savedMute = localStorage.getItem('krost-muted');
+if (savedMute === 'false') {
+    isMuted = false;
+    muteToggle.textContent = '🔊';
+    muteToggle.classList.remove('muted');
+} else {
+    muteToggle.textContent = '🔇';
+    muteToggle.classList.add('muted');
+}
+
+function initAudio() {
+    if (audioInitialized) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    audioInitialized = true;
+}
+
+function resumeAudio() {
+    if (!audioCtx) initAudio();
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+muteToggle.addEventListener('click', () => {
+    enableAudio();
+    // Play feedback before toggling so it always sounds
+    if (audioCtx) {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.06, now + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+    }
+    isMuted = !isMuted;
+    muteToggle.textContent = isMuted ? '🔇' : '🔊';
+    muteToggle.classList.toggle('muted', isMuted);
+    localStorage.setItem('krost-muted', isMuted);
+    if (!isMuted) resumeAudio();
+});
+
+// Project-specific chord frequencies (root + third + fifth variations)
+const projectChords = [
+    [261.63, 329.63, 392.00],   // VR Hotel — warm major
+    [349.23, 440.00, 523.25],   // AR Hotel — bright major
+    [220.00, 261.63, 329.63],   // Multiplayer — darker minor
+    [293.66, 349.23, 440.00],   // TTS Tool — neutral
+    [196.00, 246.94, 293.66],   // Audio Tool — low
+    [329.63, 392.00, 493.88],   // 360 Tours — airy
+    [440.00, 554.37, 659.25]    // Mobile Games — energetic
+];
+
+function playProjectSound(idx, type = 'navigate') {
+    if (isMuted || !audioCtx) return;
+
+    const now = audioCtx.currentTime;
+    const freqs = projectChords[idx % projectChords.length];
+
+    if (type === 'navigate') {
+        // Chord sweep on project change
+        freqs.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.type = i === 0 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq * 0.5, now);
+            osc.frequency.exponentialRampToValueAtTime(freq, now + 0.3);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(200, now);
+            filter.frequency.exponentialRampToValueAtTime(2000, now + 0.4);
+
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.06 / freqs.length, now + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.7);
+        });
+    } else if (type === 'hover') {
+        // Short tone on hover
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freqs[0] * (1 + idx * 0.03), now);
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.04, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+    } else if (type === 'flip') {
+        // Subtle click on card flip
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(400, now + 0.15);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+    }
+}
+
+function playClickSound() {
+    if (isMuted || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.06, now + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+}
+
+function playBootSound() {
+    if (isMuted || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    // Power-on sweep: low to high with slight reverb feel via multiple oscillators
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc2.type = 'triangle';
+    osc1.frequency.setValueAtTime(150, now);
+    osc1.frequency.exponentialRampToValueAtTime(880, now + 0.4);
+    osc2.frequency.setValueAtTime(300, now);
+    osc2.frequency.exponentialRampToValueAtTime(1200, now + 0.3);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.08, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 0.6);
+    osc2.stop(now + 0.6);
+}
+
+function playShootSound() {
+    if (isMuted || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(1800, now + 0.04);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.04, now + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.07);
+}
+
+function playExplosionSound() {
+    if (isMuted || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const bufferSize = audioCtx.sampleRate * 0.2;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    noise.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start(now);
+}
+
+function playHitSound() {
+    if (isMuted || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, now);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.3);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.08, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+}
+
+// Expose audio API for game.js
+window.KrostAudio = {
+    enableAudio,
+    playExplosionSound,
+    playHitSound
+};
+
+// Resume audio on first user interaction
+function enableAudio() {
+    if (!audioInitialized) {
+        initAudio();
+        isMuted = savedMute !== 'false';
+        if (!isMuted) resumeAudio();
+    }
+}
+
+// Haptic feedback on mobile
+function hapticPulse() {
+    if (isTouchDevice && navigator.vibrate) {
+        navigator.vibrate(15);
+    }
+}
+
+// Patch navigateTo to trigger sound + haptic
+const _origNavigateTo2 = navigateTo;
+navigateTo = function(index) {
+    const prev = currentIndex;
+    _origNavigateTo2(index);
+    if (currentIndex !== prev) {
+        enableAudio();
+        playProjectSound(currentIndex, 'navigate');
+        hapticPulse();
+    }
+};
+
+// Patch setCardHover to trigger hover sound
+const _origSetCardHover2 = setCardHover;
+let lastHoverSoundIdx = -1;
+setCardHover = function(idx, active) {
+    _origSetCardHover2(idx, active);
+    if (active && idx !== lastHoverSoundIdx) {
+        lastHoverSoundIdx = idx;
+        enableAudio();
+        playProjectSound(idx, 'hover');
+    }
+    if (!active && idx === lastHoverSoundIdx) {
+        lastHoverSoundIdx = -1;
+    }
+};
+
+// Patch flipCard to trigger flip sound
+const _origFlipCard = flipCard;
+flipCard = function(idx) {
+    _origFlipCard(idx);
+    enableAudio();
+    playProjectSound(idx, 'flip');
+};
+
+// ==========================================
+// 9. Auto-hide arrows & Custom cursor
+// ==========================================
+const controlsEl = document.querySelector('.controls');
+const customCursor = document.getElementById('custom-cursor');
+let controlsHideTimer = null;
+
+function showControls() {
+    if (controlsEl) controlsEl.classList.remove('hidden');
+    clearTimeout(controlsHideTimer);
+    controlsHideTimer = setTimeout(() => {
+        if (controlsEl) controlsEl.classList.add('hidden');
+    }, 2500);
+}
+
+canvasContainer.addEventListener('pointermove', showControls);
+canvasContainer.addEventListener('pointerdown', showControls);
+canvasContainer.addEventListener('pointerup', showControls);
+showControls();
+
+// Custom cursor (desktop only)
+if (!isTouchDevice && customCursor) {
+    customCursor.classList.add('active');
+    document.addEventListener('mousemove', (e) => {
+        gsap.to(customCursor, {
+            x: e.clientX,
+            y: e.clientY,
+            duration: 0.15,
+            ease: 'power2.out'
+        });
+    });
+
+    const _origSetCardHover = setCardHover;
+    setCardHover = function(idx, active) {
+        _origSetCardHover(idx, active);
+        customCursor.classList.toggle('hover', active);
+    };
+}
+
+// Double-tap zoom prevention (iOS Safari)
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+    }
+    lastTouchEnd = now;
+}, { passive: false });
+
+// ==========================================
+// 10. Boot Screen Sequence
+// ==========================================
+function runBootSequence() {
+    const bootScreen = document.getElementById('boot-screen');
+    const bootStart = document.getElementById('boot-start');
+    const bootPlay = document.getElementById('boot-play');
+    const bootSkip = document.getElementById('boot-skip');
+    const bootProgress = document.getElementById('boot-progress');
+    const bootProgressText = document.getElementById('boot-progress-text');
+    const bootLogs = document.querySelectorAll('.boot-log');
+
+    if (!bootScreen) {
+        runCinematicEntrance();
+        return;
+    }
+
+    function startMinigame() {
+        enableAudio();
+        playBootSound();
+        // Hide boot, load game module
+        gsap.to(bootScreen, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.inOut",
+            onComplete: () => {
+                bootScreen.style.display = 'none';
+                document.body.classList.remove('booting');
+                import('./game.js').then(m => m.startGame());
+            }
+        });
+    }
+
+    // Reduced motion: static display, immediate buttons
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        bootLogs.forEach(l => l.classList.add('ok'));
+        bootProgress.style.width = '100%';
+        bootProgressText.textContent = '100%';
+        bootStart.style.display = 'block';
+        if (bootPlay) bootPlay.style.display = 'block';
+        gsap.set([bootStart, bootPlay], { opacity: 1, scale: 1 });
+        bootStart.addEventListener('click', () => {
+            enableAudio();
+            playBootSound();
+            finishBoot();
+        });
+        if (bootPlay) bootPlay.addEventListener('click', startMinigame);
+        return;
+    }
+
+    // Hide main content during boot
+    document.body.classList.add('booting');
+
+    // Animate logo + title
+    gsap.to('.boot-logo', { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" });
+    gsap.to('.boot-title', { opacity: 1, duration: 0.5, delay: 0.3 });
+
+    // Stagger logs in, then mark OK
+    gsap.to(bootLogs, {
+        opacity: 1,
+        x: 0,
+        duration: 0.3,
+        stagger: 0.15,
+        delay: 0.5,
+        onComplete: () => {
+            bootLogs.forEach(l => l.classList.add('ok'));
+        }
+    });
+
+    // Progress tracking: combines real texture load + minimum time
+    let loadProgress = totalToLoad === 0 ? 100 : 0;
+    let timeProgress = 0;
+    const minBootTime = 2500; // ms
+    const startTime = Date.now();
+    let readyShown = false;
+
+    function updateProgress() {
+        const combined = (loadProgress * 0.6) + (timeProgress * 0.4);
+        const pct = Math.min(100, Math.round(combined));
+        if (bootProgress) bootProgress.style.width = pct + '%';
+        if (bootProgressText) bootProgressText.textContent = pct + '%';
+
+        if (pct >= 100 && !readyShown && bootStart) {
+            readyShown = true;
+            bootStart.style.display = 'block';
+            if (bootPlay) bootPlay.style.display = 'block';
+            gsap.to([bootStart, bootPlay], { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)", stagger: 0.08 });
+        }
+    }
+
+    // Time progress tick
+    const timeInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        timeProgress = Math.min(100, (elapsed / minBootTime) * 100);
+        updateProgress();
+        if (elapsed >= minBootTime) clearInterval(timeInterval);
+    }, 50);
+
+    // Texture loading progress
+    if (totalToLoad > 0) {
+        loadingManager.onProgress = (url, loaded, total) => {
+            loadProgress = total > 0 ? (loaded / total) * 100 : 0;
+            updateProgress();
+        };
+        loadingManager.onLoad = () => {
+            loadProgress = 100;
+            updateProgress();
+        };
+    }
+
+    // Skip button
+    if (bootSkip) {
+        bootSkip.addEventListener('click', () => {
+            clearInterval(timeInterval);
+            finishBoot();
+        });
+    }
+
+    // Start button → glitch transition → site
+    if (bootStart) {
+        bootStart.addEventListener('click', () => {
+            enableAudio();
+            playBootSound();
+
+            // Glitch sweep overlay
+            const glitch = document.createElement('div');
+            glitch.className = 'boot-glitch';
+            if (bootScreen) bootScreen.appendChild(glitch);
+
+            gsap.to(bootScreen, {
+                opacity: 0,
+                duration: 0.5,
+                delay: 0.3,
+                ease: "power2.inOut",
+                onComplete: finishBoot
+            });
+        });
+    }
+
+    // Play minigame button
+    if (bootPlay) {
+        bootPlay.addEventListener('click', startMinigame);
+    }
+
+    function finishBoot() {
+        document.body.classList.remove('booting');
+        if (bootScreen && bootScreen.parentNode) {
+            bootScreen.parentNode.removeChild(bootScreen);
+        }
+        runCinematicEntrance();
+    }
+}
+
+// ==========================================
 // Initialize
 // ==========================================
 updateIndicators();
 updateUI();
 animate();
 initScrollAnimations();
+runBootSequence();
+
+// Global hook for game.js to return to portfolio
+window.finishBootFromGame = function() {
+    document.body.classList.remove('booting');
+    const bs = document.getElementById('boot-screen');
+    if (bs && bs.parentNode) bs.parentNode.removeChild(bs);
+    runCinematicEntrance();
+};
+
+// Launch the minigame from anywhere in the portfolio (header button)
+window.launchMinigame = function() {
+    enableAudio();
+    const bs = document.getElementById('boot-screen');
+    if (bs && bs.parentNode) bs.parentNode.removeChild(bs);
+    document.body.classList.remove('booting');
+    import('./game.js').then(m => m.startGame());
+};
+
+const playGameBtn = document.getElementById('play-game-btn');
+if (playGameBtn) {
+    playGameBtn.addEventListener('click', () => window.launchMinigame());
+}
