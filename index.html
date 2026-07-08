@@ -73,26 +73,57 @@
         <div class="boot-scanlines"></div>
     </div>
     <header>
-        <img src="Media/logo.png" alt="Krost Games Logo" class="logo-img">
-        <nav class="main-nav">
-            <a href="#about" class="nav-link" id="nav-about">Experience</a>
-            <a href="https://github.com/Krost22" target="_blank" class="nav-icon" title="GitHub">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        <div class="header-left">
+            <img src="Media/logo.png" alt="Krost Games Logo" class="logo-img">
+            <span class="header-logo-text">KROST</span>
+        </div>
+        <nav class="header-pills" aria-label="Primary">
+            <a href="#hero" class="nav-pill active" id="nav-projects">PROJECTS</a>
+            <a href="#about" class="nav-pill" id="nav-about">EXPERIENCE</a>
+        </nav>
+        <div class="header-right">
+            <a href="https://github.com/Krost22" target="_blank" class="nav-icon" title="GitHub" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
             </a>
-            <a href="https://www.linkedin.com/in/eduardomogollonsalcedo/?locale=en" target="_blank" class="nav-icon" title="LinkedIn">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            <a href="https://www.linkedin.com/in/eduardomogollonsalcedo/?locale=en" target="_blank" class="nav-icon" title="LinkedIn" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
             </a>
-            <a href="https://sketchfab.com/Krost22" target="_blank" class="nav-icon" title="Sketchfab">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.16 11-9.22-5.32c-.58-.34-1.3-.34-1.88 0L.84 11c-.58.34-.94.96-.94 1.63v6.74c0 .67.36 1.3.94 1.63l9.22 5.32c.58.34 1.3.34 1.88 0l9.22-5.32c.58-.34.94-.96.94-1.63v-6.74c0-.67-.36-1.3-.94-1.63zM11 5.75v12.5m-8-7.9 8-4.6m8 4.6-8-4.6"></path></svg>
+            <a href="https://sketchfab.com/Krost22" target="_blank" class="nav-icon" title="Sketchfab" aria-label="Sketchfab">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.16 11-9.22-5.32c-.58-.34-1.3-.34-1.88 0L.84 11c-.58.34-.94.96-.94 1.63v6.74c0 .67.36 1.3.94 1.63l9.22 5.32c.58.34 1.3.34 1.88 0l9.22-5.32c.58-.34.94-.96.94-1.63v-6.74c0-.67-.36-1.3-.94-1.63zM11 5.75v12.5m-8-7.9 8-4.6m8 4.6-8-4.6"></path></svg>
             </a>
-            <a href="https://krostgames.itch.io/" target="_blank" class="nav-icon" title="Itch.io">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 1h18v22H3V1zm2 2v18h14V3H5zm4 4h6v2H9V7zm0 4h6v2H9v-2zm0 4h6v2H9v-2z"></path></svg>
+            <a href="https://krostgames.itch.io/" target="_blank" class="nav-icon" title="Itch.io" aria-label="Itch.io">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 1h18v22H3V1zm2 2v18h14V3H5zm4 4h6v2H9V7zm0 4h6v2H9v-2zm0 4h6v2H9v-2z"></path></svg>
             </a>
-            <button id="play-game-btn" title="Play minigame" aria-label="Play minigame">▶ PLAY</button>
+            <button id="play-game-btn" title="Play minigame" aria-label="Play minigame">▶</button>
             <button id="mute-toggle" title="Toggle sound" aria-label="Toggle sound">🔇</button>
             <button id="lang-toggle" aria-label="Switch language">ES</button>
-        </nav>
+            <div class="bpm-clock" id="bpm-clock" aria-label="Clock">--:--</div>
+        </div>
     </header>
+
+    <section id="hero" class="hero-section">
+        <div class="hero-backdrop" id="hero-backdrop"></div>
+        <div class="hero-vignette"></div>
+        <div class="hero-content">
+            <div class="hero-avatar-wrap">
+                <img src="Media/logo.png" alt="Krost" class="hero-avatar">
+            </div>
+            <div class="hero-meta">
+                <div class="hero-name">Eduardo Mogollón Salcedo</div>
+                <div class="hero-role" id="hero-role">Unity Game Developer</div>
+                <div class="hero-tagline" id="hero-tagline">VR/AR · Multiplayer · Mobile</div>
+                <div class="hero-badges">
+                    <span class="hero-badge" id="hero-available">● Available for work</span>
+                    <span class="hero-badge">Bachelor of Systems Engineering</span>
+                    <span class="hero-badge">Colombia · Remote</span>
+                </div>
+                <div class="hero-actions">
+                    <a href="https://www.linkedin.com/in/eduardomogollonsalcedo/?locale=en" target="_blank" class="bpm-btn-primary" id="hero-cta-contact">Contact on LinkedIn</a>
+                    <a href="https://github.com/Krost22" target="_blank" class="bpm-btn-secondary" id="hero-cta-github">View GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <div id="canvas-wrapper">
         <div id="canvas-container"></div>

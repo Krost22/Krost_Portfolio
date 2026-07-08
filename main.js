@@ -130,7 +130,13 @@ const projects = [
 
 const aboutTranslations = {
     en: {
+        navProjects: "Projects",
         navAbout: "Experience",
+        heroRole: "Unity Game Developer",
+        heroTagline: "VR/AR · Multiplayer · Mobile",
+        heroAvailable: "● Available for work",
+        heroCtaContact: "Contact on LinkedIn",
+        heroCtaGithub: "View GitHub",
         aboutTitle: "Experience & Education",
         profileTitle: "Profile",
         profileDesc: "Unity Game Developer focused on mobile games and interactive experiences. Experienced with gameplay programming, physics, particles, UI/UX for games and performance optimization for Android. Comfortable working 100% remote and collaborating with multidisciplinary teams.",
@@ -147,7 +153,13 @@ const aboutTranslations = {
         exp2Desc: "Developed mobile game prototypes using Unity for Android. Designed and implemented core gameplay mechanics, UI systems, and particle effects. Optimized performance for low and mid-range mobile devices."
     },
     es: {
+        navProjects: "Proyectos",
         navAbout: "Experiencia",
+        heroRole: "Desarrollador de Videojuegos Unity",
+        heroTagline: "VR/AR · Multijugador · Móvil",
+        heroAvailable: "● Disponible para trabajar",
+        heroCtaContact: "Contactar en LinkedIn",
+        heroCtaGithub: "Ver GitHub",
         aboutTitle: "Experiencia y Educación",
         profileTitle: "Perfil",
         profileDesc: "Desarrollador de Videojuegos Unity enfocado en juegos móviles y experiencias interactivas. Con experiencia en programación de gameplay, físicas, partículas, UI/UX para juegos y optimización de rendimiento para Android. Capacidad para trabajar 100% remoto y colaborar con equipos multidisciplinarios.",
@@ -169,34 +181,37 @@ function generatePalette(hex) {
     const c = new THREE.Color(hex);
     const hsl = {};
     c.getHSL(hsl);
+    // Steam Big Picture: base stays dark blue-ish, accent inherits project color
     return {
         primary: hex,
-        bg: new THREE.Color().setHSL(hsl.h, Math.min(hsl.s * 1.2, 1), 0.06).getStyle(),
-        surface: new THREE.Color().setHSL(hsl.h, hsl.s * 0.8, 0.12).getStyle(),
-        surface2: new THREE.Color().setHSL(hsl.h, hsl.s * 0.6, 0.2).getStyle(),
+        bg: new THREE.Color().setHSL(0.58, 0.35, 0.06).getStyle(),
+        surface: new THREE.Color().setHSL(0.58, 0.35, 0.11).getStyle(),
+        surface2: new THREE.Color().setHSL(0.58, 0.35, 0.17).getStyle(),
         accent: hex,
-        secondary: new THREE.Color().setHSL((hsl.h + 0.04) % 1, hsl.s * 0.9, 0.5).getStyle(),
-        glow: `rgba(${c.r * 255 | 0}, ${c.g * 255 | 0}, ${c.b * 255 | 0}, 0.25)`
+        secondary: new THREE.Color().setHSL((hsl.h + 0.04) % 1, Math.min(hsl.s * 0.85, 1), 0.55).getStyle(),
+        glow: `rgba(${c.r * 255 | 0}, ${c.g * 255 | 0}, ${c.b * 255 | 0}, 0.28)`
     };
 }
 
 function generateGeometricPlaceholder(color, seed = 0) {
+    const W = 512;
+    const H = 768;
     const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 320;
+    canvas.width = W;
+    canvas.height = H;
     const ctx = canvas.getContext('2d');
     const c = new THREE.Color(color);
 
     // Dark background derived from color
     ctx.fillStyle = `rgb(${Math.floor(c.r * 18)}, ${Math.floor(c.g * 18)}, ${Math.floor(c.b * 18)})`;
-    ctx.fillRect(0, 0, 512, 320);
+    ctx.fillRect(0, 0, W, H);
 
     // Geometric pattern: triangles, squares, hexagons
-    const shapes = 40;
+    const shapes = 50;
     for (let i = 0; i < shapes; i++) {
-        const x = ((Math.sin(i * 1.618 + seed) * 0.5 + 0.5) * 0.85 + 0.075) * 512;
-        const y = ((Math.cos(i * 2.718 + seed) * 0.5 + 0.5) * 0.85 + 0.075) * 320;
-        const size = 16 + ((Math.sin(i * 0.7) * 0.5 + 0.5) * 55);
+        const x = ((Math.sin(i * 1.618 + seed) * 0.5 + 0.5) * 0.85 + 0.075) * W;
+        const y = ((Math.cos(i * 2.718 + seed) * 0.5 + 0.5) * 0.85 + 0.075) * H;
+        const size = 18 + ((Math.sin(i * 0.7) * 0.5 + 0.5) * 65);
         const alpha = 0.04 + ((Math.sin(i * 0.3 + seed) * 0.5 + 0.5) * 0.2);
         const rotation = i * 0.5 + seed;
 
@@ -227,8 +242,8 @@ function generateGeometricPlaceholder(color, seed = 0) {
 
     // Central glow dot
     ctx.beginPath();
-    ctx.arc(256, 160, 50, 0, Math.PI * 2);
-    const glowGrad = ctx.createRadialGradient(256, 160, 0, 256, 160, 50);
+    ctx.arc(W / 2, H / 2, 70, 0, Math.PI * 2);
+    const glowGrad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, 70);
     glowGrad.addColorStop(0, `rgba(${Math.floor(c.r * 255)}, ${Math.floor(c.g * 255)}, ${Math.floor(c.b * 255)}, 0.22)`);
     glowGrad.addColorStop(1, `rgba(${Math.floor(c.r * 255)}, ${Math.floor(c.g * 255)}, ${Math.floor(c.b * 255)}, 0)`);
     ctx.fillStyle = glowGrad;
@@ -236,10 +251,10 @@ function generateGeometricPlaceholder(color, seed = 0) {
 
     // Project title watermark
     ctx.fillStyle = `rgba(255,255,255,0.06)`;
-    ctx.font = 'bold 20px "Space Grotesk", sans-serif';
+    ctx.font = 'bold 22px "Space Grotesk", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('KROSTGAMES', 256, 160);
+    ctx.fillText('KROSTGAMES', W / 2, H / 2);
 
     return canvas.toDataURL('image/png');
 }
@@ -271,6 +286,18 @@ const nextBtn = document.getElementById('next-btn');
 const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// BPM live clock
+function updateClock() {
+    const clock = document.getElementById('bpm-clock');
+    if (!clock) return;
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    clock.textContent = `${h}:${m}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
 // ==========================================
 // 3. Theme & UI Update
 // ==========================================
@@ -299,9 +326,10 @@ function updateUI() {
         duration: 0.3,
         onComplete: () => {
             titleEl.textContent = data.title;
-            titleEl.style.background = `linear-gradient(135deg, #fff 0%, ${proj.color} 80%)`;
-            titleEl.style.webkitBackgroundClip = 'text';
-            titleEl.style.webkitTextFillColor = 'transparent';
+            titleEl.style.background = 'none';
+            titleEl.style.webkitBackgroundClip = 'unset';
+            titleEl.style.webkitTextFillColor = 'unset';
+            titleEl.style.color = '#fff';
 
             descEl.textContent = data.desc;
 
@@ -377,8 +405,35 @@ function updateUI() {
         }
     }
 
+    // Hero + Header i18n
     const aboutData = aboutTranslations[currentLang];
+    document.getElementById('nav-projects').textContent = aboutData.navProjects;
     document.getElementById('nav-about').textContent = aboutData.navAbout;
+    document.getElementById('hero-role').textContent = aboutData.heroRole;
+    document.getElementById('hero-tagline').textContent = aboutData.heroTagline;
+    document.getElementById('hero-available').textContent = aboutData.heroAvailable;
+    document.getElementById('hero-cta-contact').textContent = aboutData.heroCtaContact;
+    document.getElementById('hero-cta-github').textContent = aboutData.heroCtaGithub;
+
+    // Nav pills active state
+    updateNavPills();
+
+    // Canvas wrapper blurred background based on active project
+    const canvasWrapper = document.getElementById('canvas-wrapper');
+    const artwork = proj.images && proj.images.length > 0 ? proj.images[0] : proj.placeholder;
+    if (canvasWrapper) {
+        canvasWrapper.style.setProperty('--active-artwork', `url("${artwork}")`);
+    }
+
+    // Hero backdrop tint
+    const heroBackdrop = document.getElementById('hero-backdrop');
+    if (heroBackdrop) {
+        heroBackdrop.style.background = `
+            radial-gradient(ellipse 90% 120% at 70% 20%, ${proj.palette.glow} 0%, transparent 55%),
+            linear-gradient(135deg, var(--surface) 0%, var(--bg) 60%)
+        `;
+    }
+
     document.getElementById('about-title').textContent = aboutData.aboutTitle;
     document.getElementById('profile-title').textContent = aboutData.profileTitle;
     document.getElementById('profile-desc').textContent = aboutData.profileDesc;
@@ -399,6 +454,22 @@ function updateUI() {
         dot.setAttribute('aria-label', `${indicatorLabel} ${i + 1}`);
     });
 }
+
+function updateNavPills() {
+    const projectsPill = document.getElementById('nav-projects');
+    const aboutPill = document.getElementById('nav-about');
+    if (!projectsPill || !aboutPill) return;
+    const hash = window.location.hash;
+    if (hash === '#about') {
+        projectsPill.classList.remove('active');
+        aboutPill.classList.add('active');
+    } else {
+        projectsPill.classList.add('active');
+        aboutPill.classList.remove('active');
+    }
+}
+
+window.addEventListener('hashchange', updateNavPills);
 
 langToggle.addEventListener('click', () => {
     enableAudio();
@@ -493,15 +564,15 @@ function moveSpotlightToCard(idx) {
     });
 }
 
-// Shared rounded-rect alpha map for all cards
+// Shared rounded-rect alpha map for all cards (portrait 2:3)
 function createRoundedAlphaMap() {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
-    canvas.height = 320;
+    canvas.height = 768;
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.roundRect(0, 0, 512, 320, 24);
+    ctx.roundRect(0, 0, 512, 768, 28);
     ctx.fill();
     const tex = new THREE.CanvasTexture(canvas);
     tex.needsUpdate = true;
@@ -509,21 +580,142 @@ function createRoundedAlphaMap() {
 }
 const roundedAlphaMap = createRoundedAlphaMap();
 
-function createCardMaterial(proj) {
-    const textureLoader = new THREE.TextureLoader(loadingManager);
+// Compose a vertical box-art cover from project image (or placeholder)
+function createBoxArtTexture(proj, onLoad) {
+    const W = 512;
+    const H = 768;
+    const canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    const c = new THREE.Color(proj.color);
     const imageSrc = proj.images && proj.images.length > 0 ? proj.images[0] : proj.placeholder;
 
+    function drawBase() {
+        // Dark base from project color
+        ctx.fillStyle = `rgb(${Math.floor(c.r * 22)}, ${Math.floor(c.g * 22)}, ${Math.floor(c.b * 22)})`;
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    function finalize() {
+        // Bottom gradient for text readability
+        const grad = ctx.createLinearGradient(0, 420, 0, H);
+        grad.addColorStop(0, 'rgba(0,0,0,0)');
+        grad.addColorStop(0.25, `rgba(${c.r * 80 | 0}, ${c.g * 80 | 0}, ${c.b * 80 | 0}, 0.55)`);
+        grad.addColorStop(1, `rgba(${c.r * 60 | 0}, ${c.g * 60 | 0}, ${c.b * 60 | 0}, 0.95)`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Top small tag badge
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
+        ctx.beginPath();
+        ctx.roundRect(18, 18, ctx.measureText(proj.tags[0] || 'Unity').width + 24, 24, 999);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.92)';
+        ctx.font = 'bold 12px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(proj.tags[0] || 'Unity', 30, 31);
+
+        // Title
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+
+        function wrapTitle(text, maxWidth) {
+            const words = text.split(' ');
+            let line = '';
+            const lines = [];
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+                    lines.push(line.trim());
+                    line = words[n] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            lines.push(line.trim());
+            return lines;
+        }
+
+        const title = proj.en.title;
+        ctx.font = 'bold 34px "Space Grotesk", sans-serif';
+        const lines = wrapTitle(title, W - 48);
+        let y = H - 90;
+        for (let i = lines.length - 1; i >= 0; i--) {
+            ctx.fillText(lines[i], 24, y);
+            y -= 42;
+        }
+
+        // Subtle top line accent
+        ctx.fillStyle = proj.color;
+        ctx.fillRect(24, 0, 3, 36);
+
+        const tex = new THREE.CanvasTexture(canvas);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.needsUpdate = true;
+        if (onLoad) onLoad(tex);
+        return tex;
+    }
+
+    drawBase();
+
+    const img = new Image();
+    if (loadingManager) {
+        loadingManager.itemStart(imageSrc);
+    }
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+        // Cover-crop: fit shortest side to fill portrait 2:3
+        const coverAspect = W / H;
+        const imgAspect = img.width / img.height;
+        let sx, sy, sw, sh;
+        if (imgAspect > coverAspect) {
+            sh = img.height;
+            sw = sh * coverAspect;
+            sy = 0;
+            sx = (img.width - sw) / 2;
+        } else {
+            sw = img.width;
+            sh = sw / coverAspect;
+            sx = 0;
+            sy = (img.height - sh) / 2;
+        }
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+        if (loadingManager) loadingManager.itemEnd(imageSrc);
+        finalize();
+    };
+    img.onerror = () => {
+        drawBase();
+        if (loadingManager) loadingManager.itemEnd(imageSrc);
+        finalize();
+    };
+    img.src = imageSrc;
+
+    // Return immediate texture (will update once image loads)
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.needsUpdate = true;
+    return tex;
+}
+
+function createCardMaterial(proj) {
     const baseOpts = {
         roughness: 0.35,
-        metalness: 0.1,
+        metalness: 0.05,
         side: THREE.DoubleSide,
         alphaMap: roundedAlphaMap,
         transparent: true,
         alphaTest: 0.5
     };
 
-    const texture = textureLoader.load(imageSrc);
-    texture.colorSpace = THREE.SRGBColorSpace;
+    const texture = createBoxArtTexture(proj, (loadedTex) => {
+        if (texture) {
+            texture.image = loadedTex.image;
+            texture.needsUpdate = true;
+        }
+    });
     return new THREE.MeshStandardMaterial({
         ...baseOpts,
         map: texture
@@ -531,39 +723,78 @@ function createCardMaterial(proj) {
 }
 
 function createCardBackMaterial(proj) {
+    const W = 512;
+    const H = 768;
     const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 320;
+    canvas.width = W;
+    canvas.height = H;
     const ctx = canvas.getContext('2d');
+    const c = new THREE.Color(proj.color);
 
-    // Dark background with subtle tint from project color
-    ctx.fillStyle = '#0d1117';
-    ctx.fillRect(0, 0, 512, 320);
+    // Dark background with subtle tint
+    ctx.fillStyle = '#0e141b';
+    ctx.fillRect(0, 0, W, H);
+
+    // Geometric pattern
+    const shapes = 30;
+    ctx.fillStyle = `rgba(${c.r * 255 | 0}, ${c.g * 255 | 0}, ${c.b * 255 | 0}, 0.06)`;
+    for (let i = 0; i < shapes; i++) {
+        const x = Math.random() * W;
+        const y = Math.random() * H;
+        const size = 20 + Math.random() * 80;
+        ctx.beginPath();
+        const sides = 3 + (i % 3);
+        for (let j = 0; j < sides; j++) {
+            const angle = (j / sides) * Math.PI * 2;
+            const px = x + Math.cos(angle) * size;
+            const py = y + Math.sin(angle) * size;
+            if (j === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.fill();
+    }
 
     // Accent border line
     ctx.strokeStyle = proj.color;
     ctx.lineWidth = 3;
-    ctx.strokeRect(6, 6, 500, 308);
+    ctx.strokeRect(8, 8, W - 16, H - 16);
 
-    // Header
-    ctx.fillStyle = proj.color;
-    ctx.font = 'bold 18px "Space Grotesk", sans-serif';
+    // Header title
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 26px "Space Grotesk", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText(proj.en.title.toUpperCase(), 256, 20);
 
-    // Divider
-    ctx.beginPath();
-    ctx.moveTo(60, 48);
-    ctx.lineTo(452, 48);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = proj.color + '66';
-    ctx.stroke();
+    function wrapTitleBack(text, maxWidth) {
+        const words = text.split(' ');
+        let line = '';
+        const lines = [];
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+                lines.push(line.trim());
+                line = words[n] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        lines.push(line.trim());
+        return lines;
+    }
+
+    const titleLines = wrapTitleBack(proj.en.title.toUpperCase(), W - 60);
+    let titleY = 48;
+    ctx.fillStyle = proj.color;
+    titleLines.forEach(line => {
+        ctx.fillText(line, W / 2, titleY);
+        titleY += 34;
+    });
 
     // Description snippet (localized)
-    const snippet = ((proj[currentLang] && proj[currentLang].desc) || proj.en.desc).slice(0, 140);
+    const snippet = ((proj[currentLang] && proj[currentLang].desc) || proj.en.desc).slice(0, 180);
     ctx.fillStyle = '#c9d1d9';
-    ctx.font = '13px "Space Grotesk", sans-serif';
+    ctx.font = '14px "Space Grotesk", sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
 
@@ -587,19 +818,19 @@ function createCardBackMaterial(proj) {
         return cy + lineHeight;
     }
 
-    wrapText(snippet, 40, 64, 432, 20);
+    wrapText(snippet, 36, titleY + 24, W - 72, 22);
 
     // Tags
     ctx.fillStyle = '#8b949e';
-    ctx.font = '12px "Space Grotesk", sans-serif';
+    ctx.font = '13px "Space Grotesk", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText(proj.tags.join('  ·  '), 256, 280);
+    ctx.fillText(proj.tags.join('  ·  '), W / 2, H - 88);
 
     // Click hint
     ctx.fillStyle = 'rgba(255,255,255,0.10)';
-    ctx.font = '11px "Space Grotesk", sans-serif';
-    ctx.fillText('Click to flip back', 256, 300);
+    ctx.font = '12px "Space Grotesk", sans-serif';
+    ctx.fillText('Click to flip back', W / 2, H - 44);
 
     const texture = new THREE.CanvasTexture(canvas);
     return new THREE.MeshStandardMaterial({
@@ -613,11 +844,11 @@ function createCardBackMaterial(proj) {
     });
 }
 
-function createGlowMaterial(proj) {
+function createBorderMaterial(proj) {
     return new THREE.MeshBasicMaterial({
         color: proj.color,
         transparent: true,
-        opacity: 0.12,
+        opacity: 0.9,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         side: THREE.DoubleSide,
@@ -626,14 +857,14 @@ function createGlowMaterial(proj) {
     });
 }
 
-const cardGeometry = new THREE.PlaneGeometry(4.0, 2.5);
+const cardGeometry = new THREE.PlaneGeometry(2.3, 3.45);
 const carouselItems = [];
-const glowMeshes = [];
+const borderMeshes = [];
 
-// Arc parameters — cinematic wide arc
-const ARC_RADIUS = 5.5;
-const ARC_SPAN_DEG = isTouchDevice ? 70 : 128;
-const DEPTH_MULT = 1.45;
+// Arc parameters — tighter shelf for portrait cards
+const ARC_RADIUS = 5.0;
+const ARC_SPAN_DEG = isTouchDevice ? 62 : 108;
+const DEPTH_MULT = 1.35;
 const ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / (totalProjects - 1));
 const HALF_SPAN = totalProjects / 2; // half the project count, used for wrap-around
 
@@ -667,9 +898,22 @@ function updateCardPositions(animated = false) {
     carouselItems.forEach((mesh, i) => {
         const wrapped = getWrappedOffset(i, currentOffset);
         const t = getCardTransform(wrapped);
+        const isActive = Math.abs(wrapped) < 0.001;
 
         mesh.userData.baseScale = t.scale;
         mesh.renderOrder = 100 - Math.abs(wrapped);
+
+        const border = borderMeshes[i];
+        if (border) {
+            border.visible = isActive;
+            const targetScale = isActive ? 1.05 : 1.02;
+            if (animated && !prefersReducedMotion) {
+                gsap.to(border.scale, { x: targetScale, y: targetScale, duration: 0.35, ease: "power2.out", overwrite: 'auto' });
+            } else {
+                border.scale.set(targetScale, targetScale, 1);
+            }
+            border.material.opacity = isActive ? 0.95 : 0.4;
+        }
 
         if (animated && !prefersReducedMotion) {
             gsap.to(mesh.position, { x: t.x, z: t.z, duration: 0.75, ease: "power3.inOut", overwrite: 'auto' });
@@ -684,7 +928,7 @@ function updateCardPositions(animated = false) {
     });
 }
 
-// Count real textures to load for boot progress
+// Count real textures to load for boot progress (now tracked via createBoxArtTexture ImageLoader)
 totalToLoad = projects.filter(p => p.images && p.images.length > 0).length;
 
 // Build cards
@@ -692,13 +936,14 @@ projects.forEach((proj, i) => {
     const material = createCardMaterial(proj);
     const mesh = new THREE.Mesh(cardGeometry, material);
 
-    // Glow edge card behind
-    const glowMat = createGlowMaterial(proj);
-    const glow = new THREE.Mesh(cardGeometry.clone(), glowMat);
-    glow.position.z = -0.05;
-    glow.scale.set(1.06, 1.06, 1);
-    mesh.add(glow);
-    glowMeshes.push(glow);
+    // Active card highlight border (initially hidden)
+    const borderMat = createBorderMaterial(proj);
+    const border = new THREE.Mesh(cardGeometry.clone(), borderMat);
+    border.position.z = 0.02;
+    border.visible = false;
+    border.scale.set(1.05, 1.05, 1);
+    mesh.add(border);
+    borderMeshes.push(border);
 
     // Back face for flip
     const backMat = createCardBackMaterial(proj);
@@ -795,8 +1040,8 @@ function changeEnvironmentColor(hexColor) {
     const d = 0.6;
     gsap.to(pointLight.color, { r: color.r, g: color.g, b: color.b, duration: d, overwrite: 'auto' });
     gsap.to(particleMaterial.color, { r: color.r, g: color.g, b: color.b, duration: d, overwrite: 'auto' });
-    glowMeshes.forEach((g, i) => {
-        gsap.to(g.material.color, { r: color.r, g: color.g, b: color.b, duration: d, overwrite: 'auto' });
+    borderMeshes.forEach((b) => {
+        gsap.to(b.material.color, { r: color.r, g: color.g, b: color.b, duration: d, overwrite: 'auto' });
     });
 }
 
