@@ -47,11 +47,12 @@ Each object has:
 ```js
 {
   id: string,
-  color: string,           // hex color used for palette and card theme
+  category: 'game' | 'tool', // used by the filter tabs and CTA fallback text
+  color: string,             // hex color used for palette and card theme
   tags: string[],
-  images: string[],        // file paths, first image is used as 3D card texture
-  videos?: string[],       // optional, shown in the bottom info panel
-  link?: string,           // optional, external download / profile link
+  images: string[],          // file paths, first image is used as 3D card texture
+  videos?: string[],         // optional, shown in the bottom info panel
+  link?: string,             // optional, external download / profile link
   linkLabel?: { en: string, es: string }, // optional, custom CTA text
   en: { title: string, desc: string },
   es: { title: string, desc: string }
@@ -67,12 +68,13 @@ At runtime, `main.js` augments each project with:
 
 - **Infinite-loop horizontal arc carousel** of `PlaneGeometry` cards.
 - Cards are distributed along a circular arc with:
-  - `ARC_RADIUS = 5.5`
-  - `ARC_SPAN_DEG = 128` desktop / `70` touch
-  - `ANGLE_PER_CARD = ARC_SPAN_DEG / (totalProjects - 1)`
-  - `HALF_SPAN = totalProjects / 2` (used for seamless wrapping)
+  - `ARC_RADIUS = 5.0`
+  - `ARC_SPAN_DEG = 108` desktop / `62` touch
+  - `ANGLE_PER_CARD = ARC_SPAN_DEG / (filteredCount - 1)` (recalculated when the category filter changes)
+  - `HALF_SPAN = filteredCount / 2` (used for seamless wrapping over the visible subset)
 - Active card sits at the apex (center, largest, closest); neighbors curve back along the arc with depth (`z`), reduced scale, and face toward the camera via `Math.atan2`.
-- Seamless wrapping via `getWrappedOffset(i, offset)` which normalizes the difference into `[-HALF_SPAN, HALF_SPAN]`.
+- Seamless wrapping via `getWrappedOffset(i, offset, count)` which normalizes the difference into `[-HALF_SPAN, HALF_SPAN]` over the currently filtered items.
+- Category filtering is supported: state `activeCategory`, `filteredIndices`, and `filteredCount` hide non-matching cards and recompute the arc for the visible subset. Indicator dots are rebuilt for the filtered set.
 - Each card has a front texture (project screenshot or placeholder), a back face (`createCardBackMaterial`) with title/description snippet, and a glow plane behind it.
 
 ### 3.3 Interaction
@@ -80,12 +82,13 @@ At runtime, `main.js` augments each project with:
 | Input | Behavior |
 |-------|----------|
 | Drag / swipe | Pointer-driven horizontal offset; velocity-tracked inertia snaps 1–3 cards. |
-| Wheel | 700 ms throttle; scrolls to next/prev project. |
+| Wheel | Vertical wheel scrolls the page normally over the canvas; Shift+wheel or horizontal trackpad scroll navigates the carousel with a 700 ms throttle. |
 | Click card | Focus card if not active; flip card if already active. |
 | Hover | Raycaster scale bump + audio hover tone. |
-| Arrow keys | Navigate left/right. |
-| Indicators | Clickable dots below the canvas. |
-| Prev/Next buttons | Visible controls. |
+| Arrow keys | Navigate left/right within the filtered set. |
+| Indicators | Clickable dots below the canvas, rebuilt for the active filter. |
+| Prev/Next buttons | Visible controls; navigate within the filtered set. |
+| Filter tabs | `All`, `Games & Experiences`, `Unity Tools` tabs above the carousel filter the visible cards and reset to the first match. |
 
 ### 3.4 Theming
 
@@ -99,8 +102,8 @@ Procedural Web Audio API sounds: boot sweep, click, project-specific chords (one
 
 Inline dictionaries:
 - `projects[i].en` / `projects[i].es` for each project.
-- `aboutTranslations.en` / `aboutTranslations.es` for the About section.
-Toggle button `#lang-toggle` switches `currentLang` and re-renders text.
+- `aboutTranslations.en` / `aboutTranslations.es` for the About section, hero badges, navigation pills, and filter tab labels (`filterAll`, `filterGames`, `filterTools`).
+Toggle button `#lang-toggle` switches `currentLang` and re-renders text, including the filter tabs and the active CTA button label.
 
 ### 3.7 Boot Screen
 
@@ -130,6 +133,7 @@ Open `http://localhost:8000`.
 
 ## 6. Known Extension Points
 
-- Adding a new project only requires appending to the `projects` array and optionally adding media. Carousel math is fully dynamic.
-- To customize the CTA button text for a project, add `linkLabel: { en: '...', es: '...' }`.
+- Adding a new project only requires appending to the `projects` array, setting `category` to `'game'` or `'tool'`, and optionally adding media. Carousel math is fully dynamic and respects the active category filter.
+- To customize the CTA button text for a project, add `linkLabel: { en: '...', es: '...' }`. Otherwise tools fall back to `Download`/`Descargar` and games/experiences to `Play`/`Jugar`.
 - To add a new social link, add an SVG icon in `index.html` and style it in `style.css`.
+- To add a new category filter, add the tab in `index.html`, the i18n keys in `aboutTranslations`, and update `setCategoryFilter` logic in `main.js`.
