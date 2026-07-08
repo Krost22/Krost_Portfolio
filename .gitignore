@@ -9,3 +9,6 @@ Thumbs.db
 
 # Local server logs
 *.log
+
+# Cascade / Windsurf plugin data
+.ponytail/
