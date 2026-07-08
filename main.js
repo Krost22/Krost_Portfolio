@@ -1291,12 +1291,18 @@ function unflipAllCards() {
 // ==========================================
 let wheelBlocked = false;
 canvasContainer.addEventListener('wheel', (e) => {
+    // Horizontal wheel / Shift+wheel navigates the carousel;
+    // vertical wheel lets the page scroll normally.
+    const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+    const shouldNavigate = isHorizontal || e.shiftKey;
+    if (!shouldNavigate) return;
+
     e.preventDefault();
     if (wheelBlocked) return;
     wheelBlocked = true;
     setTimeout(() => { wheelBlocked = false; }, 700);
 
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const delta = isHorizontal ? e.deltaX : e.deltaY;
     if (delta > 0) navigateTo(currentIndex + 1);
     else navigateTo(currentIndex - 1);
 }, { passive: false });
