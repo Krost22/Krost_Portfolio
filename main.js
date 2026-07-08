@@ -109,6 +109,22 @@ const projects = [
             title: "Prototipos de Juegos Móviles",
             desc: "Diseño e implementación de mecánicas de juego principales, efectos de partículas y sistemas de UI para varios prototipos de juegos móviles en Android. Enfoque en optimización de rendimiento para dispositivos de gama baja y media."
         }
+    },
+    {
+        id: "itchio-games",
+        color: "#FA5C5C",
+        tags: ["Unity", "WebGL", "Itch.io", "Game Jams"],
+        images: [],
+        link: "https://krostgames.itch.io/",
+        linkLabel: { en: "Visit Itch.io", es: "Ver en Itch.io" },
+        en: {
+            title: "Games on Itch.io",
+            desc: "Collection of playable Unity games published on Itch.io: Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter, and Whack-a-Food! WebGL builds ready to play in the browser."
+        },
+        es: {
+            title: "Juegos en Itch.io",
+            desc: "Colección de juegos Unity jugables publicados en Itch.io: Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!. Builds WebGL listos para jugar en el navegador."
+        }
     }
 ];
 
@@ -253,6 +269,7 @@ const langToggle = document.getElementById('lang-toggle');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ==========================================
 // 3. Theme & UI Update
@@ -271,6 +288,7 @@ function updateUI() {
     const proj = projects[currentIndex];
     const data = proj[currentLang];
 
+    document.documentElement.lang = currentLang;
     applyTheme(proj.palette);
 
     document.title = `${data.title} — Eduardo Mogollón Salcedo`;
@@ -322,6 +340,7 @@ function updateUI() {
                 img.src = imgSrc;
                 img.alt = data.title;
                 img.className = 'project-media-img';
+                img.loading = 'lazy';
                 img.onerror = () => { img.src = proj.placeholder; };
                 img.addEventListener('click', () => openLightbox(img.src));
                 mediaEl.appendChild(img);
@@ -349,7 +368,11 @@ function updateUI() {
             btn.href = proj.link;
             btn.target = '_blank';
             btn.className = 'project-download-btn';
-            btn.textContent = currentLang === 'es' ? 'Descargar' : 'Download';
+            if (proj.linkLabel && proj.linkLabel[currentLang]) {
+                btn.textContent = proj.linkLabel[currentLang];
+            } else {
+                btn.textContent = currentLang === 'es' ? 'Descargar' : 'Download';
+            }
             mediaEl.appendChild(btn);
         }
     }
@@ -370,6 +393,11 @@ function updateUI() {
     document.getElementById('exp1-desc').textContent = aboutData.exp1Desc;
     document.getElementById('exp2-role').textContent = aboutData.exp2Role;
     document.getElementById('exp2-desc').textContent = aboutData.exp2Desc;
+
+    const indicatorLabel = currentLang === 'es' ? 'Ir al proyecto' : 'Go to project';
+    indicatorDots.forEach((dot, i) => {
+        dot.setAttribute('aria-label', `${indicatorLabel} ${i + 1}`);
+    });
 }
 
 langToggle.addEventListener('click', () => {
@@ -393,12 +421,26 @@ const camera = new THREE.PerspectiveCamera(50, canvasContainer.clientWidth / can
 camera.position.set(0, 0.3, 5);
 camera.lookAt(0, 0, 0);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.25;
-canvasContainer.appendChild(renderer.domElement);
+function hasWebGL() {
+    try {
+        const canvas = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    } catch (e) {
+        return false;
+    }
+}
+
+let renderer;
+if (hasWebGL()) {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    canvasContainer.appendChild(renderer.domElement);
+} else {
+    canvasContainer.innerHTML = '<div class="webgl-fallback">WebGL is not available in this browser. Please use a modern browser or device to view the 3D carousel.</div>';
+}
 
 // LoadingManager for boot screen progress
 const loadingManager = new THREE.LoadingManager();
@@ -593,7 +635,7 @@ const ARC_RADIUS = 5.5;
 const ARC_SPAN_DEG = isTouchDevice ? 70 : 128;
 const DEPTH_MULT = 1.45;
 const ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / (totalProjects - 1));
-const HALF_SPAN = totalProjects / 2; // 3.5
+const HALF_SPAN = totalProjects / 2; // half the project count, used for wrap-around
 
 // Dynamic spacing — expands during fast drag for responsive feel
 let spacingBoost = 0;
@@ -629,7 +671,7 @@ function updateCardPositions(animated = false) {
         mesh.userData.baseScale = t.scale;
         mesh.renderOrder = 100 - Math.abs(wrapped);
 
-        if (animated) {
+        if (animated && !prefersReducedMotion) {
             gsap.to(mesh.position, { x: t.x, z: t.z, duration: 0.75, ease: "power3.inOut", overwrite: 'auto' });
             gsap.to(mesh.scale, { x: t.scale, y: t.scale, duration: 0.75, ease: "power3.inOut", overwrite: 'auto' });
             gsap.to(mesh.rotation, { y: t.rotY, duration: 0.75, ease: "power3.inOut", overwrite: 'auto' });
@@ -674,6 +716,10 @@ projects.forEach((proj, i) => {
 
 // Cinematic entrance — deferred until boot completes
 function runCinematicEntrance() {
+    if (!renderer) {
+        gsap.set(contentContainer, { opacity: 1, y: 0 });
+        return;
+    }
     carouselItems.forEach((mesh, i) => {
         const wrapped = getWrappedOffset(i, currentOffset);
         const t = getCardTransform(wrapped);
@@ -722,8 +768,8 @@ function runCinematicEntrance() {
 // Hide UI until boot finishes
 contentContainer.style.opacity = '0';
 
-// Particles
-const particlesCount = 1500;
+// Particles — lower count on touch devices or reduced motion
+const particlesCount = (isTouchDevice || prefersReducedMotion) ? 600 : 1500;
 const particlesGeometry = new THREE.BufferGeometry();
 const posArray = new Float32Array(particlesCount * 3);
 for (let i = 0; i < particlesCount * 3; i++) {
@@ -759,6 +805,11 @@ const offsetAnimProxy = { value: 0 };
 
 function animateOffsetTo(targetOffset) {
     gsap.killTweensOf(offsetAnimProxy);
+    if (prefersReducedMotion) {
+        currentOffset = targetOffset;
+        updateCardPositions(false);
+        return;
+    }
     offsetAnimProxy.value = currentOffset;
     const dist = Math.abs(targetOffset - currentOffset);
     const duration = Math.min(0.7, Math.max(0.35, dist * 0.25));
@@ -995,14 +1046,19 @@ canvasContainer.addEventListener('pointercancel', () => {
 const clock = new THREE.Clock();
 
 function animate() {
+    if (!renderer) return;
     requestAnimationFrame(animate);
     const elapsed = clock.getElapsedTime();
 
     spacingBoost *= SPACING_DECAY;
 
     carouselItems.forEach((mesh, i) => {
-        const floatY = Math.sin(elapsed * 0.5 + i * 0.9) * 0.04;
-        mesh.position.y = floatY;
+        if (prefersReducedMotion) {
+            mesh.position.y = 0;
+        } else {
+            const floatY = Math.sin(elapsed * 0.5 + i * 0.9) * 0.04;
+            mesh.position.y = floatY;
+        }
     });
 
     particlesMesh.rotation.y = elapsed * 0.008;
@@ -1043,6 +1099,7 @@ function animate() {
 }
 
 window.addEventListener('resize', () => {
+    if (!renderer) return;
     const w = canvasContainer.clientWidth;
     const h = canvasContainer.clientHeight;
     camera.aspect = w / h;
@@ -1171,7 +1228,8 @@ const projectChords = [
     [293.66, 349.23, 440.00],   // TTS Tool — neutral
     [196.00, 246.94, 293.66],   // Audio Tool — low
     [329.63, 392.00, 493.88],   // 360 Tours — airy
-    [440.00, 554.37, 659.25]    // Mobile Games — energetic
+    [440.00, 554.37, 659.25],   // Mobile Games — energetic
+    [246.94, 293.66, 369.99]    // Itch.io Games — playful red major
 ];
 
 function playProjectSound(idx, type = 'navigate') {

@@ -144,6 +144,19 @@ header {
     touch-action: none;
 }
 
+.webgl-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 24px;
+    text-align: center;
+    color: var(--accent, #fff);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
 .controls {
     position: absolute;
     top: 50%;
