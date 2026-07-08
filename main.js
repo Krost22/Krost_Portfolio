@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
     {
         id: "vr-hotel-cartagena",
+        category: "game",
         color: "#FF7A59",
         tags: ["Unity", "Meta Quest 3", "PICO 4", "VR"],
         images: ["Media/SmartRoom/CardImagen.png", "Media/SmartRoom/SmartRoom.webp", "Media/SmartRoom/SmartRoom1.webp"],
@@ -24,6 +25,7 @@ const projects = [
     },
     {
         id: "ar-hotel-cartagena",
+        category: "game",
         color: "#00D4C8",
         tags: ["Unity", "Android", "ARCore", "AR"],
         images: ["Media/AR Hotel/Hotel AR Card.png", "Media/AR Hotel/Main Menu AR Hotel.jpg", "Media/AR Hotel/Screenshot_2026-01-19-16-14-46-602_com.unity.AREMHotels.jpg", "Media/AR Hotel/Screenshot_2026-01-19-16-15-47-462_com.unity.AREMHotels.jpg", "Media/AR Hotel/Screenshot_2026-01-19-16-33-40-598_com.unity.AREMHotels.jpg"],
@@ -38,6 +40,7 @@ const projects = [
     },
     {
         id: "vr-multiplayer",
+        category: "game",
         color: "#FFB84D",
         tags: ["Unity", "Multiplayer", "VR", "C#"],
         images: ["Media/VR Multiplayer - Guajira Corp/Guajira Logo horizontal.png", "Media/VR Multiplayer - Guajira Corp/Guajira gameplay.png"],
@@ -53,6 +56,7 @@ const projects = [
     },
     {
         id: "tts-tool",
+        category: "tool",
         color: "#8B7FFF",
         tags: ["Unity Editor", "Tools", "C#"],
         images: ["Media/UnityLocalTTS/Unity-Local-TTS.png", "Media/UnityLocalTTS/Unity-Local-TTS 2.png", "Media/UnityLocalTTS/Unity-Local-TTS 3ss.png", "Media/UnityLocalTTS/Unity-Local-TTS Icon.png"],
@@ -68,6 +72,7 @@ const projects = [
     },
     {
         id: "audio-tool",
+        category: "tool",
         color: "#E855A0",
         tags: ["Unity Editor", "Audio", "Tools"],
         images: ["Media/LoopClip/LoopClip Icon.png", "Media/LoopClip/LoopClip.png", "Media/LoopClip/Loopclip 1.png", "Media/LoopClip/LoopClip 2.png", "Media/LoopClip/LoopClip 3.png"],
@@ -83,6 +88,7 @@ const projects = [
     },
     {
         id: "360-tours",
+        category: "game",
         color: "#4ECDC4",
         tags: ["360 Video", "VR", "Web"],
         images: ["Media/360 virtual tours/Terraviva 360 recorridos 360.png"],
@@ -98,6 +104,7 @@ const projects = [
     },
     {
         id: "mobile-games",
+        category: "game",
         color: "#A8E063",
         tags: ["Unity", "Android", "Mobile", "Gameplay"],
         images: [],
@@ -112,6 +119,7 @@ const projects = [
     },
     {
         id: "itchio-games",
+        category: "game",
         color: "#FA5C5C",
         tags: ["Unity", "WebGL", "Itch.io", "Game Jams"],
         images: [],
@@ -132,6 +140,9 @@ const aboutTranslations = {
     en: {
         navProjects: "Projects",
         navAbout: "Experience",
+        filterAll: "All",
+        filterGames: "Games & Experiences",
+        filterTools: "Unity Tools",
         heroRole: "Unity Game Developer",
         heroTagline: "Virtual Reality and Augmented Reality · Multiplayer · Mobile",
         heroAvailable: "● Available for work",
@@ -159,6 +170,9 @@ const aboutTranslations = {
     es: {
         navProjects: "Proyectos",
         navAbout: "Experiencia",
+        filterAll: "Todo",
+        filterGames: "Juegos y Experiencias",
+        filterTools: "Herramientas Unity",
         heroRole: "Desarrollador de Videojuegos Unity",
         heroTagline: "Realidad virtual y realidad aumentada · Multijugador · Móvil",
         heroAvailable: "● Disponible para trabajar",
@@ -280,6 +294,9 @@ let currentLang = 'en';
 let currentIndex = 0;
 let currentOffset = 0;
 const totalProjects = projects.length;
+let activeCategory = 'all';
+let filteredIndices = projects.map((_, i) => i);
+let filteredCount = projects.length;
 
 // ==========================================
 // 2. DOM Elements
@@ -407,7 +424,10 @@ function updateUI() {
             if (proj.linkLabel && proj.linkLabel[currentLang]) {
                 btn.textContent = proj.linkLabel[currentLang];
             } else {
-                btn.textContent = currentLang === 'es' ? 'Jugar' : 'Play';
+                const isTool = proj.category === 'tool';
+                btn.textContent = currentLang === 'es'
+                    ? (isTool ? 'Descargar' : 'Jugar')
+                    : (isTool ? 'Download' : 'Play');
             }
             mediaEl.appendChild(btn);
         }
@@ -426,6 +446,12 @@ function updateUI() {
     document.getElementById('hero-cta-contact').textContent = aboutData.heroCtaContact;
     document.getElementById('hero-cta-itch').textContent = aboutData.heroCtaItch;
     document.getElementById('hero-cta-github').textContent = aboutData.heroCtaGithub;
+
+    // Filter tabs i18n
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+        const key = 'filter' + btn.dataset.filter.charAt(0).toUpperCase() + btn.dataset.filter.slice(1);
+        if (aboutData[key]) btn.textContent = aboutData[key];
+    });
 
     // Nav pills active state
     updateNavPills();
@@ -590,8 +616,8 @@ langToggle.addEventListener('click', () => {
     updateUI();
 });
 
-prevBtn.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(currentIndex - 1); });
-nextBtn.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(currentIndex + 1); });
+prevBtn.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(getNextFilteredIndex(-1)); });
+nextBtn.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(getNextFilteredIndex(1)); });
 
 // ==========================================
 // 4. Three.js Arc Carousel — Infinite Loop
@@ -976,17 +1002,23 @@ const borderMeshes = [];
 const ARC_RADIUS = 5.0;
 const ARC_SPAN_DEG = isTouchDevice ? 62 : 108;
 const DEPTH_MULT = 1.35;
-const ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / (totalProjects - 1));
-const HALF_SPAN = totalProjects / 2; // half the project count, used for wrap-around
+let ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / (filteredCount - 1));
+let HALF_SPAN = filteredCount / 2; // half the visible project count, used for wrap-around
+
+function updateCarouselParams() {
+    ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / Math.max(1, filteredCount - 1));
+    HALF_SPAN = filteredCount / 2;
+}
 
 // Dynamic spacing — expands during fast drag for responsive feel
 let spacingBoost = 0;
 const SPACING_DECAY = 0.92;
 
 // Wraps arbitrary offset into [-HALF_SPAN, HALF_SPAN] for seamless infinite loop
-function getWrappedOffset(i, offset) {
+function getWrappedOffset(i, offset, count = filteredCount) {
+    const half = count / 2;
     let diff = i - offset;
-    diff = ((diff + HALF_SPAN) % totalProjects + totalProjects) % totalProjects - HALF_SPAN;
+    diff = ((diff + half) % count + count) % count - half;
     return diff;
 }
 
@@ -1006,15 +1038,27 @@ function getCardTransform(wrappedOffset) {
 }
 
 function updateCardPositions(animated = false) {
-    carouselItems.forEach((mesh, i) => {
-        const wrapped = getWrappedOffset(i, currentOffset);
+    carouselItems.forEach((mesh, originalIdx) => {
+        const filteredIdx = filteredIndices.indexOf(originalIdx);
+
+        // Hide cards excluded by the active filter
+        if (filteredIdx === -1) {
+            mesh.visible = false;
+            mesh.userData.baseScale = 0;
+            const border = borderMeshes[originalIdx];
+            if (border) border.visible = false;
+            return;
+        }
+
+        mesh.visible = true;
+        const wrapped = getWrappedOffset(filteredIdx, currentOffset);
         const t = getCardTransform(wrapped);
         const isActive = Math.abs(wrapped) < 0.001;
 
         mesh.userData.baseScale = t.scale;
         mesh.renderOrder = 100 - Math.abs(wrapped);
 
-        const border = borderMeshes[i];
+        const border = borderMeshes[originalIdx];
         if (border) {
             border.visible = isActive;
             const targetScale = isActive ? 1.05 : 1.02;
@@ -1076,8 +1120,14 @@ function runCinematicEntrance() {
         gsap.set(contentContainer, { opacity: 1, y: 0 });
         return;
     }
-    carouselItems.forEach((mesh, i) => {
-        const wrapped = getWrappedOffset(i, currentOffset);
+    carouselItems.forEach((mesh, originalIdx) => {
+        const filteredIdx = filteredIndices.indexOf(originalIdx);
+        if (filteredIdx === -1) {
+            mesh.visible = false;
+            return;
+        }
+
+        const wrapped = getWrappedOffset(filteredIdx, currentOffset);
         const t = getCardTransform(wrapped);
 
         mesh.userData.baseScale = t.scale;
@@ -1093,23 +1143,23 @@ function runCinematicEntrance() {
             x: t.x,
             z: t.z,
             duration: 1.2,
-            delay: i * 0.08,
+            delay: filteredIdx * 0.08,
             ease: "power3.out"
         });
         gsap.to(mesh.scale, {
             x: t.scale,
             y: t.scale,
             duration: 1.2,
-            delay: i * 0.08,
+            delay: filteredIdx * 0.08,
             ease: "power3.out"
         });
         gsap.to(mesh.rotation, {
             y: t.rotY,
             duration: 1.2,
-            delay: i * 0.08,
+            delay: filteredIdx * 0.08,
             ease: "power3.out",
             onComplete: () => {
-                if (i === totalProjects - 1) {
+                if (filteredIdx === filteredCount - 1) {
                     // Reveal title after all cards are in place
                     gsap.fromTo(contentContainer,
                         { opacity: 0, y: 30 },
@@ -1180,14 +1230,25 @@ function animateOffsetTo(targetOffset) {
     });
 }
 
-function navigateTo(targetIdx) {
-    const targetIndex = ((targetIdx % totalProjects) + totalProjects) % totalProjects;
-    if (targetIndex === currentIndex) return;
-    currentIndex = targetIndex;
+function getNextFilteredIndex(delta) {
+    const currentFi = filteredIndices.indexOf(currentIndex);
+    if (currentFi === -1) return filteredIndices[0];
+    const nextFi = (currentFi + delta + filteredCount) % filteredCount;
+    return filteredIndices[nextFi];
+}
 
-    const diff = targetIndex - currentOffset;
-    const half = totalProjects / 2;
-    let shortest = ((diff + half) % totalProjects + totalProjects) % totalProjects - half;
+function navigateTo(targetIdx) {
+    let targetFilteredIndex = filteredIndices.indexOf(targetIdx);
+    if (targetFilteredIndex === -1) {
+        targetFilteredIndex = 0;
+        targetIdx = filteredIndices[0];
+    }
+    if (targetIdx === currentIndex) return;
+    currentIndex = targetIdx;
+
+    const diff = targetFilteredIndex - currentOffset;
+    const half = filteredCount / 2;
+    let shortest = ((diff + half) % filteredCount + filteredCount) % filteredCount - half;
     const targetOffset = currentOffset + shortest;
 
     animateOffsetTo(targetOffset);
@@ -1303,8 +1364,8 @@ canvasContainer.addEventListener('wheel', (e) => {
     setTimeout(() => { wheelBlocked = false; }, 700);
 
     const delta = isHorizontal ? e.deltaX : e.deltaY;
-    if (delta > 0) navigateTo(currentIndex + 1);
-    else navigateTo(currentIndex - 1);
+    if (delta > 0) navigateTo(getNextFilteredIndex(1));
+    else navigateTo(getNextFilteredIndex(-1));
 }, { passive: false });
 
 // ==========================================
@@ -1497,20 +1558,25 @@ function initScrollAnimations() {
 // 7. Carousel Indicators
 // ==========================================
 const indicatorsContainer = document.getElementById('carousel-indicators');
-const indicatorDots = [];
+let indicatorDots = [];
 
-projects.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', `Go to project ${i + 1}`);
-    dot.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(i); });
-    indicatorsContainer.appendChild(dot);
-    indicatorDots.push(dot);
-});
+function buildIndicators() {
+    indicatorsContainer.innerHTML = '';
+    indicatorDots = [];
+    filteredIndices.forEach((projIdx, fi) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (projIdx === currentIndex ? ' active' : '');
+        const labelBase = currentLang === 'es' ? 'Ir al proyecto' : 'Go to project';
+        dot.setAttribute('aria-label', `${labelBase} ${fi + 1}`);
+        dot.addEventListener('click', () => { enableAudio(); playClickSound(); navigateTo(projIdx); });
+        indicatorsContainer.appendChild(dot);
+        indicatorDots.push(dot);
+    });
+}
 
 function updateIndicators() {
     indicatorDots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
+        dot.classList.toggle('active', filteredIndices[i] === currentIndex);
     });
 }
 
@@ -1522,8 +1588,47 @@ navigateTo = function(index) {
 };
 
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') navigateTo(currentIndex - 1);
-    if (e.key === 'ArrowRight') navigateTo(currentIndex + 1);
+    if (e.key === 'ArrowLeft') navigateTo(getNextFilteredIndex(-1));
+    if (e.key === 'ArrowRight') navigateTo(getNextFilteredIndex(1));
+});
+
+buildIndicators();
+
+function setCategoryFilter(category) {
+    activeCategory = category;
+    filteredIndices = projects
+        .map((p, i) => ({ p, i }))
+        .filter(({ p }) => category === 'all' || p.category === category)
+        .map(({ i }) => i);
+    filteredCount = filteredIndices.length;
+    updateCarouselParams();
+
+    if (filteredCount === 0) return;
+
+    currentIndex = filteredIndices[0];
+    currentOffset = 0;
+
+    updateCardPositions(true);
+    moveSpotlightToCard(currentIndex);
+    unflipAllCards();
+    buildIndicators();
+    updateUI();
+
+    // Update tab UI active state
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+        const isActive = btn.dataset.filter === category;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', String(isActive));
+    });
+}
+
+// Filter tabs
+document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        enableAudio();
+        playClickSound();
+        setCategoryFilter(btn.dataset.filter);
+    });
 });
 
 // ==========================================
