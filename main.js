@@ -133,9 +133,13 @@ const aboutTranslations = {
         navProjects: "Projects",
         navAbout: "Experience",
         heroRole: "Unity Game Developer",
-        heroTagline: "VR/AR · Multiplayer · Mobile",
+        heroTagline: "Virtual Reality and Augmented Reality · Multiplayer · Mobile",
         heroAvailable: "● Available for work",
+        heroBadgeDegree: "Bachelor of Systems Engineering",
+        heroBadgeTools: "Custom Unity Editor Tools",
+        heroBadgeLocation: "Colombia · Remote",
         heroCtaContact: "Contact on LinkedIn",
+        heroCtaItch: "Games on Itch.io",
         heroCtaGithub: "View GitHub",
         aboutTitle: "Experience & Education",
         profileTitle: "Profile",
@@ -156,9 +160,13 @@ const aboutTranslations = {
         navProjects: "Proyectos",
         navAbout: "Experiencia",
         heroRole: "Desarrollador de Videojuegos Unity",
-        heroTagline: "VR/AR · Multijugador · Móvil",
+        heroTagline: "Realidad virtual y realidad aumentada · Multijugador · Móvil",
         heroAvailable: "● Disponible para trabajar",
+        heroBadgeDegree: "Ingeniero de Sistemas",
+        heroBadgeTools: "Herramientas personalizadas en Unity",
+        heroBadgeLocation: "Colombia · Remoto",
         heroCtaContact: "Contactar en LinkedIn",
+        heroCtaItch: "Juegos en Itch.io",
         heroCtaGithub: "Ver GitHub",
         aboutTitle: "Experiencia y Educación",
         profileTitle: "Perfil",
@@ -399,7 +407,7 @@ function updateUI() {
             if (proj.linkLabel && proj.linkLabel[currentLang]) {
                 btn.textContent = proj.linkLabel[currentLang];
             } else {
-                btn.textContent = currentLang === 'es' ? 'Descargar' : 'Download';
+                btn.textContent = currentLang === 'es' ? 'Jugar' : 'Play';
             }
             mediaEl.appendChild(btn);
         }
@@ -412,7 +420,11 @@ function updateUI() {
     document.getElementById('hero-role').textContent = aboutData.heroRole;
     document.getElementById('hero-tagline').textContent = aboutData.heroTagline;
     document.getElementById('hero-available').textContent = aboutData.heroAvailable;
+    document.getElementById('hero-badge-degree').textContent = aboutData.heroBadgeDegree;
+    document.getElementById('hero-badge-tools').textContent = aboutData.heroBadgeTools;
+    document.getElementById('hero-badge-location').textContent = aboutData.heroBadgeLocation;
     document.getElementById('hero-cta-contact').textContent = aboutData.heroCtaContact;
+    document.getElementById('hero-cta-itch').textContent = aboutData.heroCtaItch;
     document.getElementById('hero-cta-github').textContent = aboutData.heroCtaGithub;
 
     // Nav pills active state
@@ -455,12 +467,11 @@ function updateUI() {
     });
 }
 
-function updateNavPills() {
+function updateNavPills(activeSection = 'projects') {
     const projectsPill = document.getElementById('nav-projects');
     const aboutPill = document.getElementById('nav-about');
     if (!projectsPill || !aboutPill) return;
-    const hash = window.location.hash;
-    if (hash === '#about') {
+    if (activeSection === 'about') {
         projectsPill.classList.remove('active');
         aboutPill.classList.add('active');
     } else {
@@ -469,7 +480,107 @@ function updateNavPills() {
     }
 }
 
-window.addEventListener('hashchange', updateNavPills);
+window.addEventListener('hashchange', () => {
+    updateNavPills(window.location.hash === '#about' ? 'about' : 'projects');
+});
+
+// Scroll spy for header pills: detect which section is in viewport
+(function initScrollSpy() {
+    const heroSection = document.getElementById('hero');
+    const aboutSection = document.getElementById('about');
+    if (!heroSection || !aboutSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                updateNavPills(id === 'about' ? 'about' : 'projects');
+                // sync URL hash smoothly without jumping
+                if (window.location.hash !== '#' + id) {
+                    history.replaceState(null, null, '#' + id);
+                }
+            }
+        });
+    }, {
+        rootMargin: '-40% 0px -40% 0px',
+        threshold: 0
+    });
+
+    observer.observe(heroSection);
+    observer.observe(aboutSection);
+})();
+
+// Logo dropdown — easter egg menu
+(function initLogoDropdown() {
+    const toggle = document.getElementById('logo-dropdown-toggle');
+    const dropdown = document.getElementById('logo-dropdown');
+    if (!toggle || !dropdown) return;
+
+    function setOpen(isOpen) {
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        dropdown.classList.toggle('open', isOpen);
+        dropdown.setAttribute('aria-hidden', String(!isOpen));
+    }
+
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setOpen(!dropdown.classList.contains('open'));
+        enableAudio();
+        playClickSound();
+    });
+
+    dropdown.addEventListener('click', (e) => {
+        const item = e.target.closest('.logo-dropdown-item');
+        if (!item) return;
+        e.stopPropagation();
+        setOpen(false);
+        enableAudio();
+        playClickSound();
+        runEasterEgg(item.dataset.easterEgg);
+    });
+
+    document.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+    });
+})();
+
+function runEasterEgg(type) {
+    if (type === 'random-theme') {
+        const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        const palette = generatePalette(randomColor);
+        applyTheme(palette);
+        changeEnvironmentColor(randomColor);
+        showEasterEggToast('Random theme applied!');
+    } else if (type === 'party-mode') {
+        document.body.classList.add('party-mode');
+        setTimeout(() => document.body.classList.remove('party-mode'), 4000);
+        showEasterEggToast('Party mode! 🎉');
+    } else if (type === 'secret-message') {
+        const msgs = {
+            en: "Krost engine v2.0.26 — made with caffeine and code.",
+            es: "Krost engine v2.0.26 — hecho con cafeína y código."
+        };
+        showEasterEggToast(msgs[currentLang] || msgs.en);
+    } else if (type === 'scanlines') {
+        document.body.classList.toggle('scanlines-overlay');
+        showEasterEggToast(document.body.classList.contains('scanlines-overlay') ? 'Scanlines ON' : 'Scanlines OFF');
+    }
+}
+
+function showEasterEggToast(message) {
+    let toast = document.getElementById('easter-egg-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'easter-egg-toast';
+        toast.className = 'easter-egg-toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
 
 langToggle.addEventListener('click', () => {
     enableAudio();

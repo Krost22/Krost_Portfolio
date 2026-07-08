@@ -74,8 +74,17 @@
     </div>
     <header>
         <div class="header-left">
-            <img src="Media/logo.png" alt="Krost Games Logo" class="logo-img">
-            <span class="header-logo-text">KROST</span>
+            <button class="logo-dropdown-toggle" id="logo-dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Open Krost menu">
+                <img src="Media/logo.png" alt="Krost Games Logo" class="logo-img">
+                <span class="header-logo-text">KROST</span>
+                <svg class="logo-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="logo-dropdown" id="logo-dropdown" aria-hidden="true">
+                <button class="logo-dropdown-item" data-easter-egg="random-theme">Random Theme</button>
+                <button class="logo-dropdown-item" data-easter-egg="party-mode">Party Mode</button>
+                <button class="logo-dropdown-item" data-easter-egg="secret-message">Secret Message</button>
+                <button class="logo-dropdown-item" data-easter-egg="scanlines">Toggle Scanlines</button>
+            </div>
         </div>
         <nav class="header-pills" aria-label="Primary">
             <a href="#hero" class="nav-pill active" id="nav-projects">PROJECTS</a>
@@ -114,11 +123,13 @@
                 <div class="hero-tagline" id="hero-tagline">VR/AR · Multiplayer · Mobile</div>
                 <div class="hero-badges">
                     <span class="hero-badge" id="hero-available">● Available for work</span>
-                    <span class="hero-badge">Bachelor of Systems Engineering</span>
-                    <span class="hero-badge">Colombia · Remote</span>
+                    <span class="hero-badge" id="hero-badge-degree">Bachelor of Systems Engineering</span>
+                    <span class="hero-badge" id="hero-badge-tools">Custom Unity Editor Tools</span>
+                    <span class="hero-badge" id="hero-badge-location">Colombia · Remote</span>
                 </div>
                 <div class="hero-actions">
                     <a href="https://www.linkedin.com/in/eduardomogollonsalcedo/?locale=en" target="_blank" class="bpm-btn-primary" id="hero-cta-contact">Contact on LinkedIn</a>
+                    <a href="https://krostgames.itch.io/" target="_blank" class="bpm-btn-itch" id="hero-cta-itch">Games on Itch.io</a>
                     <a href="https://github.com/Krost22" target="_blank" class="bpm-btn-secondary" id="hero-cta-github">View GitHub</a>
                 </div>
             </div>
