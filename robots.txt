@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://krost22.github.io/Krost_Portfolio/sitemap.xml

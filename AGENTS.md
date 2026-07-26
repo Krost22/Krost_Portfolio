@@ -1,51 +1,62 @@
 # Krost Portfolio
 
-Static single-page portfolio site. No build step, no package manager, no tests.
+Static single-page portfolio. No build step, no package manager, no tests.
 
 ## Stack
 
 - Vanilla HTML/CSS/JS — **no bundler, no npm, no framework**
-- Three.js + GSAP + ScrollTrigger — all loaded from CDN via `<script type="importmap">` in `index.html`
-- Versions pinned in importmap: Three.js 0.160.0, GSAP 3.12.5
+- Three.js 0.160.0 + GSAP 3.12.5 + ScrollTrigger, from CDN via the importmap in `index.html`
 
 ## Key files
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Entrypoint; contains importmap with CDN dependency URLs, SEO meta tags, and layout |
-| `main.js` | All app logic: data, UI, Three.js scene, GSAP animations, i18n, drag/swipe, raycasting, audio, boot screen |
-| `style.css` | All styles |
-| `game.js` | Canvas minigame loaded on demand |
-| `Media/` | Images (logo, project screenshots, videos) |
+| `index.html` | Entrypoint; importmap, SEO meta + JSON-LD, layout, boot screen, game overlay |
+| `main.js` | Data, theming, Three.js shelf, i18n, audio, interaction, boot sequence |
+| `style.css` | Design tokens and all styles |
+| `game.js` | Minigame, loaded on demand |
+| `Media/` | Source art plus `.webp` derivatives and `cover.webp` card faces |
 
-## Architecture notes
+See `PROJECT_CONTEXT.MD` for the full architecture. The notes below are the
+things that will bite you.
 
-- **Translations**: EN/ES i18n is inline in `main.js` as two large dictionaries (`aboutTranslations`, per-project `en`/`es` fields). Toggled by `#lang-toggle` button.
-- **3D scene**: An *infinite-loop* horizontal arc carousel of 8 cards inside `#canvas-container`. Cards distributed along a circular arc (radius 5.5, span 128° desktop / 70° touch). Active card at arc apex (center, largest, closest); neighbors curve backward along the arc with depth (z), reduced scale, and face toward camera via `atan2`. Seamless wrapping via `getWrappedOffset()`: diff normalized to `[-HALF_SPAN, HALF_SPAN]` where `HALF_SPAN = totalProjects / 2`.
-- **Drag/swipe**: `pointerdown/pointermove/pointerup` on canvas for horizontal drag. Velocity-tracked inertia: fast flicks snap up to 3 cards.
-- **Wheel**: `wheel` event on canvas navigates cards (700 ms throttle).
-- **Raycasting hover**: `THREE.Raycaster` on `pointermove` — hovered card gains ~8 % scale bump via GSAP.
-- **Idle floating**: Each card bobs subtly (`sin * 0.04`) at unique phase in the animation loop — GSAP is not involved. Disabled when `prefers-reduced-motion` is active.
-- **Dynamic theming**: Each project has an auto-generated `palette` (bg, surface, accent, secondary, glow). `applyTheme()` sets CSS custom properties on `:root` — entire page recolors per project.
-- **ACESFilmic tone mapping** on renderer for cinematic contrast.
-- **Indicators**: 8 clickable dots below canvas, built dynamically in JS.
-- **Keyboard**: ArrowLeft/ArrowRight navigates between projects.
-- **Procedural audio**: Web Audio API project-specific chords, boot sweep, hover, flip, and minigame SFX.
-- **WebGL fallback**: graceful message if WebGL is unavailable; renderer-dependent code is guarded.
-- **No routing**: Hashless single page. Anchor `#about` scrolls to the about section.
-- **No loading spinner**: The boot screen combines real texture progress with a minimum display time.
+## Design rules
 
-## OpenCode skills (`.agents/skills/`)
+The visual system is deliberately **not** neon. When adding UI:
 
-5 skills are installed and locked via `skills-lock.json`:
-- `accessibility`, `frontend-design`, `seo`, `threejs-animation`, `threejs-fundamentals`
+- Depth comes from layered directional shadows (`--shadow-1..3`), never from
+  `box-shadow: 0 0 Npx <colour>` or `text-shadow` halos.
+- The per-project accent is a **mark** — a 2 px rule, a dot, a dash, a frame.
+  It is not a light source and it does not tint whole surfaces.
+- Text is warm off-white (`--text: #e6e4e1`), not `#fff`. Borders are hairlines.
+- One pill shape only (the header nav). Everything else uses `--r-xs/sm/md/lg`.
+- Accents live in a 35–50 % saturation band. High-saturation lime/cyan/magenta
+  is what this design was moved away from — don't reintroduce it.
+
+## Gotchas
+
+- **Colour maths for CSS must not go through `THREE.Color`.** It works in linear
+  space and gamma-converts in `getStyle()`, so `setHSL(h, s, 0.045)` comes out a
+  mid grey. Use `hexToHsl()` / `hsl()` in `main.js`.
+- **`renderer.setSize(w, h)` — never pass `updateStyle: false`.** Without the
+  style update the canvas lays out at its backing-store size, i.e. double width
+  on every HiDPI screen.
+- **Card faces are canvases.** Anything with baked text (`drawCardBack`) needs
+  `refreshCardBacks()` on a language switch.
+- **Filtered indices are not project indices.** Use `projectIndexForOffset()` and
+  `getNextFilteredIndex()`; reaching for `totalProjects` is how a drag ends up
+  selecting a card the active filter hides.
+- **`renderSkills()` must not emit `gs-reveal`.** It re-renders on every language
+  switch, and ScrollTriggers are only created once at start-up.
+- **`#game-screen` visibility is an inline `display` style**, because `game.js`
+  sets it directly. Don't convert it to the `hidden` attribute.
+- **Media paths in `main.js` point at `.webp` only.** The PNG/JPG originals stay
+  in the repo as archives and must never be referenced by the page.
 
 ## Running
 
 ```powershell
-# Python (built-in)
 python -m http.server 8000
-# or Node
+# or
 npx serve .
 ```
-Then open `http://localhost:8000`. No build step needed.

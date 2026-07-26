@@ -61,13 +61,14 @@ const BG_TEXTS = [
     'Eduardo Mogollón Salcedo',
     'Game Developer @ LSV-TECH S.A.S   2021 — 2026',
     'Mobile Game Developer @ Freelance   2019 — 2021',
-    'VR Hotel Experience (Cartagena)',
-    'AR Hotel Experience (Cartagena)',
+    'VR Hotel Experience — Cartagena',
+    'AR Hotel Experience — Cartagena',
     'VR Multiplayer — Guajira Corp',
     'Native TTS Editor Tool',
-    'Audio Loop & Cut Tool',
-    '360 Virtual Tours',
-    'Mobile Game Prototypes'
+    'ClipLoop — Audio loop & cut tool',
+    '360 Virtual Tours — Terraviva',
+    'Mobile Game Prototypes',
+    'Games on Itch.io'
 ];
 
 function createBgText() {
@@ -278,14 +279,14 @@ function ShooterMode() {
         const geo = new THREE.BufferGeometry();
         geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0,0.7,0, -0.45,-0.55,0, 0.45,-0.55,0]), 3));
         geo.computeVertexNormals();
-        const mat = new THREE.MeshBasicMaterial({ color: 0xA8E063, side: THREE.DoubleSide });
+        const mat = new THREE.MeshBasicMaterial({ color: 0xE2DFDA, side: THREE.DoubleSide });
         ship = new THREE.Mesh(geo, mat);
         ship.position.set(0, targetShipY, 0);
         addModeMesh(ship);
 
         const gGeo = new THREE.BufferGeometry();
         gGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0,0.9,0, -0.55,-0.65,0, 0.55,-0.65,0]), 3));
-        const gMat = new THREE.MeshBasicMaterial({ color: 0xA8E063, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+        const gMat = new THREE.MeshBasicMaterial({ color: 0xE2DFDA, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
         shipGlow = new THREE.Mesh(gGeo, gMat);
         shipGlow.position.copy(ship.position);
         shipGlow.position.z = -0.1;
@@ -318,7 +319,7 @@ function ShooterMode() {
         enter() {
             makeShip();
             const bGeo = new THREE.PlaneGeometry(0.12, 0.5);
-            const bMat = new THREE.MeshBasicMaterial({ color: 0x00D4C8, transparent: true, opacity: 0.9, side: THREE.DoubleSide });
+            const bMat = new THREE.MeshBasicMaterial({ color: 0xC08A5A, transparent: true, opacity: 0.9, side: THREE.DoubleSide });
             for (let i = 0; i < MAX_BULLETS; i++) {
                 const mesh = new THREE.Mesh(bGeo.clone(), bMat.clone());
                 mesh.visible = false;
@@ -393,7 +394,7 @@ function ShooterMode() {
                             playExplosion();
                             return { scoreChange: true, damage: false };
                         } else {
-                            a.mesh.material.emissive.setHex(0xA8E063);
+                            a.mesh.material.emissive.setHex(0xE2DFDA);
                             setTimeout(() => { if (a.mesh) a.mesh.material.emissive.setHex(0x000000); }, 80);
                         }
                     }
@@ -412,8 +413,8 @@ function ShooterMode() {
                 }
             });
             if (damage) {
-                ship.material.color.setHex(0xff4444);
-                setTimeout(() => { if (ship) ship.material.color.setHex(0xA8E063); }, 150);
+                ship.material.color.setHex(0xC4605A);
+                setTimeout(() => { if (ship) ship.material.color.setHex(0xE2DFDA); }, 150);
             }
             return { damage };
         },
@@ -445,12 +446,12 @@ function CrossyMode() {
         const g = new THREE.Group();
         const body = new THREE.Mesh(
             new THREE.BoxGeometry(CELL * 0.66, CELL * 0.66, CELL * 0.66),
-            new THREE.MeshBasicMaterial({ color: 0xA8E063 })
+            new THREE.MeshBasicMaterial({ color: 0xE2DFDA })
         );
         g.add(body);
         const top = new THREE.Mesh(
             new THREE.BoxGeometry(CELL * 0.7, CELL * 0.7, CELL * 0.7),
-            new THREE.MeshBasicMaterial({ color: 0xA8E063, wireframe: true, transparent: true, opacity: 0.5 })
+            new THREE.MeshBasicMaterial({ color: 0xE2DFDA, wireframe: true, transparent: true, opacity: 0.5 })
         );
         g.add(top);
         player = g;
@@ -471,7 +472,7 @@ function CrossyMode() {
 
     function spawnCar(lane) {
         const geo = new THREE.BoxGeometry(CELL * 1.5, CELL * 0.55, CELL * 0.55);
-        const color = [0x00D4C8, 0xff5f5f, 0x8b949e, 0xF7F8F0][Math.floor(Math.random() * 4)];
+        const color = [0xC08A5A, 0xC4605A, 0x8b949e, 0xE2DFDA][Math.floor(Math.random() * 4)];
         const mat = new THREE.MeshBasicMaterial({ color });
         const car = new THREE.Mesh(geo, mat);
         const startX = lane.dir > 0 ? -COLS / 2 * CELL - 2 : COLS / 2 * CELL + 2;
@@ -492,14 +493,14 @@ function CrossyMode() {
         }
         const geo = new THREE.BufferGeometry();
         geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verts), 3));
-        const grid = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x2a3530, transparent: true, opacity: 0.5 }));
+        const grid = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x242a33, transparent: true, opacity: 0.5 }));
         addModeMesh(grid);
 
         // Safe-zone tint at bottom and top
         [0, ROWS - 1].forEach(r => {
             const strip = new THREE.Mesh(
                 new THREE.PlaneGeometry(COLS * CELL, CELL),
-                new THREE.MeshBasicMaterial({ color: 0xA8E063, transparent: true, opacity: 0.06 })
+                new THREE.MeshBasicMaterial({ color: 0xE2DFDA, transparent: true, opacity: 0.06 })
             );
             strip.position.set(0, worldY(r), -0.15);
             addModeMesh(strip);
@@ -595,7 +596,7 @@ function SnakeMode() {
         const startC = Math.floor(COLS/2);
         const startR = 2;
         const geo = new THREE.BoxGeometry(CELL*0.85, CELL*0.85, CELL*0.85);
-        const mat = new THREE.MeshBasicMaterial({ color: 0xA8E063 });
+        const mat = new THREE.MeshBasicMaterial({ color: 0xE2DFDA });
         for (let i = 0; i < 3; i++) {
             const seg = new THREE.Mesh(geo.clone(), mat.clone());
             seg.position.set(worldX(startC), worldY(startR - i), 0);
@@ -607,7 +608,7 @@ function SnakeMode() {
     function spawnFood() {
         if (food) { modeGroup.remove(food); food.geometry.dispose(); food.material.dispose(); food = null; }
         const geo = new THREE.BoxGeometry(CELL*0.55, CELL*0.55, CELL*0.55);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x00D4C8, transparent: true, opacity: 0.95 });
+        const mat = new THREE.MeshBasicMaterial({ color: 0xC08A5A, transparent: true, opacity: 0.95 });
         const mesh = new THREE.Mesh(geo, mat);
         let attempts = 0;
         do {
@@ -666,7 +667,7 @@ function SnakeMode() {
                     damage = true;
                 } else {
                     const geo = new THREE.BoxGeometry(CELL*0.85, CELL*0.85, CELL*0.85);
-                    const mat = new THREE.MeshBasicMaterial({ color: 0xA8E063 });
+                    const mat = new THREE.MeshBasicMaterial({ color: 0xE2DFDA });
                     const seg = new THREE.Mesh(geo, mat);
                     seg.position.set(worldX(nc), worldY(nr), 0);
                     addModeMesh(seg);
@@ -721,7 +722,7 @@ function DodgeMode() {
 
     function makePlayer() {
         const geo = new THREE.BoxGeometry(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
-        const mat = new THREE.MeshBasicMaterial({ color: 0xA8E063 });
+        const mat = new THREE.MeshBasicMaterial({ color: 0xE2DFDA });
         player = new THREE.Mesh(geo, mat);
         player.position.set(0, -gameHeight/2 + 1.5, 0);
         addModeMesh(player);
@@ -731,7 +732,7 @@ function DodgeMode() {
         const w = 0.6 + Math.random() * 1.2;
         const h = 0.6 + Math.random() * 1.0;
         const geo = new THREE.BoxGeometry(w, h, 0.4);
-        const color = [0xff5f5f, 0x00D4C8, 0xF7F8F0, 0x8b949e][Math.floor(Math.random()*4)];
+        const color = [0xC4605A, 0xC08A5A, 0xE2DFDA, 0x8b949e][Math.floor(Math.random()*4)];
         const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.85 });
         const mesh = new THREE.Mesh(geo, mat);
         const x = (Math.random() - 0.5) * (GAME_WIDTH - w - 1);
@@ -991,10 +992,10 @@ function applyDamage() {
 
 function flashDamage() {
     if (!hudScoreEl) return;
-    hudScoreEl.style.color = '#ff5f5f';
+    hudScoreEl.style.color = '#C4605A';
     gsap.fromTo(hudScoreEl, { scale: 1.25 }, {
         scale: 1, duration: 0.3, ease: 'power2.out',
-        onComplete: () => { if (hudScoreEl) hudScoreEl.style.color = '#A8E063'; }
+        onComplete: () => { if (hudScoreEl) hudScoreEl.style.color = '#E2DFDA'; }
     });
 }
 

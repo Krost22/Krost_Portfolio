@@ -11,129 +11,164 @@
   - `three/addons/` → `https://unpkg.com/three@0.160.0/examples/jsm/`
   - `gsap` → `https://unpkg.com/gsap@3.12.5/index.js`
   - `gsap/ScrollTrigger` → `https://unpkg.com/gsap@3.12.5/ScrollTrigger.js`
-- **Fonts**: Google Fonts (`Space Grotesk`, `JetBrains Mono`).
+- **Fonts**: Google Fonts (`Space Grotesk`, `JetBrains Mono`), one combined request.
 - **Hosting**: GitHub Pages at `https://krost22.github.io/Krost_Portfolio/`.
 
 ## 2. File Structure
 
 ```
 Krost_Portfolio/
-├─ index.html          # Entrypoint, importmap, layout, boot screen, about section, game screen
-├─ main.js             # App logic: data, Three.js arc carousel, GSAP animations, i18n, audio, drag/wheel/keyboard, raycasting, lightbox
-├─ style.css           # All styles and CSS custom properties for dynamic theming
-├─ game.js             # Canvas minigame loaded on demand (import('./game.js'))
-├─ Media/              # logo.png, project screenshots/videos, placeholder folder Itchio/
-│  ├─ logo.png
-│  ├─ SmartRoom/
-│  ├─ AR Hotel/
-│  ├─ VR Multiplayer - Guajira Corp/
-│  ├─ UnityLocalTTS/
-│  ├─ LoopClip/
-│  ├─ 360 virtual tours/
-│  └─ Itchio/          # Placeholder for future itch.io card screenshots
-├─ README.md           # High-level overview (currently outdated)
-├─ AGENTS.md           # Agent memory / architecture notes
-├─ PROJECT_CONTEXT.MD  # This file
-└─ repomix-output.xml  # Large context file; should not be deployed
+├─ index.html          # Entrypoint: importmap, SEO/JSON-LD, layout, boot screen, game overlay
+├─ main.js             # Data, theming, Three.js shelf, i18n, audio, interaction, boot
+├─ style.css           # Design tokens + all styles
+├─ game.js             # Canvas/Three minigame, loaded on demand via import('./game.js')
+├─ robots.txt          # Points at the sitemap
+├─ sitemap.xml         # Single-URL sitemap
+├─ .claude/launch.json # Dev-server config for the preview tooling
+├─ Media/
+│  ├─ logo.png, logo-256.webp, favicon-64.png
+│  ├─ og-cover.jpg     # 1200x630 social card
+│  └─ <Project>/       # Source PNG/JPG + .webp derivative + cover.webp (2:3 card art)
+└─ README.md, AGENTS.md, PROJECT_CONTEXT.MD
 ```
+
+### Media convention
+
+Every source bitmap has a `.webp` sibling at ≤1600 px, and every project with
+artwork has a `cover.webp` at 720×1080 used as the 3D card face. **The site
+references only the `.webp` files**; the original PNG/JPGs are kept as archives
+and are never fetched by the page (~29 MB of sources → ~2.3 MB of derivatives).
+
+Derivatives were generated with `sharp`; regenerate them if you add source art.
 
 ## 3. Architecture
 
-### 3.1 Data Model
+### 3.1 Data model
 
-All projects live in the `projects` array declared at the top of `main.js`.
-Each object has:
+`projects` at the top of `main.js`:
 
 ```js
 {
-  id: string,
-  category: 'game' | 'tool', // used by the filter tabs and CTA fallback text
-  color: string,             // hex color used for palette and card theme
+  id, category: 'game' | 'tool',
+  color: '#hex',              // muted accent, ~35-50% saturation
+  year, role, platform, company,
   tags: string[],
-  images: string[],          // file paths, first image is used as 3D card texture
-  videos?: string[],         // optional, shown in the bottom info panel
-  link?: string,             // optional, external download / profile link
-  linkLabel?: { en: string, es: string }, // optional, custom CTA text
-  en: { title: string, desc: string },
-  es: { title: string, desc: string }
+  cover: 'Media/.../cover.webp',
+  posterCover: true,          // artwork already has its own title lockup
+  images: string[],           // .webp paths for the detail gallery
+  videos: [{ src, poster }],
+  link, repo, linkLabel: { en, es },
+  en: { title, subtitle, desc, highlights: string[] },
+  es: { ... }
 }
 ```
 
-At runtime, `main.js` augments each project with:
-- `palette` — generated via `generatePalette(color)` (bg, surface, surface2, accent, secondary, glow)
-- `placeholder` — procedural geometric PNG used when no images exist
-- default values for `date`, `role`, `link`, `company`
+`skillGroups` and `ui` (EN/ES strings) sit alongside it. All copy lives in
+`main.js`; `index.html` holds only fallback text.
 
-### 3.2 Three.js Carousel
+### 3.2 Theming
 
-- **Infinite-loop horizontal arc carousel** of `PlaneGeometry` cards.
-- Cards are distributed along a circular arc with:
-  - `ARC_RADIUS = 5.0`
-  - `ARC_SPAN_DEG = 108` desktop / `62` touch
-  - `ANGLE_PER_CARD = ARC_SPAN_DEG / (filteredCount - 1)` (recalculated when the category filter changes)
-  - `HALF_SPAN = filteredCount / 2` (used for seamless wrapping over the visible subset)
-- Active card sits at the apex (center, largest, closest); neighbors curve back along the arc with depth (`z`), reduced scale, and face toward the camera via `Math.atan2`.
-- Seamless wrapping via `getWrappedOffset(i, offset, count)` which normalizes the difference into `[-HALF_SPAN, HALF_SPAN]` over the currently filtered items.
-- Category filtering is supported: state `activeCategory`, `filteredIndices`, and `filteredCount` hide non-matching cards and recompute the arc for the visible subset. Indicator dots are rebuilt for the filtered set.
-- Each card has a front texture (project screenshot or placeholder), a back face (`createCardBackMaterial`) with title/description snippet, and a glow plane behind it.
+`hexToHsl()` / `hsl()` do the colour maths in **plain sRGB**. Do not use
+`THREE.Color` for CSS values — it works in linear space and gamma-converts on
+output, which turns an `L=0.045` near-black into a mid grey.
 
-### 3.3 Interaction
+`generatePalette(hex)` builds a neutral ramp (`bg`, `surface`, `surface-2`,
+`surface-3`) carrying a *trace* of the project hue, plus `accent`,
+`accent-soft` and `secondary`. `applyTheme()` writes them as CSS custom
+properties and updates `<meta name="theme-color">`.
 
-| Input | Behavior |
-|-------|----------|
-| Drag / swipe | Pointer-driven horizontal offset; velocity-tracked inertia snaps 1–3 cards. |
-| Wheel | Vertical wheel scrolls the page normally over the canvas; Shift+wheel or horizontal trackpad scroll navigates the carousel with a 700 ms throttle. |
-| Click card | Focus card if not active; flip card if already active. |
-| Hover | Raycaster scale bump + audio hover tone. |
-| Arrow keys | Navigate left/right within the filtered set. |
-| Indicators | Clickable dots below the canvas, rebuilt for the active filter. |
-| Prev/Next buttons | Visible controls; navigate within the filtered set. |
-| Filter tabs | `All`, `Games & Experiences`, `Unity Tools` tabs above the carousel filter the visible cards and reset to the first match. |
+**Design rule:** the accent is a mark — a 2 px rule under the active tab, a
+timeline dot, a bullet dash, the active card's frame. It is never a glow.
+Elevation comes from layered directional shadows (`--shadow-1..3`).
 
-### 3.4 Theming
+### 3.3 Three.js shelf
 
-`applyTheme(palette)` writes CSS custom properties to `document.documentElement.style`, causing the entire page to recolor based on the active project. Tone mapping is `ACESFilmicToneMapping` with exposure `1.25`.
+- Infinite-loop horizontal arc of `PlaneGeometry` cards.
+  `ARC_RADIUS = 5.0`, `ARC_SPAN_DEG` 108 desktop / 62 touch, `DEPTH_MULT 1.35`.
+- `ANGLE_PER_CARD` and `HALF_SPAN` are recomputed from `filteredCount` whenever
+  the category filter changes; `getWrappedOffset()` wraps over the filtered set.
+- Each card carries three children: a **shadow** plane (radial-gradient
+  texture, normal blending), a **frame** plane shown only on the active card,
+  and a **back** face.
+- Card faces are drawn to 640×960 canvases:
+  - `posterCover: true` → artwork full-bleed, no overlay type.
+  - otherwise → `drawComposedCover()`: art in the top 66 %, typographic plate below.
+  - no artwork at all → `drawTypographicCover()`: tinted field, ghosted monogram, title.
+  - back → `drawCardBack()`: year/platform, title, description, highlights, tags.
+- `refreshCardBacks()` **must** run on a language switch — back faces bake their
+  text into a canvas.
+- `resizeRenderer()` calls `renderer.setSize(w, h)` with `updateStyle` left on.
+  Passing `false` makes the canvas lay out at its backing-store size, i.e. 2× on
+  every HiDPI display.
 
-### 3.5 Audio
+### 3.4 Interaction
 
-Procedural Web Audio API sounds: boot sweep, click, project-specific chords (one per project), hover, flip, shoot, explosion, hit. Mute state persists in `localStorage`. Audio context is created on first user interaction (`enableAudio`).
+| Input | Behaviour |
+|-------|-----------|
+| Drag / swipe | Velocity-tracked inertia; snaps 1–3 cards. |
+| Wheel | Vertical scrolls the page; Shift+wheel or horizontal trackpad moves the shelf (620 ms throttle). |
+| Click card | Focus if inactive, flip if already active. |
+| Hover | Raycast scale bump, lift, deeper shadow, hover tone. |
+| Arrow keys | Navigate — but only when `shelfHasFocus()`: not during the minigame, not with the lightbox open, not while a tab or field has focus. |
+| Filter tabs | Full tablist keyboard model (arrows / Home / End) with roving tabindex. |
+| Indicators | One dot per filtered project. |
+
+`projectIndexForOffset()` maps a raw offset back through `filteredIndices` —
+using `totalProjects` there is the bug that let a drag select a hidden card.
+
+### 3.5 Performance
+
+- No particle system. The render loop pauses when `#canvas-wrapper` leaves the
+  viewport (IntersectionObserver) and on `visibilitychange`.
+- Videos are `preload="none"` with a poster; the 45 MB and 85 MB captures are
+  only fetched if someone presses play.
+- Gallery images are `loading="lazy" decoding="async"`.
 
 ### 3.6 i18n
 
-Inline dictionaries:
-- `projects[i].en` / `projects[i].es` for each project.
-- `aboutTranslations.en` / `aboutTranslations.es` for the About section, hero badges, navigation pills, and filter tab labels (`filterAll`, `filterGames`, `filterTools`).
-Toggle button `#lang-toggle` switches `currentLang` and re-renders text, including the filter tabs and the active CTA button label.
+`ui.en` / `ui.es` plus per-project `en`/`es`. Language is resolved from
+`localStorage` → `navigator.language` → `en`, and persisted on toggle. A switch
+re-runs `renderStaticText()`, `updateProjectPanel()`, `refreshCardBacks()` and
+`buildIndicators()`.
 
-### 3.7 Boot Screen
+Note `renderSkills()` deliberately does **not** add `gs-reveal`: it re-renders
+on every language switch and ScrollTriggers are only wired once at start-up.
 
-`#boot-screen` shows a retro terminal sequence: animated logo, logs, progress bar that combines real texture loading (`THREE.LoadingManager`) with a minimum time of 2.5 s. Buttons `PRESS START` and `PLAY MINIGAME` appear at 100 %. Reduced-motion users get static buttons immediately.
+### 3.7 Audio
 
-### 3.8 Minigame
+Procedural Web Audio through one `tone()` helper. Muted by default, state in
+`localStorage` under `krost-muted`. `window.KrostAudio` is the bridge for
+`game.js`.
 
-A canvas shooter loaded on demand from `game.js`. Launched via `window.launchMinigame()` (header button or boot screen). Exposes `window.finishBootFromGame()` to return to the portfolio.
+### 3.8 Boot screen
 
-## 4. Assets & Naming Conventions
+Quiet loader: logo, name, role, a 2 px progress rule, real percentage. Progress
+is `coversDone / coversTotal` (70 %) blended with a 1.6 s minimum (30 %), and
+force-completes after 8 s so a stalled asset can never strand a visitor.
 
-- Project media folders use the project name; spaces are allowed (e.g., `AR Hotel/`, `360 virtual tours/`).
-- Images are referenced with relative paths from the repo root.
-- If a project has no `images` array, the procedural placeholder is used for both the 3D card and the bottom panel.
+### 3.9 Logo menu
 
-## 5. Running Locally
+`shuffle-accent` (curated pool, never random RGB), `attract-mode` (auto-advance
+kiosk loop), `grain` (persisted), `colophon`. Any manual navigation calls
+`stopAttract()`.
+
+### 3.10 Minigame
+
+`game.js`, loaded on demand. Visibility is driven by an inline `display` style —
+keep `#game-screen` as a style toggle, not the `hidden` attribute.
+
+## 4. Running locally
 
 ```powershell
-# Python (built-in)
 python -m http.server 8000
-# or Node
+# or
 npx serve .
-# or npx http-server .
 ```
 
-Open `http://localhost:8000`.
+## 5. Extension points
 
-## 6. Known Extension Points
-
-- Adding a new project only requires appending to the `projects` array, setting `category` to `'game'` or `'tool'`, and optionally adding media. Carousel math is fully dynamic and respects the active category filter.
-- To customize the CTA button text for a project, add `linkLabel: { en: '...', es: '...' }`. Otherwise tools fall back to `Download`/`Descargar` and games/experiences to `Play`/`Jugar`.
-- To add a new social link, add an SVG icon in `index.html` and style it in `style.css`.
-- To add a new category filter, add the tab in `index.html`, the i18n keys in `aboutTranslations`, and update `setCategoryFilter` logic in `main.js`.
+- **New project**: append to `projects`, add `Media/<Name>/`, generate the
+  `.webp` derivatives and `cover.webp`, set `category` and `posterCover`.
+- **New skill group**: append to `skillGroups` with `en`/`es`.
+- **New accent**: keep saturation in the 35–50 % band so it stays a mark and not
+  a neon light; add it to `ACCENT_POOL` too.

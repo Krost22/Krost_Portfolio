@@ -1,55 +1,60 @@
-# Krost_Portfolio – Interactive 3D Portfolio
+# Krost Portfolio
 
-A single-page, zero-dependency portfolio built with **Vanilla HTML, CSS & JavaScript** (ES modules), showcasing Unity, VR/AR, multiplayer, Unity tools, and Itch.io game development.
+Portfolio of **Eduardo Mogollón Salcedo** — Unity Game Developer.
+VR and AR for standalone headsets, multiplayer, Android games, and custom Unity
+Editor tooling.
 
-## Highlights
+**Live:** https://krost22.github.io/Krost_Portfolio/
 
-- **Three.js + GSAP** infinite-loop horizontal arc carousel of 8 project cards (`PlaneGeometry`) that rotate, scale, and emit a subtle glow.
-- **Dynamic theming**: each project auto-generates a color palette that recolors the entire page via CSS custom properties.
-- **Procedural placeholders**: projects without screenshots get a generated geometric card texture instead of a broken image.
-- **Language toggle** (EN/ES) — project descriptions, about section, and accessibility labels switch instantly.
-- **Responsive media gallery** beneath the canvas shows screenshots, videos, and external links for the selected project.
-- **Boot screen** with terminal-style loading sequence and real texture progress tracking.
-- **Built-in canvas minigame** loaded on demand from `game.js`.
-- **Procedural audio** via Web Audio API (boot sweep, project chords, hover, flip, shooting).
-- **Accessibility & performance**: keyboard navigation, reduced-motion support, lazy-loaded gallery images, lower particle count on mobile.
-- **SEO**: meta description, Open Graph, Twitter Card, JSON-LD Person, favicon, and canonical URL.
-- **No build step** — dependencies are loaded from pinned CDNs via `importmap`. Run locally with `python -m http.server` or `npx serve .`.
+![Eduardo Mogollón Salcedo — Unity Game Developer](Media/og-cover.jpg)
 
-## Project Structure
+## What it is
 
-```
-Krost_Portfolio/
-├─ index.html          // Entry point, importmap, SEO meta tags, layout
-├─ style.css           // Design system, dynamic CSS variables, responsive styles
-├─ main.js             // Three.js scene, carousel, i18n, audio, boot, UI logic
-├─ game.js             // Canvas minigame (loaded on demand)
-├─ Media/              // logo.png, project screenshots/videos, Itchio/ folder
-├─ PROJECT_CONTEXT.MD  // Detailed architecture and extension notes
-├─ README.md           // This file
-├─ AGENTS.md           # Agent memory / architecture notes
-└─ .agents/            # Optional skill definitions (accessibility, SEO, etc.)
-```
+A single page with no build step. Projects sit on a 3D shelf you can drag, flip
+and filter, rendered with Three.js. Everything else — layout, i18n, audio, the
+minigame — is plain ES modules.
 
-## Live Demo
+- **8 projects** across VR, AR, multiplayer, 360° video, Unity Editor tools and
+  published WebGL games, each with year, role, platform, client and highlights.
+- **Bilingual** (EN/ES), resolved from your browser language and remembered.
+- **Card art composed at runtime**: designed key art is shown whole, screenshots
+  get a typographic plate, projects without art get a typographic cover.
+- **A minigame**, because it's a game developer's portfolio.
+- **Accessible**: skip link, keyboard-driven tablist and carousel, live region
+  for shelf changes, focus-visible styling, full reduced-motion path.
 
-Deployed with **GitHub Pages** at:
-https://krost22.github.io/Krost_Portfolio/
+## Stack
 
-## How to Run Locally
+Vanilla HTML/CSS/JS. Three.js 0.160.0 and GSAP 3.12.5 come from a CDN through an
+importmap — there is no bundler, no `package.json` and no dependency install.
+
+## Running locally
 
 ```bash
-# Python (built-in)
 python -m http.server 8000
-
-# Or Node
-npx serve .
-# or
-npx http-server .
 ```
 
-Open `http://localhost:8000` in a modern browser.
+Then open http://localhost:8000.
 
----
+## Media
 
-*Feel free to fork, customize the carousel, or add your own projects. The code is deliberately lightweight, framework-free, and ready for extension.*
+Source screenshots live in `Media/<Project>/` next to `.webp` derivatives and a
+`cover.webp` (720×1080) used as the 3D card face. **The site loads only the
+`.webp` files** — about 2.3 MB in place of ~29 MB of source PNG/JPG. Videos are
+`preload="none"` behind a poster frame, so the large captures are fetched only
+when someone presses play.
+
+Derivatives are produced with [`sharp`](https://sharp.pixelplumbing.com/);
+regenerate them when you add source art.
+
+## Docs
+
+- `PROJECT_CONTEXT.MD` — architecture in detail
+- `AGENTS.md` — design rules and the gotchas worth knowing before editing
+
+## Elsewhere
+
+[GitHub](https://github.com/Krost22) ·
+[LinkedIn](https://www.linkedin.com/in/eduardomogollonsalcedo/) ·
+[Itch.io](https://krostgames.itch.io/) ·
+[Sketchfab](https://sketchfab.com/Krost22)
