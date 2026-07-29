@@ -19,7 +19,9 @@ minigame — is plain ES modules.
 - **Bilingual** (EN/ES), resolved from your browser language and remembered.
 - **Card art composed at runtime**: designed key art is shown whole, screenshots
   get a typographic plate, projects without art get a typographic cover.
-- **A minigame**, because it's a game developer's portfolio.
+- **A four-mode arcade** hiding behind the play button — shooter, road crossing,
+  snake and dodge, rotating every 18 seconds on three shared lives. Keyboard,
+  mouse and touch (swipe) all work.
 - **Accessible**: skip link, keyboard-driven tablist and carousel, live region
   for shelf changes, focus-visible styling, full reduced-motion path.
 

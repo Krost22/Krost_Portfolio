@@ -152,10 +152,48 @@ force-completes after 8 s so a stalled asset can never strand a visitor.
 kiosk loop), `grain` (persisted), `colophon`. Any manual navigation calls
 `stopAttract()`.
 
-### 3.10 Minigame
+### 3.10 Minigame — Krost Arcade
 
-`game.js`, loaded on demand. Visibility is driven by an inline `display` style —
-keep `#game-screen` as a style toggle, not the `hidden` attribute.
+`game.js`, loaded on demand via `import('./game.js')`. Visibility is driven by an
+inline `display` style — keep `#game-screen` as a style toggle, not the `hidden`
+attribute.
+
+**Run structure.** One run rotates through all four modes, `ROUND_TIME` (18 s)
+each, with `START_LIVES` (3) shared across the whole run. Losing a life is the
+only cost of a mistake — no score penalty, so the final number reflects how far
+you got. At zero lives the run ends on a real game-over panel with score, best,
+and Play again. Difficulty scales off `round`, not `score`, so a good run isn't
+punished into unplayability.
+
+**Mode contract.** Every mode returns:
+
+```js
+{ control: 'follow' | 'swipe', enter(), update(dt, input), exit() }
+```
+
+Modes report outcomes by calling the shared `addScore(points, x, y, colour)` and
+`hurt(x, y)` rather than by return value, so scoring, particles, shake and
+life-loss stay in one place. `hurt()` returns `false` while the player is in
+post-hit invulnerability (`INVULN_TIME`), but modes should still run their own
+reset either way — bailing out early left the snake frozen mid-board.
+
+`control` drives touch handling: `follow` modes track the finger/mouse
+position, `swipe` modes turn drags into discrete direction taps.
+
+**Shared systems.** A 120-quad particle pool (`burst()`), camera `shake()`, an
+opaque board plate for the grid modes, and a background layer that scrolls the
+CV past at ~5 % opacity behind everything.
+
+**Things that were broken and must not regress:**
+- The scene needs lights. `MeshStandardMaterial` asteroids rendered pure black
+  without them.
+- `pointermove` must be bound in `bindInput()`. It was written and never wired,
+  so desktop players only ever had the keyboard.
+- Cars, blocks, bullets and rocks are pooled. The old crossing mode allocated a
+  fresh mesh per spawn and left every one in the group for the whole round.
+- `keyState` is cleared in `unbindInput()`, otherwise a key held while exiting
+  stays down for the next run.
+- `window.resize` is handled; the canvas used to stay at its first size.
 
 ## 4. Running locally
 

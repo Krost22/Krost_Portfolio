@@ -319,17 +319,6 @@ header {
 #mute-toggle[aria-pressed="false"] { color: var(--text-3); }
 #mute-toggle[aria-pressed="true"] { color: var(--accent); }
 
-.bpm-clock {
-    min-width: 42px;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-3);
-    font-variant-numeric: tabular-nums;
-    padding-left: 8px;
-}
-
 /* ==========================================================================
    Hero
    ========================================================================== */
@@ -1295,7 +1284,8 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
 #game-hud-high { font-size: 0.72rem; color: var(--text-3); font-variant-numeric: tabular-nums; }
 
 .game-hud-center { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.game-hud-right { display: flex; flex-direction: column; align-items: flex-end; }
+.game-hud-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.game-hud-buttons { display: flex; align-items: center; gap: 6px; }
 
 #game-mode-label {
     font-size: 0.68rem;
@@ -1305,8 +1295,15 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
     color: var(--text-2);
 }
 
+#game-round {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
 #game-mode-timer {
-    width: 76px;
+    width: 96px;
     height: 2px;
     background: var(--line-strong);
     border-radius: 1px;
@@ -1316,6 +1313,32 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
     width: 100%; height: 100%;
     background: var(--text-2);
     transform-origin: left;
+    transition: background-color 0.2s;
+}
+/* The round ending is signalled on the bar itself rather than by a
+   full-screen countdown sitting over the play field. */
+#game-mode-bar.is-ending {
+    background: var(--accent);
+    animation: barPulse 0.6s ease-in-out infinite;
+}
+@keyframes barPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Lives */
+#game-hud-lives { display: flex; gap: 5px; }
+.game-life {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--text);
+    transition: background-color 0.25s, transform 0.25s;
+}
+.game-life.is-lost {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transform: scale(0.8);
 }
 
 #game-mode-hint {
@@ -1333,8 +1356,12 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
     transition: opacity 0.4s ease;
 }
 
-#game-exit-btn {
+#game-exit-btn,
+#game-pause-btn {
     pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 500;
@@ -1346,19 +1373,16 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
     cursor: pointer;
     transition: color 0.15s, border-color 0.15s, background-color 0.15s;
 }
-#game-exit-btn:hover { color: var(--text); border-color: var(--line-strong); }
-
-#game-exit-btn.exit-prominent {
-    color: #0b0d10;
-    background: var(--text);
-    border-color: var(--text);
-    font-weight: 600;
-    font-size: 0.8rem;
-    padding: 8px 18px;
+#game-pause-btn { padding: 6px 9px; }
+#game-exit-btn:hover,
+#game-pause-btn:hover {
+    color: var(--text);
+    border-color: var(--line-strong);
+    background: rgba(255, 255, 255, 0.05);
 }
-#game-exit-btn.exit-prominent:hover { background: #fff; }
 
-#game-pause {
+#game-pause,
+#game-over {
     position: absolute;
     inset: 0;
     z-index: 3;
@@ -1413,24 +1437,38 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
 }
 .game-btn-secondary:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
 
-#game-countdown {
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    display: none;
-    align-items: center;
+/* Game over result rows */
+.game-result {
+    display: flex;
+    gap: 28px;
     justify-content: center;
-    background: rgba(7, 9, 11, 0.55);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    margin: 2px 0 10px;
 }
-
-#game-countdown-text {
+.game-result div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.game-result dt {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+.game-result dd {
+    margin: 0;
     font-family: var(--font-sans);
-    font-size: 3.6rem;
+    font-size: 1.7rem;
     font-weight: 600;
     color: var(--text);
     font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.game-over-note {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 8px;
+    min-height: 1em;
 }
 
 #game-transition {
@@ -1440,6 +1478,40 @@ body.booting > *:not(#boot-screen):not(.grain-overlay) { visibility: hidden; }
     display: none;
     background: #07090b;
     pointer-events: none;
+}
+
+/* "Next up" card — replaces the blocking countdown overlay */
+#game-nextup {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.game-nextup-inner { text-align: center; }
+.game-nextup-label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+}
+.game-nextup-name {
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    line-height: 1;
+}
+.game-nextup-hint {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-2);
+    margin-top: 12px;
 }
 
 body.game-active > *:not(#game-screen):not(.grain-overlay) { visibility: hidden; }
@@ -1454,7 +1526,7 @@ body.game-active .custom-cursor { display: none; }
 
 @media (max-width: 900px) {
     header { padding: 0 10px; }
-    .header-logo-text, .bpm-clock, .header-divider { display: none; }
+    .header-logo-text, .header-divider { display: none; }
     .nav-pill { padding: 6px 11px; font-size: 0.76rem; }
     /* The social links all live in the footer too, so the header sheds them
        first rather than letting the row overflow. */
@@ -1464,10 +1536,14 @@ body.game-active .custom-cursor { display: none; }
 }
 
 @media (max-width: 420px) {
-    #play-game-btn { display: none; }
-    .nav-pill { padding: 6px 9px; font-size: 0.72rem; }
-    .logo-dropdown-toggle { padding: 5px 4px; }
+    /* The play button stays: once the boot screen is skipped it is the only
+       way back into the minigame. Space is taken from the pills instead. */
+    .nav-pill { padding: 6px 8px; font-size: 0.7rem; }
+    .header-pills { padding: 2px; }
+    .logo-dropdown-toggle { padding: 5px 3px; }
     .logo-dropdown-chevron { display: none; }
+    .header-right { gap: 0; }
+    .nav-icon, #play-game-btn, #mute-toggle, #lang-toggle { width: 28px; height: 28px; }
 }
 
 @media (max-width: 760px) {

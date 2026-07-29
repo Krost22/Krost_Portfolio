@@ -571,20 +571,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 function t(key) { return ui[currentLang][key]; }
 
 // ==========================================
-// 4. Clock
-// ==========================================
-(function initClock() {
-    const clock = document.getElementById('bpm-clock');
-    if (!clock) return;
-    const tick = () => {
-        const now = new Date();
-        clock.textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    };
-    tick();
-    setInterval(tick, 15000);
-})();
-
-// ==========================================
 // 5. Static UI text
 // ==========================================
 function setText(id, value) {

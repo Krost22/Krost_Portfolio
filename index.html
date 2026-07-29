@@ -127,7 +127,6 @@
             </button>
             <button id="mute-toggle" title="Toggle sound" aria-label="Toggle sound" aria-pressed="false"></button>
             <button id="lang-toggle" aria-label="Cambiar a español">ES</button>
-            <div class="bpm-clock" id="bpm-clock" aria-hidden="true">--:--</div>
         </div>
     </header>
 
@@ -285,26 +284,60 @@
         <div id="game-hud">
             <div class="game-hud-left">
                 <div id="game-hud-score">00000</div>
-                <div id="game-hud-high">HI 00000</div>
+                <div id="game-hud-high">BEST 00000</div>
             </div>
             <div class="game-hud-center">
-                <div id="game-mode-label">SHOOTER</div>
+                <div id="game-mode-label">Shooter</div>
                 <div id="game-mode-timer"><div id="game-mode-bar"></div></div>
+                <div id="game-round">Round 1</div>
             </div>
             <div class="game-hud-right">
-                <button id="game-exit-btn" onclick="KrostGame.exitToPortfolio()">Exit</button>
+                <div id="game-hud-lives" role="status" aria-label="Lives"></div>
+                <div class="game-hud-buttons">
+                    <button id="game-pause-btn" onclick="KrostGame.pauseGame()" aria-label="Pause">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                    </button>
+                    <button id="game-exit-btn" onclick="KrostGame.exitToPortfolio()">Exit</button>
+                </div>
             </div>
         </div>
+
         <div id="game-mode-hint"></div>
-        <div id="game-countdown">
-            <div id="game-countdown-text">3</div>
+
+        <div id="game-nextup">
+            <div class="game-nextup-inner">
+                <p class="game-nextup-label" id="game-nextup-label">Next up</p>
+                <p class="game-nextup-name" id="game-nextup-name">Snake</p>
+                <p class="game-nextup-hint" id="game-nextup-hint">Swipe to turn</p>
+            </div>
         </div>
+
         <div id="game-transition"></div>
+
         <div id="game-pause">
             <div class="game-panel">
-                <p class="game-panel-title">Paused</p>
-                <button class="game-btn" onclick="KrostGame.pauseGame()">Resume</button>
-                <button class="game-btn game-btn-secondary" onclick="KrostGame.exitToPortfolio()">Exit</button>
+                <p class="game-panel-title" id="game-pause-title">Paused</p>
+                <button class="game-btn" id="game-resume-btn" onclick="KrostGame.pauseGame()">Resume</button>
+                <button class="game-btn game-btn-secondary" id="game-pause-exit-btn" onclick="KrostGame.exitToPortfolio()">Exit</button>
+            </div>
+        </div>
+
+        <div id="game-over">
+            <div class="game-panel">
+                <p class="game-panel-title" id="game-over-title">Game over</p>
+                <dl class="game-result">
+                    <div>
+                        <dt id="game-over-score-label">Score</dt>
+                        <dd id="game-over-score">0</dd>
+                    </div>
+                    <div>
+                        <dt id="game-over-best-label">Best</dt>
+                        <dd id="game-over-best">0</dd>
+                    </div>
+                </dl>
+                <p class="game-over-note" id="game-over-note"></p>
+                <button class="game-btn" id="game-retry-btn" onclick="KrostGame.restartGame()">Play again</button>
+                <button class="game-btn game-btn-secondary" id="game-over-exit-btn" onclick="KrostGame.exitToPortfolio()">Back to portfolio</button>
             </div>
         </div>
     </div>
