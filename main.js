@@ -283,32 +283,153 @@ const projects = [
         role: "Solo developer",
         platform: "WebGL · Itch.io",
         tags: ["Unity", "WebGL", "Itch.io", "Game Jams"],
-        cover: "Media/Itchio/cover.webp",
-        posterCover: true,
+        cover: "Media/Itchio/Itchio logo.webp",
+        coverLayout: 'list',
+        coverList: [
+            "Oil Be Back", "Lumber Drop", "The Echo Loop", "Sumo Eggs", "Balloon Drop",
+            "Clic The Cube", "Play Fetch", "Soccer Shooter", "Whack-a-Food!"
+        ],
         images: [
-            "Media/Itchio/Itchio logo.webp",
-            "Media/Itchio/Itchio vertical.webp"
+            "Media/Itchio/Itchio vertical.webp",
+            "Media/Itchio/Itchio logo.webp"
+        ],
+        // Each published game gets its own folder in the media panel. Taglines
+        // marked "itch" are quoted from the game's own Itch.io page; the rest
+        // describe only what the screenshots actually show.
+        gallerySets: [
+            {
+                id: "lumber-drop",
+                name: "Lumber Drop",
+                link: "https://krostgames.itch.io/lumber-drop",
+                cover: "Media/Itchio/Lumber Drop/cover.webp",
+                en: "Timing-based lumberjack game with three difficulty tiers.",
+                es: "Juego de leñador basado en timing, con tres niveles de dificultad.",
+                images: [
+                    "Media/Itchio/Lumber Drop/shot-1.webp",
+                    "Media/Itchio/Lumber Drop/shot-2.webp",
+                    "Media/Itchio/Lumber Drop/shot-3.webp",
+                    "Media/Itchio/Lumber Drop/shot-4.webp"
+                ]
+            },
+            {
+                id: "echo-loop",
+                name: "The Echo Loop",
+                link: "https://krostgames.itch.io/the-echo-loop",
+                cover: "Media/Itchio/Echo Loop/cover.webp",
+                en: "Puzzle levels built around syncing with your own echo.",
+                es: "Niveles de puzle construidos alrededor de sincronizarte con tu propio eco.",
+                images: [
+                    "Media/Itchio/Echo Loop/shot-1.webp",
+                    "Media/Itchio/Echo Loop/shot-2.webp",
+                    "Media/Itchio/Echo Loop/shot-3.webp"
+                ]
+            },
+            {
+                id: "sumo-eggs",
+                name: "Sumo Eggs",
+                link: "https://krostgames.itch.io/sumo-eggs",
+                cover: "Media/Itchio/Sumo Eggs/cover.webp",
+                en: "Unity Learn Prototype 4 — push the other eggs off the pan.",
+                es: "Unity Learn Prototype 4 — empuja los otros huevos fuera de la sartén.",
+                images: [
+                    "Media/Itchio/Sumo Eggs/shot-1.webp",
+                    "Media/Itchio/Sumo Eggs/shot-2.webp",
+                    "Media/Itchio/Sumo Eggs/shot-3.webp",
+                    "Media/Itchio/Sumo Eggs/shot-4.webp",
+                    "Media/Itchio/Sumo Eggs/shot-5.webp"
+                ]
+            },
+            {
+                id: "balloon-drop",
+                name: "Balloon Drop",
+                link: "https://krostgames.itch.io/baloon-drop",
+                cover: "Media/Itchio/Balloon drop/cover.webp",
+                en: "Unity Learn Balloon Challenge.",
+                es: "Unity Learn Balloon Challenge.",
+                images: [
+                    "Media/Itchio/Balloon drop/shot-1.webp",
+                    "Media/Itchio/Balloon drop/shot-2.webp",
+                    "Media/Itchio/Balloon drop/shot-3.webp"
+                ]
+            },
+            {
+                id: "clic-the-cube",
+                name: "Clic The Cube",
+                link: "https://krostgames.itch.io/clic-the-cube",
+                cover: "Media/Itchio/Clic The Cube/cover.webp",
+                en: "Unity Learn activity “Mod The Cube”.",
+                es: "Actividad de Unity Learn «Mod The Cube».",
+                images: [
+                    "Media/Itchio/Clic The Cube/shot-1.webp",
+                    "Media/Itchio/Clic The Cube/shot-2.webp",
+                    "Media/Itchio/Clic The Cube/shot-3.webp"
+                ]
+            },
+            {
+                id: "play-fetch",
+                name: "Play Fetch",
+                link: "https://krostgames.itch.io/playfetchunitylearn",
+                cover: "Media/Itchio/Fecht/cover.webp",
+                en: "Unity Learn challenge from the programming pathway.",
+                es: "Reto de Unity Learn de la ruta de programación.",
+                images: [
+                    "Media/Itchio/Fecht/shot-1.webp",
+                    "Media/Itchio/Fecht/shot-2.webp",
+                    "Media/Itchio/Fecht/shot-3.webp",
+                    "Media/Itchio/Fecht/shot-4.webp"
+                ]
+            },
+            {
+                id: "soccer-shooter",
+                name: "Soccer Shooter",
+                link: "https://krostgames.itch.io/soccer-shooter",
+                cover: "Media/Itchio/soccer Shooter/cover.webp",
+                en: "Penalty-kick shooting game.",
+                es: "Juego de tiros a portería.",
+                images: ["Media/Itchio/soccer Shooter/shot-1.webp"]
+            },
+            {
+                id: "whack-a-food",
+                name: "Whack-a-Food!",
+                link: "https://krostgames.itch.io/whack-a-food",
+                cover: "Media/Itchio/Whack-a-food!/cover.webp",
+                en: "Grid whack-a-mole with food and three difficulty settings.",
+                es: "Whack-a-mole en cuadrícula con comida y tres dificultades.",
+                images: [
+                    "Media/Itchio/Whack-a-food!/shot-1.webp",
+                    "Media/Itchio/Whack-a-food!/shot-2.webp",
+                    "Media/Itchio/Whack-a-food!/shot-3.webp"
+                ]
+            },
+            {
+                id: "recycling-game",
+                name: "Recycling Game",
+                cover: "Media/Itchio/Recycling game/cover.webp",
+                en: "Sort falling items into the right bin before the timer runs out.",
+                es: "Clasifica los objetos que caen en el contenedor correcto antes de que acabe el tiempo.",
+                images: ["Media/Itchio/Recycling game/shot-1.webp"]
+            }
         ],
         link: "https://krostgames.itch.io/",
         linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
         en: {
             title: "Games on Itch.io",
-            subtitle: "Eight WebGL builds",
-            desc: "A shelf of small, finished Unity games published as WebGL builds: Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter and Whack-a-Food.",
+            subtitle: "Nine WebGL builds",
+            desc: "A shelf of small, finished Unity games published as WebGL builds: Oil Be Back, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter and Whack-a-Food!",
             highlights: [
-                "Eight games shipped and playable in the browser — no download, no install.",
-                "Each one scoped to a single mechanic and finished rather than left as a prototype.",
-                "WebGL builds tuned for fast first load and keyboard or mouse-only input."
+                "Nine games shipped and playable in the browser — no download, no install.",
+                "A mix of game-jam entries and Unity Learn pathway challenges taken to a finished state.",
+                "Each one scoped to a single mechanic, tuned for fast first load in WebGL."
             ]
         },
         es: {
             title: "Juegos en Itch.io",
-            subtitle: "Ocho builds WebGL",
-            desc: "Una estantería de juegos Unity pequeños y terminados, publicados como builds WebGL: Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food.",
+            subtitle: "Nueve builds WebGL",
+            desc: "Una estantería de juegos Unity pequeños y terminados, publicados como builds WebGL: Oil Be Back, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!",
             highlights: [
-                "Ocho juegos publicados y jugables en el navegador: sin descargas ni instalación.",
-                "Cada uno acotado a una sola mecánica y terminado, no abandonado como prototipo.",
-                "Builds WebGL ajustadas para carga inicial rápida y control con teclado o ratón."
+                "Nueve juegos publicados y jugables en el navegador: sin descargas ni instalación.",
+                "Una mezcla de game jams y retos de la ruta Unity Learn, llevados hasta terminarlos.",
+                "Cada uno acotado a una sola mecánica y ajustado para carga rápida en WebGL."
             ]
         }
     }
@@ -365,6 +486,7 @@ const ui = {
         heroCtaGithub: "GitHub",
         workHeading: "Selected work",
         carouselHint: "Drag, or use ← →",
+        carouselHintTouch: "Swipe to browse",
         skillsHeading: "What I build with",
         metaYear: "Year",
         metaRole: "Role",
@@ -374,6 +496,7 @@ const ui = {
         ctaDownload: "Download",
         ctaPlay: "Play",
         ctaRepo: "Source",
+        playOnItch: "Play on Itch.io ↗",
         aboutTitle: "Experience & education",
         profileTitle: "Profile",
         profileDesc: "Unity developer working on VR and AR experiences for standalone headsets, multiplayer environments, and Android games. I like the unglamorous half of the job: making an interaction feel obvious, and keeping the frame budget honest on hardware that has none to spare. I also build small Editor tools when a workflow gets in the way. Fully remote, used to multidisciplinary teams.",
@@ -426,6 +549,7 @@ const ui = {
         heroCtaGithub: "GitHub",
         workHeading: "Trabajo seleccionado",
         carouselHint: "Arrastra, o usa ← →",
+        carouselHintTouch: "Desliza para explorar",
         skillsHeading: "Con qué trabajo",
         metaYear: "Año",
         metaRole: "Rol",
@@ -435,6 +559,7 @@ const ui = {
         ctaDownload: "Descargar",
         ctaPlay: "Jugar",
         ctaRepo: "Código",
+        playOnItch: "Jugar en Itch.io ↗",
         aboutTitle: "Experiencia y educación",
         profileTitle: "Perfil",
         profileDesc: "Desarrollador Unity trabajando en experiencias de VR y AR para visores autónomos, entornos multijugador y juegos Android. Me gusta la mitad menos vistosa del trabajo: que una interacción se sienta obvia y que el presupuesto de frame sea honesto en hardware que no tiene margen. También construyo pequeñas herramientas de editor cuando un flujo de trabajo estorba. Cien por ciento remoto, acostumbrado a equipos multidisciplinarios.",
@@ -595,7 +720,7 @@ function renderStaticText() {
     setText('hero-cta-itch', s.heroCtaItch);
     setText('hero-cta-github', s.heroCtaGithub);
     setText('work-heading', s.workHeading);
-    setText('carousel-hint', s.carouselHint);
+    setText('carousel-hint', isTouchDevice ? s.carouselHintTouch : s.carouselHint);
     setText('skills-heading', s.skillsHeading);
     setText('about-title', s.aboutTitle);
     setText('profile-title', s.profileTitle);
@@ -689,10 +814,134 @@ function renderMeta(proj) {
     });
 }
 
+// A collection project shows its games as folders: one characteristic photo
+// each, expanding in place to that game's shots. Only one is ever open, so the
+// panel stays compact no matter how many games there are.
+function renderGallerySets(proj, mediaEl) {
+    mediaEl.classList.add('is-folders');
+    let openId = null;
+    let panel = null;
+
+    function removePanel(immediate) {
+        if (!panel) return;
+        const dying = panel;
+        panel = null;
+        openId = null;
+        mediaEl.querySelectorAll('.folder-card').forEach(b => b.setAttribute('aria-expanded', 'false'));
+        if (immediate || prefersReducedMotion) { dying.remove(); return; }
+        gsap.to(dying, {
+            height: 0, opacity: 0, duration: 0.26, ease: 'power2.in',
+            onComplete: () => dying.remove()
+        });
+    }
+
+    function buildPanel(set) {
+        const wrap = document.createElement('div');
+        wrap.className = 'folder-panel';
+        wrap.id = `folder-panel-${set.id}`;
+
+        const head = document.createElement('div');
+        head.className = 'folder-panel-head';
+
+        const heading = document.createElement('div');
+        const h = document.createElement('h4');
+        h.textContent = set.name;
+        heading.appendChild(h);
+        const note = set[currentLang] || set.en;
+        if (note) {
+            const p = document.createElement('p');
+            p.className = 'folder-note';
+            p.textContent = note;
+            heading.appendChild(p);
+        }
+        head.appendChild(heading);
+
+        if (set.link) {
+            const a = document.createElement('a');
+            a.className = 'folder-link';
+            a.href = set.link;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = t('playOnItch');
+            head.appendChild(a);
+        }
+        wrap.appendChild(head);
+
+        const shots = document.createElement('div');
+        shots.className = 'folder-shots';
+        set.images.forEach((src, i) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `${set.name} — ${i + 1}`;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.addEventListener('click', () => openLightbox(src, img.alt));
+            shots.appendChild(img);
+        });
+        wrap.appendChild(shots);
+        return wrap;
+    }
+
+    proj.gallerySets.forEach(set => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'folder-card';
+        card.setAttribute('aria-expanded', 'false');
+        card.setAttribute('aria-controls', `folder-panel-${set.id}`);
+
+        const cover = document.createElement('img');
+        cover.src = set.cover;
+        cover.alt = '';
+        cover.loading = 'lazy';
+        cover.decoding = 'async';
+
+        const meta = document.createElement('span');
+        meta.className = 'folder-meta';
+        const name = document.createElement('span');
+        name.className = 'folder-name';
+        name.textContent = set.name;
+        const count = document.createElement('span');
+        count.className = 'folder-count';
+        count.textContent = set.images.length;
+        meta.append(name, count);
+
+        card.append(cover, meta);
+        mediaEl.appendChild(card);
+
+        card.addEventListener('click', () => {
+            enableAudio();
+            playClickSound();
+            if (openId === set.id) { removePanel(false); return; }
+            removePanel(true);
+            openId = set.id;
+            card.setAttribute('aria-expanded', 'true');
+            panel = buildPanel(set);
+            // Inserted straight after its own card; the panel spans every
+            // column, so the grid flows it onto the row below that card.
+            card.insertAdjacentElement('afterend', panel);
+            if (prefersReducedMotion) return;
+            const target = panel.scrollHeight;
+            gsap.fromTo(panel,
+                { height: 0, opacity: 0 },
+                {
+                    height: target, opacity: 1, duration: 0.36, ease: 'power3.out',
+                    onComplete: () => { if (panel) panel.style.height = 'auto'; }
+                }
+            );
+        });
+    });
+}
+
 function renderMedia(proj, data) {
     const mediaEl = document.getElementById('project-media');
     if (!mediaEl) return;
     mediaEl.innerHTML = '';
+    mediaEl.classList.remove('is-folders');
+
+    if (proj.gallerySets && proj.gallerySets.length) {
+        renderGallerySets(proj, mediaEl);
+        return;
+    }
 
     const images = (proj.images && proj.images.length) ? proj.images : [proj.placeholder];
 
@@ -1239,34 +1488,143 @@ function drawTypographicCover(ctx, proj) {
     });
 }
 
+// Finishing pass every card gets, whatever its layout. This is what makes the
+// shelf read as a row of physical boxes rather than eight flat images: a
+// vignette settles bright artwork into a dark scene, a raking sheen suggests a
+// gloss surface, and the double edge reads as a printed border.
+function finishCard(ctx) {
+    const vignette = ctx.createRadialGradient(
+        CARD_W / 2, CARD_H * 0.44, CARD_W * 0.26,
+        CARD_W / 2, CARD_H * 0.5, CARD_H * 0.74
+    );
+    vignette.addColorStop(0, 'rgba(0,0,0,0)');
+    vignette.addColorStop(0.65, 'rgba(0,0,0,0.14)');
+    vignette.addColorStop(1, 'rgba(0,0,0,0.42)');
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    const sheen = ctx.createLinearGradient(0, 0, CARD_W * 0.75, CARD_H * 0.6);
+    sheen.addColorStop(0, 'rgba(255,255,255,0.09)');
+    sheen.addColorStop(0.4, 'rgba(255,255,255,0.015)');
+    sheen.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sheen;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+    ctx.lineWidth = 4;
+    roundedPath(ctx, 2, 2, CARD_W - 4, CARD_H - 4, CARD_RADIUS);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.13)';
+    ctx.lineWidth = 1.5;
+    roundedPath(ctx, 5.5, 5.5, CARD_W - 11, CARD_H - 11, CARD_RADIUS - 3);
+    ctx.stroke();
+}
+
+function paintCover(ctx, proj, img) {
+    ctx.clearRect(0, 0, CARD_W, CARD_H);
+    if (!img) {
+        drawTypographicCover(ctx, proj);
+    } else if (proj.coverLayout === 'list') {
+        drawListCover(ctx, proj, img);
+    } else if (proj.posterCover) {
+        // Designed key art already carries its own title — show it whole.
+        drawCover(ctx, img, 0, 0, CARD_W, CARD_H);
+    } else {
+        drawComposedCover(ctx, proj, img);
+    }
+    finishCard(ctx);
+}
+
+// A cover for a project that is really a collection: key art up top, then the
+// contents typeset as a list. Without this the Itch.io card was a brand mark
+// and nothing else — it never said what was actually behind it.
+function drawListCover(ctx, proj, img) {
+    const { h } = hexToHsl(proj.color);
+    const artBottom = Math.round(CARD_H * 0.46);
+    const plate = hsl(h, 0.17, 0.055);
+
+    ctx.fillStyle = plate;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    if (img) {
+        drawCover(ctx, img, 0, 0, CARD_W, artBottom);
+        const fade = ctx.createLinearGradient(0, artBottom - 130, 0, artBottom);
+        fade.addColorStop(0, 'rgba(0,0,0,0)');
+        fade.addColorStop(1, plate);
+        ctx.fillStyle = fade;
+        ctx.fillRect(0, artBottom - 130, CARD_W, 130);
+    }
+
+    const data = proj[currentLang] || proj.en;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+
+    ctx.fillStyle = proj.color;
+    ctx.fillRect(44, artBottom + 40, 34, 3);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.42)';
+    ctx.font = '500 21px "JetBrains Mono", monospace';
+    ctx.fillText(proj.year || '', 44, artBottom + 100);
+
+    ctx.fillStyle = '#e8e6e3';
+    ctx.font = '600 44px "Space Grotesk", sans-serif';
+    let y = artBottom + 158;
+    wrapLines(ctx, data.title, CARD_W - 88).slice(0, 2).forEach(line => {
+        ctx.fillText(line, 44, y);
+        y += 50;
+    });
+
+    if (data.subtitle) {
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = '400 24px "Space Grotesk", sans-serif';
+        ctx.fillText(data.subtitle, 44, y + 4);
+        y += 40;
+    }
+
+    const items = proj.coverList || [];
+    if (!items.length) return;
+
+    ctx.font = '400 21px "JetBrains Mono", monospace';
+    const colW = (CARD_W - 88) / 2;
+    const rows = Math.ceil(items.length / 2);
+    const listTop = y + 52;
+    items.forEach((item, i) => {
+        const col = Math.floor(i / rows);
+        const row = i % rows;
+        const x = 44 + col * colW;
+        const iy = listTop + row * 34;
+        ctx.fillStyle = proj.color;
+        ctx.fillRect(x, iy - 7, 8, 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText(item, x + 18, iy);
+    });
+}
+
 function createCardFrontTexture(proj) {
     const canvas = makeCanvas();
     const ctx = canvas.getContext('2d');
     const texture = canvasTexture(canvas);
+    let loadedImg = null;
 
-    if (!proj.cover) {
-        drawTypographicCover(ctx, proj);
-        proj.placeholder = canvas.toDataURL('image/png');
+    // Canvas text falls back to a system sans if a webfont hasn't arrived yet,
+    // and these textures are drawn during module evaluation. Keeping a redraw
+    // handle lets us repaint once Space Grotesk and JetBrains Mono are ready.
+    proj.redrawCover = () => {
+        paintCover(ctx, proj, loadedImg);
+        if (!proj.cover) proj.placeholder = canvas.toDataURL('image/png');
         texture.needsUpdate = true;
-        return texture;
-    }
+    };
 
-    // Placeholder fill while the cover downloads, so nothing flashes white.
-    drawTypographicCover(ctx, proj);
-    texture.needsUpdate = true;
+    proj.redrawCover();
+    if (!proj.cover) return texture;
 
     const img = new Image();
     coversTotal++;
     img.decoding = 'async';
     img.onload = () => {
-        ctx.clearRect(0, 0, CARD_W, CARD_H);
-        if (proj.posterCover) {
-            // Designed key art already carries its own title — show it whole.
-            drawCover(ctx, img, 0, 0, CARD_W, CARD_H);
-        } else {
-            drawComposedCover(ctx, proj, img);
-        }
-        texture.needsUpdate = true;
+        loadedImg = img;
+        proj.redrawCover();
         coversDone++;
     };
     img.onerror = () => { coversDone++; };
@@ -2106,6 +2464,8 @@ let lightboxOpener = null;
 
 function openLightbox(src, alt) {
     if (!lightbox || !lightboxImg) return;
+    // Otherwise attract mode keeps advancing the shelf underneath the viewer.
+    stopAttract();
     lightboxOpener = document.activeElement;
     lightboxImg.src = src;
     lightboxImg.alt = alt || '';
@@ -2301,3 +2661,18 @@ updateCardPositions(false);
 initScrollAnimations();
 if (renderer) animate();
 runBootSequence();
+
+// Card faces are canvases drawn during module evaluation, i.e. potentially
+// before Space Grotesk and JetBrains Mono have arrived — on a cold load every
+// baked label rendered in the fallback system sans. Repaint once fonts settle.
+if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+        projects.forEach(p => p.redrawCover && p.redrawCover());
+        refreshCardBacks();
+        // The gallery placeholder is a data URL snapshot of the same canvas,
+        // so it has to be re-pointed at the freshly drawn one.
+        document.querySelectorAll('.placeholder-img').forEach(img => {
+            if (projects[currentIndex].placeholder) img.src = projects[currentIndex].placeholder;
+        });
+    });
+}

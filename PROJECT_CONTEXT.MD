@@ -58,10 +58,24 @@ Derivatives were generated with `sharp`; regenerate them if you add source art.
   images: string[],           // .webp paths for the detail gallery
   videos: [{ src, poster }],
   link, repo, linkLabel: { en, es },
+  gallerySets: [...],         // optional; see below
   en: { title, subtitle, desc, highlights: string[] },
   es: { ... }
 }
 ```
+
+**`gallerySets`** turns the media panel into a folder browser, for a project
+that is really a collection. Each entry is
+`{ id, name, link?, cover, en, es, images[] }` and renders as a card with one
+characteristic photo, the game's name and its photo count. Clicking expands that
+set's shots in place; opening another closes the previous, so only one panel
+ever exists. The panel is inserted directly after its own card with
+`grid-column: 1 / -1`, which makes CSS Grid flow it onto the row below that
+card rather than at the end of the list.
+
+Only the Itch.io project uses this today. Its per-game copy is quoted from each
+game's own Itch.io page where a tagline exists; otherwise it describes only what
+the screenshots visibly show.
 
 `skillGroups` and `ui` (EN/ES strings) sit alongside it. All copy lives in
 `main.js`; `index.html` holds only fallback text.
@@ -90,13 +104,23 @@ Elevation comes from layered directional shadows (`--shadow-1..3`).
 - Each card carries three children: a **shadow** plane (radial-gradient
   texture, normal blending), a **frame** plane shown only on the active card,
   and a **back** face.
-- Card faces are drawn to 640×960 canvases:
+- Card faces are drawn to 640×960 canvases by `paintCover()`, which dispatches on
+  the project's fields:
+  - `coverLayout: 'list'` → `drawListCover()`: key art on top, then `coverList`
+    typeset in two columns. For projects that are a collection rather than one
+    thing (Itch.io).
   - `posterCover: true` → artwork full-bleed, no overlay type.
   - otherwise → `drawComposedCover()`: art in the top 66 %, typographic plate below.
   - no artwork at all → `drawTypographicCover()`: tinted field, ghosted monogram, title.
   - back → `drawCardBack()`: year/platform, title, description, highlights, tags.
+- Every front then goes through `finishCard()` — vignette, raking sheen and a
+  dark/light double edge. This is what makes bright artwork sit in a dark scene
+  and gives the shelf its printed-box feel; don't skip it for new layouts.
 - `refreshCardBacks()` **must** run on a language switch — back faces bake their
   text into a canvas.
+- Every project keeps a `redrawCover()` handle. Canvas text silently falls back
+  to a system sans when a webfont hasn't loaded, and these textures are drawn
+  during module evaluation, so `document.fonts.ready` triggers a full repaint.
 - `resizeRenderer()` calls `renderer.setSize(w, h)` with `updateStyle` left on.
   Passing `false` makes the canvas lay out at its backing-store size, i.e. 2× on
   every HiDPI display.

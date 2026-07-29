@@ -42,7 +42,11 @@ The visual system is deliberately **not** neon. When adding UI:
   style update the canvas lays out at its backing-store size, i.e. double width
   on every HiDPI screen.
 - **Card faces are canvases.** Anything with baked text (`drawCardBack`) needs
-  `refreshCardBacks()` on a language switch.
+  `refreshCardBacks()` on a language switch, and any new cover layout must call
+  `finishCard()` so it matches the rest of the shelf.
+- **Canvas text needs `document.fonts.ready`.** Cover textures are drawn during
+  module evaluation; without the repaint hook every baked label renders in the
+  fallback system sans on a cold load.
 - **Filtered indices are not project indices.** Use `projectIndexForOffset()` and
   `getNextFilteredIndex()`; reaching for `totalProjects` is how a drag ends up
   selecting a card the active filter hides.
