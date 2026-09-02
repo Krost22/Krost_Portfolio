@@ -12,11 +12,70 @@ gsap.registerPlugin(ScrollTrigger);
 // skip the typographic block that composed covers get.
 const projects = [
     {
+        id: "gridguard",
+        category: "game",
+        color: "#c2a04a",
+        featured: true,
+        featuredNote: {
+            en: "Final project · Generation bootcamp",
+            es: "Proyecto final · Generation bootcamp"
+        },
+        year: "2026",
+        role: { en: "Lead programmer", es: "Lead programmer" },
+        platform: "WebGL · Itch.io",
+        company: { en: "Team of five", es: "Equipo de cinco" },
+        tags: ["Unity", "WebGL", "Tower Defense", "2048 merge", "Team project"],
+        cover: "Media/GridGuard/cover.webp",
+        posterCover: true,
+        images: [
+            "Media/GridGuard/shot-0.webp",
+            "Media/GridGuard/shot-1.webp",
+            "Media/GridGuard/shot-2.webp",
+            "Media/GridGuard/shot-3.webp",
+            "Media/GridGuard/shot-4.webp",
+            "Media/GridGuard/shot-5.webp"
+        ],
+        videos: [{
+            src: "Media/GridGuard/trailer.mp4",
+            poster: "Media/GridGuard/poster.webp"
+        }],
+        link: "https://krostgames.itch.io/gridguard",
+        linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
+        // Credited verbatim from the game's Itch.io page.
+        credits: [
+            { name: "Eduardo Mogollón", role: { en: "Lead programmer", es: "Lead programmer" } },
+            { name: "Dayan Camilo Figueroa", role: { en: "Game design / Artist", es: "Diseño de juego / Artista" } },
+            { name: "Camilo Moreno", role: { en: "Technical artist, UX", es: "Artista técnico, UX" } },
+            { name: "Jean Paul Huertas", role: { en: "Gameplay programmer", es: "Programador de gameplay" } },
+            { name: "Johan Hernández", role: { en: "Gameplay programmer", es: "Programador de gameplay" } }
+        ],
+        en: {
+            title: "GridGuard",
+            subtitle: "Tower defense x 2048",
+            desc: "A tower defense built on a 2048-style merge mechanic. The Kingdom of Gridgard is holding back the Bone Horde, and as Royal Architect you spend the gold earned on the battlefield to transmute towers on the Fusion Grid: align two bastions of the same level and they instantly condense into a far more destructive one.",
+            highlights: [
+                "Lead programmer on a five-person team, on a build that is still in development.",
+                "Merge system where two towers of the same tier fuse into the next one, on a grid where space is the real constraint.",
+                "Wave-based enemy progression and a gold economy, shipped as a WebGL build playable straight in the browser."
+            ]
+        },
+        es: {
+            title: "GridGuard",
+            subtitle: "Tower defense x 2048",
+            desc: "Un tower defense construido sobre una mecánica de fusión estilo 2048. El Reino de Gridgard resiste el avance de la Horda Ósea y, como Arquitecto Real, administras el oro recaudado en el campo de batalla para transmutar torres en la Grilla de Fusión: al alinear dos baluartes del mismo nivel, se condensan al instante en una torre mucho más destructiva.",
+            highlights: [
+                "Programador principal en un equipo de cinco personas, sobre una build que sigue en desarrollo.",
+                "Sistema de fusión donde dos torres del mismo nivel se combinan en la siguiente, sobre una grilla donde el espacio es la verdadera restricción.",
+                "Progresión de enemigos por oleadas y economía de oro, publicado como build WebGL jugable directamente en el navegador."
+            ]
+        }
+    },
+    {
         id: "vr-hotel-cartagena",
         category: "game",
         color: "#c2954e",
         year: "2025",
-        role: "Unity developer",
+        role: { en: "Unity developer", es: "Desarrollador Unity" },
         platform: "Meta Quest 3 · PICO 4",
         company: "LSV-TECH · EM Hotels",
         tags: ["Unity", "Meta Quest 3", "PICO 4", "VR"],
@@ -55,7 +114,7 @@ const projects = [
         category: "game",
         color: "#6d94bf",
         year: "2026",
-        role: "Unity developer",
+        role: { en: "Unity developer", es: "Desarrollador Unity" },
         platform: "Android · ARCore",
         company: "LSV-TECH · EM Hotels",
         tags: ["Unity", "Android", "ARCore", "AR"],
@@ -93,8 +152,8 @@ const projects = [
         category: "game",
         color: "#55a081",
         year: "2025",
-        role: "Gameplay & networking",
-        platform: "Standalone VR",
+        role: { en: "Gameplay & networking", es: "Gameplay y red" },
+        platform: { en: "Standalone VR", es: "VR autónoma" },
         company: "LSV-TECH · Guajira Corp",
         tags: ["Unity", "Multiplayer", "VR", "C#"],
         cover: "Media/VR Multiplayer - Guajira Corp/cover.webp",
@@ -132,8 +191,8 @@ const projects = [
         category: "tool",
         color: "#8b85c4",
         year: "2026",
-        role: "Author",
-        platform: "Unity Editor package",
+        role: { en: "Author", es: "Autor" },
+        platform: { en: "Unity Editor package", es: "Paquete de Unity Editor" },
         tags: ["Unity Editor", "Tooling", "C#"],
         cover: "Media/UnityLocalTTS/cover.webp",
         posterCover: true,
@@ -171,8 +230,8 @@ const projects = [
         category: "tool",
         color: "#4f97a8",
         year: "2026",
-        role: "Author",
-        platform: "Unity Editor package",
+        role: { en: "Author", es: "Autor" },
+        platform: { en: "Unity Editor package", es: "Paquete de Unity Editor" },
         tags: ["Unity Editor", "Audio", "Tooling"],
         cover: "Media/LoopClip/cover.webp",
         posterCover: true,
@@ -210,8 +269,8 @@ const projects = [
         category: "game",
         color: "#86a35c",
         year: "2025",
-        role: "Unity developer",
-        platform: "Web · VR headsets",
+        role: { en: "Unity developer", es: "Desarrollador Unity" },
+        platform: { en: "Web · VR headsets", es: "Web · Visores VR" },
         company: "LSV-TECH · Terraviva",
         tags: ["360 Video", "VR", "Web"],
         cover: "Media/360 virtual tours/cover.webp",
@@ -250,7 +309,7 @@ const projects = [
         category: "game",
         color: "#c07f57",
         year: "2019 — 2021",
-        role: "Freelance developer",
+        role: { en: "Freelance developer", es: "Desarrollador freelance" },
         platform: "Android",
         tags: ["Unity", "Android", "Mobile", "Gameplay"],
         images: [],
@@ -280,7 +339,7 @@ const projects = [
         category: "game",
         color: "#c4605a",
         year: "2020 — 2026",
-        role: "Solo developer",
+        role: { en: "Solo developer", es: "Desarrollo en solitario" },
         platform: "WebGL · Itch.io",
         tags: ["Unity", "WebGL", "Itch.io", "Game Jams"],
         cover: "Media/Itchio/Itchio logo.webp",
@@ -497,6 +556,7 @@ const ui = {
         ctaPlay: "Play",
         ctaRepo: "Source",
         playOnItch: "Play on Itch.io ↗",
+        creditsTitle: "Team",
         aboutTitle: "Experience & education",
         profileTitle: "Profile",
         profileDesc: "Unity developer working on VR and AR experiences for standalone headsets, multiplayer environments, and Android games. I like the unglamorous half of the job: making an interaction feel obvious, and keeping the frame budget honest on hardware that has none to spare. I also build small Editor tools when a workflow gets in the way. Fully remote, used to multidisciplinary teams.",
@@ -529,7 +589,7 @@ const ui = {
     },
     es: {
         navProjects: "Proyectos",
-        navSkills: "Skills",
+        navSkills: "Habilidades",
         navAbout: "Experiencia",
         filterAll: "Todo",
         filterGames: "Juegos y experiencias",
@@ -560,6 +620,7 @@ const ui = {
         ctaPlay: "Jugar",
         ctaRepo: "Código",
         playOnItch: "Jugar en Itch.io ↗",
+        creditsTitle: "Equipo",
         aboutTitle: "Experiencia y educación",
         profileTitle: "Perfil",
         profileDesc: "Desarrollador Unity trabajando en experiencias de VR y AR para visores autónomos, entornos multijugador y juegos Android. Me gusta la mitad menos vistosa del trabajo: que una interacción se sienta obvia y que el presupuesto de frame sea honesto en hardware que no tiene margen. También construyo pequeñas herramientas de editor cuando un flujo de trabajo estorba. Cien por ciento remoto, acostumbrado a equipos multidisciplinarios.",
@@ -682,6 +743,8 @@ const descEl = document.getElementById('project-desc');
 const tagsEl = document.getElementById('project-tags');
 const metaEl = document.getElementById('project-meta');
 const highlightsEl = document.getElementById('project-highlights');
+const flagEl = document.getElementById('project-flag');
+const creditsEl = document.getElementById('project-credits');
 const ctaEl = document.getElementById('project-cta');
 const contentContainer = document.getElementById('content-container');
 const langToggle = document.getElementById('lang-toggle');
@@ -694,6 +757,13 @@ const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function t(key) { return ui[currentLang][key]; }
+
+// Project metadata is a plain string when it is a proper noun (device names,
+// company names) and an { en, es } pair when it is prose.
+function localised(value) {
+    if (!value) return '';
+    return typeof value === 'string' ? value : (value[currentLang] || value.en || '');
+}
 
 // ==========================================
 // 5. Static UI text
@@ -798,9 +868,9 @@ function renderMeta(proj) {
     metaEl.innerHTML = '';
     const rows = [
         [t('metaYear'), proj.year],
-        [t('metaRole'), proj.role],
-        [t('metaPlatform'), proj.platform],
-        [t('metaClient'), proj.company]
+        [t('metaRole'), localised(proj.role)],
+        [t('metaPlatform'), localised(proj.platform)],
+        [t('metaClient'), localised(proj.company)]
     ];
     rows.forEach(([label, value]) => {
         if (!value) return;
@@ -932,6 +1002,41 @@ function renderGallerySets(proj, mediaEl) {
     });
 }
 
+// Team credits, quoted from the project's own page. A portfolio that shows a
+// group project should say who else was on it and what this person actually did.
+function renderCredits(proj) {
+    if (!creditsEl) return;
+    if (!proj.credits || !proj.credits.length) {
+        creditsEl.hidden = true;
+        creditsEl.innerHTML = '';
+        return;
+    }
+    creditsEl.hidden = false;
+    creditsEl.innerHTML = '';
+
+    const title = document.createElement('p');
+    title.className = 'project-credits-title';
+    title.textContent = t('creditsTitle');
+    creditsEl.appendChild(title);
+
+    const list = document.createElement('ul');
+    list.className = 'project-credits-list';
+    proj.credits.forEach(c => {
+        const li = document.createElement('li');
+        const isMe = /Mogoll/i.test(c.name);
+        if (isMe) li.classList.add('is-self');
+        const name = document.createElement('span');
+        name.className = 'credit-name';
+        name.textContent = c.name;
+        const role = document.createElement('span');
+        role.className = 'credit-role';
+        role.textContent = (c.role && c.role[currentLang]) || '';
+        li.append(name, role);
+        list.appendChild(li);
+    });
+    creditsEl.appendChild(list);
+}
+
 function renderMedia(proj, data) {
     const mediaEl = document.getElementById('project-media');
     if (!mediaEl) return;
@@ -1013,6 +1118,14 @@ function updateProjectPanel() {
             li.textContent = text;
             highlightsEl.appendChild(li);
         });
+
+        if (flagEl) {
+            const note = proj.featured && proj.featuredNote && proj.featuredNote[currentLang];
+            flagEl.textContent = note || '';
+            flagEl.hidden = !note;
+        }
+
+        renderCredits(proj);
 
         if (proj.link) {
             ctaEl.href = proj.link;
@@ -1533,7 +1646,38 @@ function paintCover(ctx, proj, img) {
     } else {
         drawComposedCover(ctx, proj, img);
     }
+    if (proj.featured) drawFeaturedFlag(ctx, proj);
     finishCard(ctx);
+}
+
+// A featured project wears its label on the box, the way a shelf copy carries a
+// sticker. Drawn after the artwork so it survives every cover layout.
+function drawFeaturedFlag(ctx, proj) {
+    const note = (proj.featuredNote && proj.featuredNote[currentLang]) || '';
+    if (!note) return;
+
+    ctx.font = '600 21px "JetBrains Mono", monospace';
+    const padX = 18;
+    const w = Math.min(CARD_W - 56, ctx.measureText(note).width + padX * 2);
+    const h = 44;
+    const x = 28;
+    const y = 28;
+
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.55)';
+    ctx.shadowBlur = 14;
+    ctx.shadowOffsetY = 4;
+    ctx.fillStyle = proj.color;
+    roundedPath(ctx, x, y, w, h, 6);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.fillStyle = 'rgba(12,14,17,0.92)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(note, x + w / 2, y + h / 2 + 1);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
 }
 
 // A cover for a project that is really a collection: key art up top, then the

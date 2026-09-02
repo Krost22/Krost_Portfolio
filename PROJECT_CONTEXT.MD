@@ -64,6 +64,16 @@ Derivatives were generated with `sharp`; regenerate them if you add source art.
 }
 ```
 
+**`featured: true`** plus `featuredNote: { en, es }` marks a headline project.
+It draws a coloured flag onto the 3D card (`drawFeaturedFlag`) and a badge above
+the panel title; the project is also placed first in the array so it is the
+landing card. `credits: [{ name, role: { en, es } }]` renders a team block.
+
+**Localisation of metadata:** `role`, `platform` and `company` accept either a
+plain string (proper nouns — device and company names) or an `{ en, es }` pair
+(prose). `localised()` resolves them. They used to be English-only strings
+rendered unchanged into the Spanish panel.
+
 **`gallerySets`** turns the media panel into a folder browser, for a project
 that is really a collection. Each entry is
 `{ id, name, link?, cover, en, es, images[] }` and renders as a card with one
