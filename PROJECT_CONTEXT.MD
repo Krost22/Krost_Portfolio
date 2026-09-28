@@ -53,13 +53,14 @@ Derivatives were generated with `sharp`; regenerate them if you add source art.
   color: '#hex',              // muted accent, ~35-50% saturation
   year, role, platform, company,
   tags: string[],
-  cover: 'Media/.../cover.webp',
-  posterCover: true,          // artwork already has its own title lockup
+  cover: 'Media/.../art.webp',  // landscape art for the top of the card
+  coverFocus: 0.4,            // optional vertical crop for portrait art
+  coverList: string[],        // optional; replaces the blurb (collections)
   images: string[],           // .webp paths for the detail gallery
   videos: [{ src, poster }],
   link, repo, linkLabel: { en, es },
   gallerySets: [...],         // optional; see below
-  en: { title, subtitle, desc, highlights: string[] },
+  en: { title, subtitle, short, desc, highlights: string[] },  // short = card blurb
   es: { ... }
 }
 ```
@@ -114,14 +115,15 @@ Elevation comes from layered directional shadows (`--shadow-1..3`).
 - Each card carries three children: a **shadow** plane (radial-gradient
   texture, normal blending), a **frame** plane shown only on the active card,
   and a **back** face.
-- Card faces are drawn to 640×960 canvases by `paintCover()`, which dispatches on
-  the project's fields:
-  - `coverLayout: 'list'` → `drawListCover()`: key art on top, then `coverList`
-    typeset in two columns. For projects that are a collection rather than one
-    thing (Itch.io).
-  - `posterCover: true` → artwork full-bleed, no overlay type.
-  - otherwise → `drawComposedCover()`: art in the top 66 %, typographic plate below.
-  - no artwork at all → `drawTypographicCover()`: tinted field, ghosted monogram, title.
+- Card faces are drawn to 640×960 canvases by `paintCover()` → `drawCardFront()`.
+  Every card uses **one layout**: `cover` art in the top 46 % (landscape art;
+  `coverFocus` shifts a portrait crop), then accent rule, year, title, subtitle,
+  the `short` blurb — or `coverList` in two columns for a collection (Itch.io) —
+  and the platform as a footer. No artwork → a ghosted monogram fills the slot.
+  - The plate colour comes from the art: `dominantTone()` samples the image at
+    48×48 and picks the chroma-weighted dominant hue; `cardTone()` holds it dark
+    (L 0.25 → 0.09, S 0.32–0.55). Falls back to `proj.color` for greyscale art.
+    Backs use the same tone and are repainted when a cover finishes loading.
   - back → `drawCardBack()`: year/platform, title, description, highlights, tags.
 - Every front then goes through `finishCard()` — vignette, raking sheen and a
   dark/light double edge. This is what makes bright artwork sit in a dark scene
@@ -192,42 +194,66 @@ kiosk loop), `grain` (persisted), `colophon`. Any manual navigation calls
 inline `display` style — keep `#game-screen` as a style toggle, not the `hidden`
 attribute.
 
-**Run structure.** One run rotates through all four modes, `ROUND_TIME` (18 s)
-each, with `START_LIVES` (3) shared across the whole run. Losing a life is the
-only cost of a mistake — no score penalty, so the final number reflects how far
-you got. At zero lives the run ends on a real game-over panel with score, best,
-and Play again. Difficulty scales off `round`, not `score`, so a good run isn't
-punished into unplayability.
+**Run structure.** Six stages in `STAGES`: Shooter → The Core → Crossing →
+The Devourer → Snake → The Rival. Normal stages last `ROUND_TIME` (18 s);
+bosses have no timer and end when beaten. `START_LIVES` (3) are shared across
+the run. A mistake costs a life and the combo, never points. Difficulty scales
+off the stage number (`round`), not `score`.
 
-**Mode contract.** Every mode returns:
+**Mode contract.**
 
 ```js
-{ control: 'follow' | 'swipe', enter(), update(dt, input), exit() }
+{ control: 'follow' | 'swipe', duration?, enter(), update(dt, input), exit(), bar?(), stats?() }
 ```
 
-Modes report outcomes by calling the shared `addScore(points, x, y, colour)` and
-`hurt(x, y)` rather than by return value, so scoring, particles, shake and
-life-loss stay in one place. `hurt()` returns `false` while the player is in
-post-hit invulnerability (`INVULN_TIME`), but modes should still run their own
-reset either way — bailing out early left the snake frozen mid-board.
+Modes report outcomes through the shared `addScore()` and `hurt()` — scoring,
+combo, popups, particles, ripples, hit-stop, shake and lives live there.
+`hurt()` returns `false` during `INVULN_TIME` or after a stage is done; modes
+still run their own reset either way. A boss calls `stageClear()` when beaten
+(slow motion, "Boss down", then the next stage); `bar()` drives the HUD bar
+for untimed stages and `setObjective()` the line under it. `input.fire` is a
+mouse click, Space or a short tap.
 
-`control` drives touch handling: `follow` modes track the finger/mouse
-position, `swipe` modes turn drags into discrete direction taps.
+**Rendering.** Gameplay is 2D on the z = 0 plane; a perspective camera rig
+(`cam`: tilt, zoom, solved `dist`) looks at it and `fitCamera()` binary-
+searches the distance so `GAME_WIDTH × gameHeight` is in frame. Pointer input
+is a raycast onto that plane (`input.world`). `spawnTop` is the visible far
+edge — spawn beyond it. Shadows: one PCF-soft directional light onto a
+`ShadowMaterial` catcher over a `ShaderMaterial` grid floor that warps from
+each `ripple()`.
 
-**Shared systems.** A 120-quad particle pool (`burst()`), camera `shake()`, an
-opaque board plate for the grid modes, and a background layer that scrolls the
-CV past at ~5 % opacity behind everything.
+**Instancing.** `makeBatch()` is immediate-mode instancing: entities live in
+plain arrays, each frame re-emits what is visible, one draw call per batch.
+Particles (400, ring buffer, gravity + floor bounces), boss bullets, missiles,
+the Crossing terrain/cars/trees and the snakes all use it. F3 / backquote / the
+Stats button shows FPS, draw calls, triangles and per-mode pool numbers.
+
+**Bosses.**
+- *The Core* — idle → tell (core swells, shield spins) → ring / spiral / aimed.
+  Homing missiles (cooldown in the objective line) knock shield blocks out for
+  5 s and deal 6 damage. A hit clears all orbs.
+- *Crossing / The Devourer* — the road is endless: rows are generated ahead of
+  `camRow` and crumble chunk by chunk once the rising `edge.row` passes them.
+  The edge never lags more than `LAG` rows behind you; being caught costs a
+  life and respawns you ahead. The boss adds a grinder along the edge that
+  speeds up, telegraphs (reddens) and lunges, and a gate at row `GOAL`.
+- *The Rival* — a second snake running BFS toward a cell two ahead of your
+  head, drawn as a path on the board. It steals food; eat `GOAL` (8) nodes.
+
+**Finale.** On the last boss or the last life: snapshot the WebGL frame, turn
+every visible mesh/instance into sparks emitted centre-out, crane the camera to
+`FINALE_TILT`, then a result card (same layout and `finishCardFace()` pass as
+the shelf cards, the snapshot as its art) rises off the floor and flips
+face-up. `#game-over` then shows only the buttons; its title and numbers stay
+for screen readers.
 
 **Things that were broken and must not regress:**
 - The scene needs lights. `MeshStandardMaterial` asteroids rendered pure black
   without them.
-- `pointermove` must be bound in `bindInput()`. It was written and never wired,
-  so desktop players only ever had the keyboard.
-- Cars, blocks, bullets and rocks are pooled. The old crossing mode allocated a
-  fresh mesh per spawn and left every one in the group for the whole round.
-- `keyState` is cleared in `unbindInput()`, otherwise a key held while exiting
-  stays down for the next run.
-- `window.resize` is handled; the canvas used to stay at its first size.
+- `pointermove` must be bound in `bindInput()`.
+- Cars, blocks, bullets, rocks and orbs are pooled.
+- `keyState` is cleared in `unbindInput()`.
+- `window.resize` is handled and re-fits the camera.
 
 ## 4. Running locally
 
@@ -240,7 +266,8 @@ npx serve .
 ## 5. Extension points
 
 - **New project**: append to `projects`, add `Media/<Name>/`, generate the
-  `.webp` derivatives and `cover.webp`, set `category` and `posterCover`.
+  `.webp` derivatives, set `category`, point `cover` at landscape art and
+  write a `short` blurb in both languages.
 - **New skill group**: append to `skillGroups` with `en`/`es`.
 - **New accent**: keep saturation in the 35–50 % band so it stays a mark and not
   a neon light; add it to `ACCENT_POOL` too.

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>document.documentElement.classList.remove('no-js');</script>
     <title>Eduardo Mogollón Salcedo — Unity Game Developer</title>
-    <meta name="description" content="Unity Game Developer portfolio by Eduardo Mogollón Salcedo. VR and AR for standalone headsets, multiplayer, Android games, and custom Unity Editor tooling.">
+    <meta name="description" content="Unity and C# game developer portfolio by Eduardo Mogollón Salcedo: gameplay systems, multiplayer experiences, Android and WebGL games, and production tools.">
     <meta name="author" content="Eduardo Mogollón Salcedo">
     <meta name="theme-color" content="#0d1014">
     <meta name="color-scheme" content="dark">
@@ -19,7 +20,7 @@
     <meta property="og:locale:alternate" content="es_ES">
     <meta property="og:url" content="https://krost22.github.io/Krost_Portfolio/">
     <meta property="og:title" content="Eduardo Mogollón Salcedo — Unity Game Developer">
-    <meta property="og:description" content="VR and AR for standalone headsets, multiplayer, Android games, and custom Unity Editor tooling.">
+    <meta property="og:description" content="Unity and C# gameplay systems, multiplayer experiences, Android and WebGL games, and production-ready tools.">
     <meta property="og:image" content="https://krost22.github.io/Krost_Portfolio/Media/og-cover.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -28,7 +29,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Eduardo Mogollón Salcedo — Unity Game Developer">
-    <meta name="twitter:description" content="VR and AR for standalone headsets, multiplayer, Android games, and custom Unity Editor tooling.">
+    <meta name="twitter:description" content="Unity and C# gameplay systems, multiplayer experiences, Android and WebGL games, and production-ready tools.">
     <meta name="twitter:image" content="https://krost22.github.io/Krost_Portfolio/Media/og-cover.jpg">
 
     <script type="application/ld+json">
@@ -141,7 +142,7 @@
             <div class="hero-meta">
                 <p class="hero-eyebrow" id="hero-role">Unity Game Developer</p>
                 <h1 class="hero-name">Eduardo Mogollón Salcedo</h1>
-                <p class="hero-tagline" id="hero-tagline">VR and AR for standalone headsets, multiplayer, and Unity Editor tooling.</p>
+                <p class="hero-tagline" id="hero-tagline">Unity and C# gameplay systems, multiplayer experiences, and production-ready tools.</p>
                 <ul class="hero-badges">
                     <li class="hero-badge is-available" id="hero-available">Available for work</li>
                     <li class="hero-badge" id="hero-badge-degree">Systems Engineer</li>
@@ -167,8 +168,12 @@
             </div>
         </div>
 
-        <div id="canvas-wrapper" role="group" aria-roledescription="carousel" aria-label="Project shelf">
-            <div id="canvas-container"></div>
+        <div id="canvas-wrapper" role="tabpanel" aria-roledescription="carousel" aria-labelledby="tab-all">
+            <div class="shelf-chrome" aria-hidden="true">
+                <span class="shelf-chrome-label" id="shelf-chrome-label">Krost / Selected work</span>
+                <span class="shelf-chrome-index" id="shelf-chrome-index">01 — 09</span>
+            </div>
+            <div id="canvas-container" tabindex="0" aria-label="Project shelf. Use left and right arrow keys to browse."></div>
             <div class="controls">
                 <button id="prev-btn" aria-label="Previous project">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
@@ -191,7 +196,10 @@
                         <h2 id="project-title">Loading…</h2>
                         <dl class="project-meta" id="project-meta"></dl>
                     </div>
-                    <a class="btn btn-primary project-cta" id="project-cta" href="#" target="_blank" rel="noopener" hidden>Open</a>
+                    <div class="project-actions">
+                        <a class="btn btn-primary project-cta" id="project-cta" href="#" target="_blank" rel="noopener" hidden>Open</a>
+                        <a class="btn btn-ghost project-cta" id="project-repo" href="#" target="_blank" rel="noopener" hidden>Source</a>
+                    </div>
                 </div>
                 <div class="tags" id="project-tags"></div>
                 <p id="project-desc">Please wait.</p>
@@ -287,15 +295,18 @@
             <div class="game-hud-left">
                 <div id="game-hud-score">00000</div>
                 <div id="game-hud-high">BEST 00000</div>
+                <div id="game-combo" aria-hidden="true"><span id="game-combo-mult">x1.0</span><span id="game-combo-bar"><span></span></span></div>
             </div>
             <div class="game-hud-center">
                 <div id="game-mode-label">Shooter</div>
                 <div id="game-mode-timer"><div id="game-mode-bar"></div></div>
-                <div id="game-round">Round 1</div>
+                <div id="game-round">Stage 1/6</div>
+                <div id="game-objective" hidden><span id="game-objective-text"></span><span id="game-objective-bar"><span></span></span></div>
             </div>
             <div class="game-hud-right">
                 <div id="game-hud-lives" role="status" aria-label="Lives"></div>
                 <div class="game-hud-buttons">
+                    <button id="game-stats-btn" onclick="KrostGame.toggleStats()" aria-pressed="false" title="Renderer stats (F3)">Stats</button>
                     <button id="game-pause-btn" onclick="KrostGame.pauseGame()" aria-label="Pause">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
                     </button>
@@ -305,6 +316,7 @@
         </div>
 
         <div id="game-mode-hint"></div>
+        <pre id="game-stats" hidden></pre>
 
         <div id="game-nextup">
             <div class="game-nextup-inner">
@@ -316,7 +328,7 @@
 
         <div id="game-transition"></div>
 
-        <div id="game-pause">
+        <div id="game-pause" role="dialog" aria-modal="true" aria-labelledby="game-pause-title">
             <div class="game-panel">
                 <p class="game-panel-title" id="game-pause-title">Paused</p>
                 <button class="game-btn" id="game-resume-btn" onclick="KrostGame.pauseGame()">Resume</button>
@@ -324,7 +336,7 @@
             </div>
         </div>
 
-        <div id="game-over">
+        <div id="game-over" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
             <div class="game-panel">
                 <p class="game-panel-title" id="game-over-title">Game over</p>
                 <dl class="game-result">

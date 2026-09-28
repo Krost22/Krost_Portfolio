@@ -7,9 +7,9 @@ gsap.registerPlugin(ScrollTrigger);
 // ==========================================
 // 1. Data
 // ==========================================
-// `cover` is the 2:3 art used for the 3D card. `posterCover: true` means the
-// artwork already carries its own title lockup, so we render it full-bleed and
-// skip the typographic block that composed covers get.
+// `cover` is the landscape art shown in the top of the 3D card (`coverFocus`
+// shifts the crop vertically, 0 = top). `short` is the one-line blurb under the
+// title; `coverList` replaces it with a list for collection projects.
 const projects = [
     {
         id: "gridguard",
@@ -25,8 +25,7 @@ const projects = [
         platform: "WebGL · Itch.io",
         company: { en: "Team of five", es: "Equipo de cinco" },
         tags: ["Unity", "WebGL", "Tower Defense", "2048 merge", "Team project"],
-        cover: "Media/GridGuard/cover.webp",
-        posterCover: true,
+        cover: "Media/GridGuard/shot-0.webp",
         images: [
             "Media/GridGuard/shot-0.webp",
             "Media/GridGuard/shot-1.webp",
@@ -52,6 +51,7 @@ const projects = [
         en: {
             title: "GridGuard",
             subtitle: "Tower defense x 2048",
+            short: "Tower defense where two towers of the same tier merge into a stronger one, 2048-style.",
             desc: "A tower defense built on a 2048-style merge mechanic. The Kingdom of Gridgard is holding back the Bone Horde, and as Royal Architect you spend the gold earned on the battlefield to transmute towers on the Fusion Grid: align two bastions of the same level and they instantly condense into a far more destructive one.",
             highlights: [
                 "Lead programmer on a five-person team, on a build that is still in development.",
@@ -62,6 +62,7 @@ const projects = [
         es: {
             title: "GridGuard",
             subtitle: "Tower defense x 2048",
+            short: "Tower defense donde dos torres del mismo nivel se fusionan en una más fuerte, estilo 2048.",
             desc: "Un tower defense construido sobre una mecánica de fusión estilo 2048. El Reino de Gridgard resiste el avance de la Horda Ósea y, como Arquitecto Real, administras el oro recaudado en el campo de batalla para transmutar torres en la Grilla de Fusión: al alinear dos baluartes del mismo nivel, se condensan al instante en una torre mucho más destructiva.",
             highlights: [
                 "Programador principal en un equipo de cinco personas, sobre una build que sigue en desarrollo.",
@@ -79,8 +80,7 @@ const projects = [
         platform: "Meta Quest 3 · PICO 4",
         company: "LSV-TECH · EM Hotels",
         tags: ["Unity", "Meta Quest 3", "PICO 4", "VR"],
-        cover: "Media/SmartRoom/cover.webp",
-        posterCover: true,
+        cover: "Media/SmartRoom/imagen.webp",
         images: [
             "Media/SmartRoom/SmartRoom vertical.webp",
             "Media/SmartRoom/CardImagen.webp",
@@ -91,6 +91,7 @@ const projects = [
         en: {
             title: "VR Hotel Experience",
             subtitle: "Cartagena",
+            short: "A standalone VR tour, so guests walk the hotel before they book.",
             desc: "An immersive virtual reality room tour for a hotel in Cartagena, built in Unity for standalone headsets. Guests walk through rooms and common areas before they book.",
             highlights: [
                 "Shipped to Meta Quest 3 and PICO 4 as a standalone Android build.",
@@ -101,6 +102,7 @@ const projects = [
         es: {
             title: "Experiencia VR en Hotel",
             subtitle: "Cartagena",
+            short: "Recorrido VR autónomo para conocer el hotel antes de reservar.",
             desc: "Recorrido inmersivo de realidad virtual por las habitaciones de un hotel en Cartagena, hecho en Unity para visores autónomos. El huésped recorre habitaciones y zonas comunes antes de reservar.",
             highlights: [
                 "Publicado en Meta Quest 3 y PICO 4 como build autónoma de Android.",
@@ -118,7 +120,8 @@ const projects = [
         platform: "Android · ARCore",
         company: "LSV-TECH · EM Hotels",
         tags: ["Unity", "Android", "ARCore", "AR"],
-        cover: "Media/AR Hotel/cover.webp",
+        cover: "Media/AR Hotel/Screenshot_2026-01-19-16-14-46-602_com.unity.AREMHotels.webp",
+        coverFocus: 0.4,
         images: [
             "Media/AR Hotel/Main Menu AR Hotel.webp",
             "Media/AR Hotel/Hotel AR Card.webp",
@@ -129,6 +132,7 @@ const projects = [
         en: {
             title: "AR Hotel Experience",
             subtitle: "Cartagena",
+            short: "AR companion app that anchors guides and points of interest onto the real world.",
             desc: "An augmented reality companion app for the same hotel. Digital guides, maps and points of interest are anchored onto the guest's real surroundings through the phone camera.",
             highlights: [
                 "Built on ARCore with Unity's AR Foundation for plane detection and image anchoring.",
@@ -139,6 +143,7 @@ const projects = [
         es: {
             title: "Experiencia AR en Hotel",
             subtitle: "Cartagena",
+            short: "App AR que ancla guías y puntos de interés sobre el entorno real.",
             desc: "App de realidad aumentada complementaria para el mismo hotel. Guías digitales, mapas y puntos de interés se anclan al entorno real del huésped a través de la cámara.",
             highlights: [
                 "Construido sobre ARCore con AR Foundation de Unity para detección de planos y anclaje por imagen.",
@@ -156,7 +161,7 @@ const projects = [
         platform: { en: "Standalone VR", es: "VR autónoma" },
         company: "LSV-TECH · Guajira Corp",
         tags: ["Unity", "Multiplayer", "VR", "C#"],
-        cover: "Media/VR Multiplayer - Guajira Corp/cover.webp",
+        cover: "Media/VR Multiplayer - Guajira Corp/Guajira gameplay.webp",
         images: [
             "Media/VR Multiplayer - Guajira Corp/Guajira gameplay.webp",
             "Media/VR Multiplayer - Guajira Corp/Guajira Logo horizontal.webp"
@@ -168,6 +173,7 @@ const projects = [
         en: {
             title: "VR Multiplayer",
             subtitle: "Guajira Corp",
+            short: "A shared VR space where several users explore and interact in one session.",
             desc: "A shared virtual reality environment for an environmental-education programme in La Guajira, where several users explore and interact in the same session.",
             highlights: [
                 "Network synchronisation of avatars, transforms and interactable objects across sessions.",
@@ -178,6 +184,7 @@ const projects = [
         es: {
             title: "VR Multijugador",
             subtitle: "Guajira Corp",
+            short: "Espacio VR compartido donde varios usuarios exploran e interactúan en una sesión.",
             desc: "Entorno de realidad virtual compartido para un programa de educación ambiental en La Guajira, donde varios usuarios exploran e interactúan en la misma sesión.",
             highlights: [
                 "Sincronización en red de avatares, transforms y objetos interactuables entre sesiones.",
@@ -194,8 +201,7 @@ const projects = [
         role: { en: "Author", es: "Autor" },
         platform: { en: "Unity Editor package", es: "Paquete de Unity Editor" },
         tags: ["Unity Editor", "Tooling", "C#"],
-        cover: "Media/UnityLocalTTS/cover.webp",
-        posterCover: true,
+        cover: "Media/UnityLocalTTS/Unity-Local-TTS.webp",
         images: [
             "Media/UnityLocalTTS/Unity-Local-TTS 3ss.webp",
             "Media/UnityLocalTTS/Unity-Local-TTS.webp",
@@ -207,6 +213,7 @@ const projects = [
         en: {
             title: "Native TTS Editor Tool",
             subtitle: "Unity package",
+            short: "The OS text-to-speech engine inside the Unity Editor — on-device, no API keys.",
             desc: "A Unity package that exposes the operating system's native text-to-speech engine inside the Editor, so teams can audition voice lines without leaving Unity or paying for a cloud service.",
             highlights: [
                 "Runs entirely on-device — no API keys, no network calls, no per-character billing.",
@@ -217,6 +224,7 @@ const projects = [
         es: {
             title: "Herramienta TTS Nativa",
             subtitle: "Paquete de Unity",
+            short: "El motor de texto a voz del sistema dentro del Editor de Unity: local, sin API keys.",
             desc: "Paquete de Unity que expone el motor de texto a voz nativo del sistema operativo dentro del Editor, para escuchar líneas de voz sin salir de Unity ni pagar un servicio en la nube.",
             highlights: [
                 "Funciona totalmente en local: sin API keys, sin llamadas de red, sin cobro por carácter.",
@@ -233,8 +241,7 @@ const projects = [
         role: { en: "Author", es: "Autor" },
         platform: { en: "Unity Editor package", es: "Paquete de Unity Editor" },
         tags: ["Unity Editor", "Audio", "Tooling"],
-        cover: "Media/LoopClip/cover.webp",
-        posterCover: true,
+        cover: "Media/LoopClip/Loopclip 1.webp",
         images: [
             "Media/LoopClip/LoopClip 3.webp",
             "Media/LoopClip/Loopclip 1.webp",
@@ -246,6 +253,7 @@ const projects = [
         en: {
             title: "ClipLoop",
             subtitle: "Audio loop & cut tool",
+            short: "Turn any clip into a seamless loop: zero-crossing snap, crossfade, WAV export.",
             desc: "An Editor tool for turning any audio clip into a seamless loop: set precise in and out points, snap to zero crossings to avoid clicks, crossfade, and export a clean WAV.",
             highlights: [
                 "Sample-accurate in/out points with a waveform view and audition playback.",
@@ -256,6 +264,7 @@ const projects = [
         es: {
             title: "ClipLoop",
             subtitle: "Loops y corte de audio",
+            short: "Convierte cualquier clip en un loop perfecto: cruces por cero, crossfade y WAV.",
             desc: "Herramienta de editor para convertir cualquier clip de audio en un loop perfecto: puntos de entrada y salida precisos, ajuste a cruces por cero para evitar clics, crossfade y exportación a WAV.",
             highlights: [
                 "Puntos de entrada y salida con precisión de sample, vista de forma de onda y escucha previa.",
@@ -273,8 +282,7 @@ const projects = [
         platform: { en: "Web · VR headsets", es: "Web · Visores VR" },
         company: "LSV-TECH · Terraviva",
         tags: ["360 Video", "VR", "Web"],
-        cover: "Media/360 virtual tours/cover.webp",
-        posterCover: true,
+        cover: "Media/360 virtual tours/Terraviva 360 recorridos 360.webp",
         images: [
             "Media/360 virtual tours/Terraviva 360 vertical.webp",
             "Media/360 virtual tours/Terraviva 360 recorridos 360.webp"
@@ -286,6 +294,7 @@ const projects = [
         en: {
             title: "360 Virtual Tours",
             subtitle: "Terraviva",
+            short: "360° walkthroughs of real places, in the browser and on VR headsets.",
             desc: "Interactive 360-degree walkthroughs of real locations, delivered both in the browser and on VR headsets so a site can be visited from anywhere.",
             highlights: [
                 "One capture pipeline feeding two targets: browser playback and headset playback.",
@@ -296,6 +305,7 @@ const projects = [
         es: {
             title: "Recorridos Virtuales 360",
             subtitle: "Terraviva",
+            short: "Recorridos 360° de lugares reales, en el navegador y en visores VR.",
             desc: "Recorridos interactivos de 360 grados de ubicaciones reales, entregados tanto en navegador como en visores VR para poder visitar un sitio desde cualquier lugar.",
             highlights: [
                 "Un solo pipeline de captura alimentando dos destinos: navegador y visor.",
@@ -316,6 +326,7 @@ const projects = [
         en: {
             title: "Mobile Game Prototypes",
             subtitle: "Android",
+            short: "Android prototypes — core loops, particles and UI, profiled for low-end phones.",
             desc: "A run of Android prototypes built as a freelancer: core mechanics, particle work and UI systems, each taken far enough to be playable and profiled.",
             highlights: [
                 "Core gameplay loops, physics interactions, particle effects and UI systems.",
@@ -326,6 +337,7 @@ const projects = [
         es: {
             title: "Prototipos de Juegos Móviles",
             subtitle: "Android",
+            short: "Prototipos Android: loops, partículas y UI, perfilados para gama baja.",
             desc: "Una serie de prototipos para Android hechos como freelance: mecánicas principales, partículas y sistemas de UI, cada uno llevado hasta ser jugable y perfilable.",
             highlights: [
                 "Loops de gameplay, interacciones físicas, efectos de partículas y sistemas de UI.",
@@ -343,7 +355,6 @@ const projects = [
         platform: "WebGL · Itch.io",
         tags: ["Unity", "WebGL", "Itch.io", "Game Jams"],
         cover: "Media/Itchio/Itchio logo.webp",
-        coverLayout: 'list',
         coverList: [
             "Oil Be Back", "Lumber Drop", "The Echo Loop", "Sumo Eggs", "Balloon Drop",
             "Clic The Cube", "Play Fetch", "Soccer Shooter", "Whack-a-Food!"
@@ -535,7 +546,7 @@ const ui = {
         menuGrain: "Film grain",
         menuColophon: "About this build",
         heroRole: "Unity Game Developer",
-        heroTagline: "VR and AR for standalone headsets, multiplayer, and Unity Editor tooling.",
+        heroTagline: "Unity and C# gameplay systems, multiplayer experiences, and production-ready tools.",
         heroAvailable: "Available for work",
         heroBadgeDegree: "Systems Engineer",
         heroBadgeTools: "5 years in production",
@@ -559,7 +570,7 @@ const ui = {
         creditsTitle: "Team",
         aboutTitle: "Experience & education",
         profileTitle: "Profile",
-        profileDesc: "Unity developer working on VR and AR experiences for standalone headsets, multiplayer environments, and Android games. I like the unglamorous half of the job: making an interaction feel obvious, and keeping the frame budget honest on hardware that has none to spare. I also build small Editor tools when a workflow gets in the way. Fully remote, used to multidisciplinary teams.",
+        profileDesc: "Unity developer building gameplay systems, multiplayer experiences, and games for Android and WebGL. My production background in standalone VR and AR taught me to make interactions readable and keep a strict frame budget on mobile hardware. I also build focused Editor tools when a workflow gets in the way. Fully remote, used to multidisciplinary teams.",
         eduTitle: "Education",
         eduGenDegree: "Unity Developer Bootcamp",
         eduGen: "Generation · Jun 2026 — Sep 2026",
@@ -576,6 +587,14 @@ const ui = {
         exp2Desc: "Android game prototypes in Unity. Core mechanics, UI systems and particle effects, with performance tuned for low and mid-range devices.",
         footerNote: "Built with vanilla JavaScript, Three.js and GSAP. No framework, no build step.",
         goToProject: "Go to project",
+        previousProject: "Previous project",
+        nextProject: "Next project",
+        shelfLabel: "Project shelf. Use left and right arrow keys to browse.",
+        shelfChrome: "Krost / Selected work",
+        zoomImage: "Enlarge image",
+        closeViewer: "Close image viewer",
+        playGame: "Play the minigame",
+        gameLoadError: "The minigame could not start. The portfolio is still available.",
         muteOn: "Sound on",
         muteOff: "Sound off",
         langSwitch: "Cambiar a español",
@@ -599,7 +618,7 @@ const ui = {
         menuGrain: "Grano de película",
         menuColophon: "Sobre esta web",
         heroRole: "Desarrollador de Videojuegos Unity",
-        heroTagline: "VR y AR para visores autónomos, multijugador y herramientas para el editor de Unity.",
+        heroTagline: "Sistemas de gameplay en Unity y C#, experiencias multijugador y herramientas listas para producción.",
         heroAvailable: "Disponible para trabajar",
         heroBadgeDegree: "Ingeniero de Sistemas",
         heroBadgeTools: "5 años en producción",
@@ -623,7 +642,7 @@ const ui = {
         creditsTitle: "Equipo",
         aboutTitle: "Experiencia y educación",
         profileTitle: "Perfil",
-        profileDesc: "Desarrollador Unity trabajando en experiencias de VR y AR para visores autónomos, entornos multijugador y juegos Android. Me gusta la mitad menos vistosa del trabajo: que una interacción se sienta obvia y que el presupuesto de frame sea honesto en hardware que no tiene margen. También construyo pequeñas herramientas de editor cuando un flujo de trabajo estorba. Cien por ciento remoto, acostumbrado a equipos multidisciplinarios.",
+        profileDesc: "Desarrollador Unity enfocado en sistemas de gameplay, experiencias multijugador y juegos para Android y WebGL. Mi experiencia de producción en VR y AR autónoma me enseñó a hacer interacciones legibles y respetar presupuestos de frame estrictos en hardware móvil. También construyo herramientas de editor cuando un flujo de trabajo estorba. Cien por ciento remoto, acostumbrado a equipos multidisciplinarios.",
         eduTitle: "Educación",
         eduGenDegree: "Bootcamp de Desarrollo Unity",
         eduGen: "Generation · Jun 2026 — Sep 2026",
@@ -640,6 +659,14 @@ const ui = {
         exp2Desc: "Prototipos de juegos Android en Unity. Mecánicas principales, sistemas de UI y efectos de partículas, con rendimiento ajustado a dispositivos de gama baja y media.",
         footerNote: "Hecho con JavaScript, Three.js y GSAP. Sin framework, sin build.",
         goToProject: "Ir al proyecto",
+        previousProject: "Proyecto anterior",
+        nextProject: "Proyecto siguiente",
+        shelfLabel: "Estantería de proyectos. Usa las flechas izquierda y derecha para explorar.",
+        shelfChrome: "Krost / Trabajo seleccionado",
+        zoomImage: "Ampliar imagen",
+        closeViewer: "Cerrar visor de imágenes",
+        playGame: "Jugar al minijuego",
+        gameLoadError: "No se pudo iniciar el minijuego. El portafolio sigue disponible.",
         muteOn: "Sonido activado",
         muteOff: "Sonido desactivado",
         langSwitch: "Switch to English",
@@ -661,9 +688,13 @@ const ui = {
 // mid grey the first time this ramp was generated.
 function hexToHsl(hex) {
     const int = parseInt(hex.replace('#', ''), 16);
-    const r = ((int >> 16) & 255) / 255;
-    const g = ((int >> 8) & 255) / 255;
-    const b = (int & 255) / 255;
+    return rgbToHsl((int >> 16) & 255, (int >> 8) & 255, int & 255);
+}
+
+function rgbToHsl(r255, g255, b255) {
+    const r = r255 / 255;
+    const g = g255 / 255;
+    const b = b255 / 255;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const l = (max + min) / 2;
@@ -676,7 +707,7 @@ function hexToHsl(hex) {
         else if (max === g) h = ((b - r) / d + 2) / 6;
         else h = ((r - g) / d + 4) / 6;
     }
-    return { h, s, l, rgb: [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)] };
+    return { h, s, l, rgb: [r255, g255, b255] };
 }
 
 function hsl(h, s, l) {
@@ -724,8 +755,21 @@ const STORAGE_LANG = 'krost-lang';
 const STORAGE_MUTE = 'krost-muted';
 const STORAGE_GRAIN = 'krost-grain';
 
+function storageGet(key, fallback = null) {
+    try { return localStorage.getItem(key) ?? fallback; }
+    catch { return fallback; }
+}
+
+function storageSet(key, value) {
+    try { localStorage.setItem(key, value); }
+    catch { return false; }
+    return true;
+}
+
+window.KrostStorage = { get: storageGet, set: storageSet };
+
 function detectLang() {
-    const saved = localStorage.getItem(STORAGE_LANG);
+    const saved = storageGet(STORAGE_LANG);
     if (saved === 'en' || saved === 'es') return saved;
     return (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
 }
@@ -746,6 +790,7 @@ const highlightsEl = document.getElementById('project-highlights');
 const flagEl = document.getElementById('project-flag');
 const creditsEl = document.getElementById('project-credits');
 const ctaEl = document.getElementById('project-cta');
+const repoEl = document.getElementById('project-repo');
 const contentContainer = document.getElementById('content-container');
 const langToggle = document.getElementById('lang-toggle');
 const prevBtn = document.getElementById('prev-btn');
@@ -814,6 +859,15 @@ function renderStaticText() {
     setText('exp2-role', s.exp2Role);
     setText('exp2-desc', s.exp2Desc);
     setText('footer-note', s.footerNote);
+    setText('shelf-chrome-label', s.shelfChrome);
+
+    prevBtn?.setAttribute('aria-label', s.previousProject);
+    nextBtn?.setAttribute('aria-label', s.nextProject);
+    canvasContainer?.setAttribute('aria-label', s.shelfLabel);
+    document.getElementById('play-game-btn')?.setAttribute('aria-label', s.playGame);
+    document.getElementById('play-game-btn')?.setAttribute('title', s.playGame);
+    document.getElementById('lightbox')?.setAttribute('aria-label', s.closeViewer);
+    document.getElementById('lightbox-close')?.setAttribute('aria-label', s.closeViewer);
 
     const filterKeys = { all: 'filterAll', game: 'filterGames', tool: 'filterTools' };
     document.querySelectorAll('.filter-tab').forEach(btn => {
@@ -940,13 +994,18 @@ function renderGallerySets(proj, mediaEl) {
         const shots = document.createElement('div');
         shots.className = 'folder-shots';
         set.images.forEach((src, i) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'media-open';
+            button.setAttribute('aria-label', `${t('zoomImage')}: ${set.name} — ${i + 1}`);
             const img = document.createElement('img');
             img.src = src;
             img.alt = `${set.name} — ${i + 1}`;
             img.loading = 'lazy';
             img.decoding = 'async';
-            img.addEventListener('click', () => openLightbox(src, img.alt));
-            shots.appendChild(img);
+            button.addEventListener('click', () => openLightbox(src, img.alt));
+            button.appendChild(img);
+            shots.appendChild(button);
         });
         wrap.appendChild(shots);
         return wrap;
@@ -1066,11 +1125,17 @@ function renderMedia(proj, data) {
             if (img.naturalHeight > img.naturalWidth * 1.15) figure.classList.add('is-portrait');
         }, { once: true });
         if (src !== proj.placeholder) {
-            img.addEventListener('click', () => openLightbox(img.src, img.alt));
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'media-open';
+            button.setAttribute('aria-label', `${t('zoomImage')}: ${img.alt}`);
+            button.addEventListener('click', () => openLightbox(img.src, img.alt));
+            button.appendChild(img);
+            figure.appendChild(button);
         } else {
             img.style.cursor = 'default';
+            figure.appendChild(img);
         }
-        figure.appendChild(img);
         mediaEl.appendChild(figure);
     });
 
@@ -1134,6 +1199,13 @@ function updateProjectPanel() {
         } else {
             ctaEl.hidden = true;
         }
+        if (repoEl) {
+            repoEl.hidden = !proj.repo;
+            if (proj.repo) {
+                repoEl.href = proj.repo;
+                repoEl.textContent = t('ctaRepo');
+            }
+        }
 
         renderMedia(proj, data);
     };
@@ -1161,7 +1233,10 @@ function updateProjectPanel() {
         wrapper.style.setProperty('--active-artwork', `url("${proj.cover || proj.placeholder}")`);
     }
 
-    if (liveRegion) liveRegion.textContent = `${data.title}. ${filteredIndices.indexOf(currentIndex) + 1} / ${filteredCount}.`;
+    const visiblePosition = filteredIndices.indexOf(currentIndex) + 1;
+    if (liveRegion) liveRegion.textContent = `${data.title}. ${visiblePosition} / ${filteredCount}.`;
+    const shelfIndex = document.getElementById('shelf-chrome-index');
+    if (shelfIndex) shelfIndex.textContent = `${String(visiblePosition).padStart(2, '0')} — ${String(filteredCount).padStart(2, '0')}`;
 
     tintScene(proj.color);
     updateIndicators();
@@ -1236,6 +1311,20 @@ let attractTimer = null;
         runMenuAction(item.dataset.easterEgg);
     });
 
+    dropdown.addEventListener('keydown', (e) => {
+        const items = Array.from(dropdown.querySelectorAll('.logo-dropdown-item'));
+        const current = items.indexOf(document.activeElement);
+        let next = null;
+        if (e.key === 'ArrowDown') next = items[(current + 1) % items.length];
+        else if (e.key === 'ArrowUp') next = items[(current - 1 + items.length) % items.length];
+        else if (e.key === 'Home') next = items[0];
+        else if (e.key === 'End') next = items[items.length - 1];
+        if (next) {
+            e.preventDefault();
+            next.focus();
+        }
+    });
+
     document.addEventListener('click', () => { if (!dropdown.hidden) setOpen(false); });
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !dropdown.hidden) { setOpen(false); toggle.focus(); }
@@ -1269,7 +1358,7 @@ function runMenuAction(type) {
         if (!grain) return;
         grain.classList.toggle('off');
         const off = grain.classList.contains('off');
-        localStorage.setItem(STORAGE_GRAIN, off ? 'off' : 'on');
+        storageSet(STORAGE_GRAIN, off ? 'off' : 'on');
         showToast(off ? t('grainOff') : t('grainOn'));
     } else if (type === 'colophon') {
         showToast(t('colophon'));
@@ -1298,7 +1387,7 @@ function showToast(message) {
     toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3200);
 }
 
-if (localStorage.getItem(STORAGE_GRAIN) === 'off') {
+if (storageGet(STORAGE_GRAIN) === 'off') {
     document.getElementById('grain-overlay')?.classList.add('off');
 }
 
@@ -1309,10 +1398,11 @@ langToggle.addEventListener('click', () => {
     enableAudio();
     playClickSound();
     currentLang = currentLang === 'en' ? 'es' : 'en';
-    localStorage.setItem(STORAGE_LANG, currentLang);
+    storageSet(STORAGE_LANG, currentLang);
     renderStaticText();
-    updateProjectPanel();
+    projects.forEach(p => p.redrawCover && p.redrawCover());
     refreshCardBacks();
+    updateProjectPanel();
     buildIndicators();
     updateMuteButton();
 });
@@ -1366,23 +1456,23 @@ function resizeRenderer() {
 
 // Neutral three-point lighting. No coloured rim lights, no additive bloom —
 // the cards are lit like objects on a shelf.
-scene.add(new THREE.AmbientLight(0xffffff, 0.62));
+scene.add(new THREE.AmbientLight(0xffffff, 0.54));
 
-const keyLight = new THREE.DirectionalLight(0xfff6ec, 1.15);
-keyLight.position.set(2.6, 4.2, 5.5);
+const keyLight = new THREE.DirectionalLight(0xfff6ec, 1.28);
+keyLight.position.set(2.8, 4.6, 5.8);
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0xd6e2f0, 0.42);
-fillLight.position.set(-3.4, 1.2, 3.6);
+const fillLight = new THREE.DirectionalLight(0xd6e2f0, 0.34);
+fillLight.position.set(-3.8, 1.4, 3.8);
 scene.add(fillLight);
 
-const rimLight = new THREE.DirectionalLight(0xffffff, 0.3);
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.24);
 rimLight.position.set(-2.5, -1, -4);
 scene.add(rimLight);
 
 // A single soft key that follows the active card — the only place the project
 // colour touches the lighting, and only faintly.
-const accentLight = new THREE.PointLight(0xffffff, 0.55, 14, 2);
+const accentLight = new THREE.PointLight(0xffffff, 0.34, 12, 2);
 accentLight.position.set(0, 0.4, 2.4);
 scene.add(accentLight);
 
@@ -1484,7 +1574,7 @@ function wrapLines(ctx, text, maxWidth) {
     return lines;
 }
 
-function drawCover(ctx, img, x, y, w, h) {
+function drawCover(ctx, img, x, y, w, h, focusY = 0.5) {
     const targetAspect = w / h;
     const imgAspect = img.width / img.height;
     let sx, sy, sw, sh;
@@ -1497,108 +1587,128 @@ function drawCover(ctx, img, x, y, w, h) {
         sw = img.width;
         sh = sw / targetAspect;
         sx = 0;
-        sy = (img.height - sh) / 2;
+        sy = (img.height - sh) * focusY;
     }
     ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
 }
 
-// Composed cover: artwork on top, a typographic plate below. This is what a
-// project gets when its art is a screenshot rather than designed key art.
-function drawComposedCover(ctx, proj, img) {
-    const { h } = hexToHsl(proj.color);
-    const plateTop = Math.round(CARD_H * 0.66);
+// Dominant hue of the artwork, weighted by chroma so a white logo field or a
+// black letterbox never wins. Returns null for greyscale art.
+function dominantTone(img) {
+    const N = 48;
+    const ctx = makeCanvas(N, N).getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, N, N);
+    const px = ctx.getImageData(0, 0, N, N).data;
+    const bins = Array.from({ length: 24 }, () => ({ w: 0, h: 0, s: 0 }));
+    for (let i = 0; i < px.length; i += 4) {
+        const { h, s, l } = rgbToHsl(px[i], px[i + 1], px[i + 2]);
+        const w = s * (1 - Math.abs(2 * l - 1));
+        if (w < 0.08) continue;
+        const bin = bins[Math.floor(h * 24) % 24];
+        bin.w += w;
+        bin.h += h * w;
+        bin.s += s * w;
+    }
+    const top = bins.reduce((a, b) => (b.w > a.w ? b : a));
+    return top.w < 4 ? null : { h: top.h / top.w, s: top.s / top.w };
+}
 
-    const plate = hsl(h, 0.16, 0.055);
+// Card plate: the artwork's own hue, held dark and inside the muted band so
+// type stays legible and the card reads as a printed box, not a lamp.
+function cardTone(proj) {
+    const { h, s } = proj.tone || hexToHsl(proj.color);
+    const sat = Math.min(0.55, Math.max(0.32, s));
+    return { h, top: hsl(h, sat, 0.25), bottom: hsl(h, sat * 0.8, 0.09) };
+}
+
+// One layout for every card: art on top, then year, title, subtitle, a short
+// blurb (or the contents list for a collection) and the platform as a footer.
+function drawCardFront(ctx, proj, img) {
+    const tone = cardTone(proj);
+    const artBottom = Math.round(CARD_H * 0.46);
+    const data = proj[currentLang] || proj.en;
+
+    const plate = ctx.createLinearGradient(0, artBottom - 60, 0, CARD_H);
+    plate.addColorStop(0, tone.top);
+    plate.addColorStop(1, tone.bottom);
     ctx.fillStyle = plate;
     ctx.fillRect(0, 0, CARD_W, CARD_H);
 
     if (img) {
-        drawCover(ctx, img, 0, 0, CARD_W, plateTop);
-        const fade = ctx.createLinearGradient(0, plateTop - 150, 0, plateTop);
-        fade.addColorStop(0, 'rgba(0,0,0,0)');
-        fade.addColorStop(1, plate);
-        ctx.fillStyle = fade;
-        ctx.fillRect(0, plateTop - 150, CARD_W, 150);
+        drawCover(ctx, img, 0, 0, CARD_W, artBottom, proj.coverFocus);
+    } else {
+        // No artwork: a ghosted monogram fills the art slot instead.
+        ctx.save();
+        ctx.globalAlpha = 0.08;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 380px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(proj.en.title.charAt(0), CARD_W / 2, artBottom * 0.55);
+        ctx.restore();
     }
+    const fade = ctx.createLinearGradient(0, artBottom - 130, 0, artBottom);
+    fade.addColorStop(0, 'rgba(0,0,0,0)');
+    fade.addColorStop(1, tone.top);
+    ctx.fillStyle = fade;
+    ctx.fillRect(0, artBottom - 130, CARD_W, 130);
 
-    // accent rule
-    ctx.fillStyle = proj.color;
-    ctx.fillRect(44, plateTop + 34, 34, 3);
-
-    const data = proj[currentLang] || proj.en;
-
-    ctx.fillStyle = 'rgba(255,255,255,0.42)';
-    ctx.font = '500 22px "JetBrains Mono", monospace';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText((proj.year || '').toUpperCase(), 44, plateTop + 96);
+
+    ctx.fillStyle = proj.color;
+    ctx.fillRect(44, artBottom + 40, 34, 3);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '500 21px "JetBrains Mono", monospace';
+    ctx.fillText(proj.year || '', 44, artBottom + 100);
 
     ctx.fillStyle = '#e8e6e3';
-    ctx.font = '600 46px "Space Grotesk", sans-serif';
-    const lines = wrapLines(ctx, data.title, CARD_W - 88).slice(0, 3);
-    let y = plateTop + 158;
-    lines.forEach(line => {
+    ctx.font = '600 44px "Space Grotesk", sans-serif';
+    let y = artBottom + 158;
+    wrapLines(ctx, data.title, CARD_W - 88).slice(0, 2).forEach(line => {
         ctx.fillText(line, 44, y);
-        y += 54;
+        y += 50;
     });
 
     if (data.subtitle) {
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.font = '400 26px "Space Grotesk", sans-serif';
-        ctx.fillText(data.subtitle, 44, y + 8);
-    }
-}
-
-// Typographic cover for projects with no artwork at all. A quiet field, a
-// large ghosted monogram, and real type — no procedural confetti.
-function drawTypographicCover(ctx, proj) {
-    const { h } = hexToHsl(proj.color);
-
-    const grad = ctx.createLinearGradient(0, 0, CARD_W, CARD_H);
-    grad.addColorStop(0, hsl(h, 0.2, 0.115));
-    grad.addColorStop(1, hsl(h, 0.18, 0.05));
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, CARD_W, CARD_H);
-
-    // ghosted monogram
-    ctx.save();
-    ctx.globalAlpha = 0.06;
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '700 460px "Space Grotesk", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(proj.en.title.charAt(0), CARD_W / 2, CARD_H * 0.42);
-    ctx.restore();
-
-    // hairline grid, evenly spaced — structure, not decoration
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-    ctx.lineWidth = 1;
-    for (let x = 80; x < CARD_W; x += 80) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, CARD_H);
-        ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,0.48)';
+        ctx.font = '400 24px "Space Grotesk", sans-serif';
+        ctx.fillText(data.subtitle, 44, y + 4);
+        y += 40;
     }
 
-    const data = proj[currentLang] || proj.en;
+    const footerY = CARD_H - 80;
+    const items = proj.coverList || [];
+    if (items.length) {
+        ctx.font = '400 21px "JetBrains Mono", monospace';
+        const colW = (CARD_W - 88) / 2;
+        const rows = Math.ceil(items.length / 2);
+        const listTop = y + 40;
+        items.forEach((item, i) => {
+            const x = 44 + Math.floor(i / rows) * colW;
+            const iy = listTop + (i % rows) * 32;
+            ctx.fillStyle = proj.color;
+            ctx.fillRect(x, iy - 7, 8, 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillText(item, x + 18, iy);
+        });
+    } else if (data.short) {
+        ctx.fillStyle = 'rgba(255,255,255,0.64)';
+        ctx.font = '400 24px "Space Grotesk", sans-serif';
+        y += 34;
+        const maxLines = Math.max(1, Math.floor((footerY - 30 - y) / 34) + 1);
+        wrapLines(ctx, data.short, CARD_W - 88).slice(0, maxLines).forEach(line => {
+            ctx.fillText(line, 44, y);
+            y += 34;
+        });
+    }
 
-    ctx.fillStyle = proj.color;
-    ctx.fillRect(44, CARD_H - 268, 34, 3);
-
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    ctx.fillRect(44, footerY, CARD_W - 88, 1);
     ctx.fillStyle = 'rgba(255,255,255,0.42)';
-    ctx.font = '500 22px "JetBrains Mono", monospace';
-    ctx.fillText(proj.year || '', 44, CARD_H - 208);
-
-    ctx.fillStyle = '#e8e6e3';
-    ctx.font = '600 46px "Space Grotesk", sans-serif';
-    const lines = wrapLines(ctx, data.title, CARD_W - 88).slice(0, 3);
-    let y = CARD_H - 148;
-    lines.forEach(line => {
-        ctx.fillText(line, 44, y);
-        y += 54;
-    });
+    ctx.font = '500 18px "JetBrains Mono", monospace';
+    ctx.fillText(localised(proj.platform).toUpperCase(), 44, footerY + 38);
 }
 
 // Finishing pass every card gets, whatever its layout. This is what makes the
@@ -1611,14 +1721,14 @@ function finishCard(ctx) {
         CARD_W / 2, CARD_H * 0.5, CARD_H * 0.74
     );
     vignette.addColorStop(0, 'rgba(0,0,0,0)');
-    vignette.addColorStop(0.65, 'rgba(0,0,0,0.14)');
-    vignette.addColorStop(1, 'rgba(0,0,0,0.42)');
+    vignette.addColorStop(0.62, 'rgba(0,0,0,0.11)');
+    vignette.addColorStop(1, 'rgba(0,0,0,0.36)');
     ctx.fillStyle = vignette;
     ctx.fillRect(0, 0, CARD_W, CARD_H);
 
     const sheen = ctx.createLinearGradient(0, 0, CARD_W * 0.75, CARD_H * 0.6);
-    sheen.addColorStop(0, 'rgba(255,255,255,0.09)');
-    sheen.addColorStop(0.4, 'rgba(255,255,255,0.015)');
+    sheen.addColorStop(0, 'rgba(255,255,255,0.075)');
+    sheen.addColorStop(0.38, 'rgba(255,255,255,0.012)');
     sheen.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = sheen;
     ctx.fillRect(0, 0, CARD_W, CARD_H);
@@ -1636,16 +1746,7 @@ function finishCard(ctx) {
 
 function paintCover(ctx, proj, img) {
     ctx.clearRect(0, 0, CARD_W, CARD_H);
-    if (!img) {
-        drawTypographicCover(ctx, proj);
-    } else if (proj.coverLayout === 'list') {
-        drawListCover(ctx, proj, img);
-    } else if (proj.posterCover) {
-        // Designed key art already carries its own title — show it whole.
-        drawCover(ctx, img, 0, 0, CARD_W, CARD_H);
-    } else {
-        drawComposedCover(ctx, proj, img);
-    }
+    drawCardFront(ctx, proj, img);
     if (proj.featured) drawFeaturedFlag(ctx, proj);
     finishCard(ctx);
 }
@@ -1680,71 +1781,6 @@ function drawFeaturedFlag(ctx, proj) {
     ctx.textBaseline = 'alphabetic';
 }
 
-// A cover for a project that is really a collection: key art up top, then the
-// contents typeset as a list. Without this the Itch.io card was a brand mark
-// and nothing else — it never said what was actually behind it.
-function drawListCover(ctx, proj, img) {
-    const { h } = hexToHsl(proj.color);
-    const artBottom = Math.round(CARD_H * 0.46);
-    const plate = hsl(h, 0.17, 0.055);
-
-    ctx.fillStyle = plate;
-    ctx.fillRect(0, 0, CARD_W, CARD_H);
-
-    if (img) {
-        drawCover(ctx, img, 0, 0, CARD_W, artBottom);
-        const fade = ctx.createLinearGradient(0, artBottom - 130, 0, artBottom);
-        fade.addColorStop(0, 'rgba(0,0,0,0)');
-        fade.addColorStop(1, plate);
-        ctx.fillStyle = fade;
-        ctx.fillRect(0, artBottom - 130, CARD_W, 130);
-    }
-
-    const data = proj[currentLang] || proj.en;
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
-
-    ctx.fillStyle = proj.color;
-    ctx.fillRect(44, artBottom + 40, 34, 3);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.42)';
-    ctx.font = '500 21px "JetBrains Mono", monospace';
-    ctx.fillText(proj.year || '', 44, artBottom + 100);
-
-    ctx.fillStyle = '#e8e6e3';
-    ctx.font = '600 44px "Space Grotesk", sans-serif';
-    let y = artBottom + 158;
-    wrapLines(ctx, data.title, CARD_W - 88).slice(0, 2).forEach(line => {
-        ctx.fillText(line, 44, y);
-        y += 50;
-    });
-
-    if (data.subtitle) {
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.font = '400 24px "Space Grotesk", sans-serif';
-        ctx.fillText(data.subtitle, 44, y + 4);
-        y += 40;
-    }
-
-    const items = proj.coverList || [];
-    if (!items.length) return;
-
-    ctx.font = '400 21px "JetBrains Mono", monospace';
-    const colW = (CARD_W - 88) / 2;
-    const rows = Math.ceil(items.length / 2);
-    const listTop = y + 52;
-    items.forEach((item, i) => {
-        const col = Math.floor(i / rows);
-        const row = i % rows;
-        const x = 44 + col * colW;
-        const iy = listTop + row * 34;
-        ctx.fillStyle = proj.color;
-        ctx.fillRect(x, iy - 7, 8, 2);
-        ctx.fillStyle = 'rgba(255,255,255,0.5)';
-        ctx.fillText(item, x + 18, iy);
-    });
-}
-
 function createCardFrontTexture(proj) {
     const canvas = makeCanvas();
     const ctx = canvas.getContext('2d');
@@ -1768,7 +1804,9 @@ function createCardFrontTexture(proj) {
     img.decoding = 'async';
     img.onload = () => {
         loadedImg = img;
+        proj.tone = dominantTone(img);
         proj.redrawCover();
+        refreshCardBacks();
         coversDone++;
     };
     img.onerror = () => { coversDone++; };
@@ -1780,10 +1818,13 @@ function createCardFrontTexture(proj) {
 // ---- Card back -----------------------------------------------------------
 function drawCardBack(ctx, proj) {
     const data = proj[currentLang] || proj.en;
-    const { h } = hexToHsl(proj.color);
+    const tone = cardTone(proj);
 
     ctx.clearRect(0, 0, CARD_W, CARD_H);
-    ctx.fillStyle = hsl(h, 0.12, 0.062);
+    const plate = ctx.createLinearGradient(0, 0, 0, CARD_H);
+    plate.addColorStop(0, tone.bottom);
+    plate.addColorStop(1, hsl(tone.h, 0.3, 0.05));
+    ctx.fillStyle = plate;
     ctx.fillRect(0, 0, CARD_W, CARD_H);
 
     ctx.strokeStyle = 'rgba(255,255,255,0.08)';
@@ -1799,7 +1840,7 @@ function drawCardBack(ctx, proj) {
 
     ctx.fillStyle = 'rgba(255,255,255,0.42)';
     ctx.font = '500 21px "JetBrains Mono", monospace';
-    ctx.fillText(`${proj.year || ''}${proj.platform ? '  ·  ' + proj.platform : ''}`, 56, 146);
+    ctx.fillText(`${proj.year || ''}${proj.platform ? '  ·  ' + localised(proj.platform) : ''}`, 56, 146);
 
     ctx.fillStyle = '#e8e6e3';
     ctx.font = '600 42px "Space Grotesk", sans-serif';
@@ -1894,8 +1935,8 @@ function updateCarouselParams() {
 projects.forEach((proj, i) => {
     const frontMaterial = new THREE.MeshStandardMaterial({
         map: createCardFrontTexture(proj),
-        roughness: 0.42,
-        metalness: 0.02,
+        roughness: 0.48,
+        metalness: 0.015,
         alphaMap: roundedAlphaMap,
         transparent: true,
         alphaTest: 0.5
@@ -1925,8 +1966,8 @@ projects.forEach((proj, i) => {
 
     const backMesh = new THREE.Mesh(cardGeometry, new THREE.MeshStandardMaterial({
         map: createCardBackTexture(proj),
-        roughness: 0.5,
-        metalness: 0.02,
+        roughness: 0.54,
+        metalness: 0.015,
         alphaMap: roundedAlphaMap,
         transparent: true,
         alphaTest: 0.5
@@ -1955,7 +1996,7 @@ function getCardTransform(wrappedOffset) {
     const x = ARC_RADIUS * Math.sin(angle);
     const z = ARC_RADIUS * (Math.cos(angle) - 1) * DEPTH_MULT;
     const abs = Math.abs(wrappedOffset);
-    const scale = Math.max(0.35, 1 - Math.pow(abs / 3, 1.35) * 0.36);
+    const scale = Math.max(0.32, 1.025 - Math.pow(abs / 3, 1.32) * 0.4);
     const rotY = Math.atan2(-x, 5 - z);
     return { x, z, scale, rotY };
 }
@@ -1991,15 +2032,16 @@ function updateCardPositions(animated = false) {
             mesh.userData.shadow.material.opacity = isActive ? 0.72 : 0.42;
         }
 
+        const targetRotation = tr.rotY + (mesh.userData.isFlipped ? Math.PI : 0);
         if (animated && !prefersReducedMotion) {
             gsap.to(mesh.position, { x: tr.x, z: tr.z, duration: 0.7, ease: 'power3.inOut', overwrite: 'auto' });
             gsap.to(mesh.scale, { x: tr.scale, y: tr.scale, duration: 0.7, ease: 'power3.inOut', overwrite: 'auto' });
-            gsap.to(mesh.rotation, { y: tr.rotY, duration: 0.7, ease: 'power3.inOut', overwrite: 'auto' });
+            gsap.to(mesh.rotation, { y: targetRotation, duration: 0.7, ease: 'power3.inOut', overwrite: 'auto' });
         } else {
             mesh.position.x = tr.x;
             mesh.position.z = tr.z;
             mesh.scale.set(tr.scale, tr.scale, 1);
-            mesh.rotation.y = tr.rotY;
+            mesh.rotation.y = targetRotation;
         }
     });
 }
@@ -2082,8 +2124,14 @@ function pickCard(clientX, clientY) {
     pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
-    const hits = raycaster.intersectObjects(carouselItems, false);
-    return hits.length ? hits[0].object.userData.projectId : -1;
+    const candidates = carouselItems.filter(mesh => mesh.visible);
+    const hits = raycaster.intersectObjects(candidates, true);
+    for (const hit of hits) {
+        let object = hit.object;
+        while (object && !Number.isInteger(object.userData.projectId)) object = object.parent;
+        if (object) return object.userData.projectId;
+    }
+    return -1;
 }
 
 function setCardHover(idx, active) {
@@ -2108,24 +2156,26 @@ let lastHoverSoundIdx = -1;
 
 function flipCard(idx) {
     const mesh = carouselItems[idx];
-    if (!mesh) return;
-    const isFlipped = mesh.userData.isFlipped;
-    gsap.to(mesh.rotation, {
-        y: mesh.rotation.y + (isFlipped ? -Math.PI : Math.PI),
-        duration: 0.55,
-        ease: 'power2.inOut',
-        overwrite: 'auto'
-    });
-    mesh.userData.isFlipped = !isFlipped;
+    const filteredIdx = filteredIndices.indexOf(idx);
+    if (!mesh || filteredIdx === -1) return;
+    mesh.userData.isFlipped = !mesh.userData.isFlipped;
+    const tr = getCardTransform(getWrappedOffset(filteredIdx, currentOffset));
+    const targetRotation = tr.rotY + (mesh.userData.isFlipped ? Math.PI : 0);
+    if (prefersReducedMotion) mesh.rotation.y = targetRotation;
+    else gsap.to(mesh.rotation, { y: targetRotation, duration: 0.55, ease: 'power2.inOut', overwrite: 'auto' });
     enableAudio();
     playProjectSound(idx, 'flip');
 }
 
 function unflipAllCards() {
-    carouselItems.forEach(mesh => {
+    carouselItems.forEach((mesh, originalIdx) => {
         if (!mesh.userData.isFlipped) return;
-        gsap.to(mesh.rotation, { y: mesh.rotation.y - Math.PI, duration: 0.4, ease: 'power2.inOut', overwrite: 'auto' });
         mesh.userData.isFlipped = false;
+        const filteredIdx = filteredIndices.indexOf(originalIdx);
+        if (filteredIdx === -1) return;
+        const targetRotation = getCardTransform(getWrappedOffset(filteredIdx, currentOffset)).rotY;
+        if (prefersReducedMotion) mesh.rotation.y = targetRotation;
+        else gsap.to(mesh.rotation, { y: targetRotation, duration: 0.4, ease: 'power2.inOut', overwrite: 'auto' });
     });
 }
 
@@ -2258,7 +2308,7 @@ let rafId = null;
 
 function animate() {
     rafId = requestAnimationFrame(animate);
-    if (!renderer || !shelfVisible) return;
+    if (!renderer || !shelfVisible || document.body.classList.contains('game-active')) return;
 
     const elapsed = clock.getElapsedTime();
     spacingBoost *= SPACING_DECAY;
@@ -2304,7 +2354,14 @@ window.addEventListener('resize', () => {
 // ==========================================
 // 14. Entrance
 // ==========================================
+let entranceDone = false;
 function runEntrance() {
+    if (entranceDone) {
+        updateCardPositions(false);
+        gsap.set(contentContainer, { opacity: 1, y: 0 });
+        return;
+    }
+    entranceDone = true;
     if (!renderer) {
         gsap.set(contentContainer, { opacity: 1, y: 0 });
         updateCardPositions(false);
@@ -2316,6 +2373,7 @@ function runEntrance() {
         return;
     }
 
+    updateCardPositions(false);
     carouselItems.forEach((mesh, originalIdx) => {
         const filteredIdx = filteredIndices.indexOf(originalIdx);
         if (filteredIdx === -1) { mesh.visible = false; return; }
@@ -2331,7 +2389,6 @@ function runEntrance() {
         gsap.to(mesh.scale, { x: tr.scale, y: tr.scale, duration: 1, delay, ease: 'power3.out' });
     });
 
-    updateCardPositions(false);
     gsap.fromTo(contentContainer,
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.7, delay: 0.35, ease: 'power3.out' }
@@ -2398,6 +2455,9 @@ function updateIndicators() {
 }
 
 function setCategoryFilter(category) {
+    stopAttract();
+    gsap.killTweensOf(offsetProxy);
+    unflipAllCards();
     activeCategory = category;
     filteredIndices = projects.reduce((acc, p, i) => {
         if (category === 'all' || p.category === category) acc.push(i);
@@ -2411,7 +2471,6 @@ function setCategoryFilter(category) {
     currentOffset = 0;
 
     updateCardPositions(true);
-    unflipAllCards();
     buildIndicators();
     updateProjectPanel();
 
@@ -2420,6 +2479,7 @@ function setCategoryFilter(category) {
         btn.classList.toggle('active', isActive);
         btn.setAttribute('aria-selected', String(isActive));
         btn.tabIndex = isActive ? 0 : -1;
+        if (isActive) document.getElementById('canvas-wrapper')?.setAttribute('aria-labelledby', btn.id);
     });
 }
 
@@ -2450,20 +2510,24 @@ filterTabs.forEach((btn, i) => {
 function shelfHasFocus() {
     if (document.getElementById('game-screen')?.style.display !== 'none') return false;
     if (!lightbox.hidden) return false;
-    const active = document.activeElement;
-    if (active && active.closest('.filter-tab, input, textarea, select, [contenteditable="true"]')) return false;
-    return true;
+    return document.activeElement === canvasContainer;
 }
 
 document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (!shelfHasFocus()) return;
     if (e.key === 'ArrowLeft') {
+        e.preventDefault();
         stopAttract();
         navigateTo(getNextFilteredIndex(-1));
     } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
         stopAttract();
         navigateTo(getNextFilteredIndex(1));
+    } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        stopAttract();
+        flipCard(currentIndex);
     }
 });
 
@@ -2472,7 +2536,7 @@ document.addEventListener('keydown', (e) => {
 // ==========================================
 const muteToggle = document.getElementById('mute-toggle');
 let audioCtx = null;
-let isMuted = localStorage.getItem(STORAGE_MUTE) !== 'false';
+let isMuted = storageGet(STORAGE_MUTE) !== 'false';
 let audioInitialized = false;
 
 const ICON_SOUND_ON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
@@ -2503,7 +2567,7 @@ if (muteToggle) {
     updateMuteButton();
     muteToggle.addEventListener('click', () => {
         isMuted = !isMuted;
-        localStorage.setItem(STORAGE_MUTE, String(isMuted));
+        storageSet(STORAGE_MUTE, String(isMuted));
         updateMuteButton();
         enableAudio();
         if (!isMuted) playClickSound();
@@ -2592,7 +2656,7 @@ function playNoiseBurst(duration, gainValue) {
 function playExplosionSound() { playNoiseBurst(0.2, 0.07); }
 function playHitSound() { tone({ type: 'sawtooth', from: 200, to: 60, gain: 0.06, duration: 0.32 }); }
 
-window.KrostAudio = { enableAudio, playExplosionSound, playHitSound };
+window.KrostAudio = { enableAudio, playExplosionSound, playHitSound, tone };
 
 function hapticPulse() {
     if (isTouchDevice && navigator.vibrate) navigator.vibrate(12);
@@ -2605,9 +2669,11 @@ const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxClose = document.getElementById('lightbox-close');
 let lightboxOpener = null;
+let lightboxCloseTimer = null;
 
 function openLightbox(src, alt) {
     if (!lightbox || !lightboxImg) return;
+    clearTimeout(lightboxCloseTimer);
     // Otherwise attract mode keeps advancing the shelf underneath the viewer.
     stopAttract();
     lightboxOpener = document.activeElement;
@@ -2624,10 +2690,11 @@ function closeLightbox() {
     if (!lightbox || lightbox.hidden) return;
     lightbox.classList.remove('active');
     document.body.style.overflow = '';
-    setTimeout(() => {
+    lightboxCloseTimer = setTimeout(() => {
         lightbox.hidden = true;
         lightboxImg.src = '';
-    }, 260);
+        lightboxCloseTimer = null;
+    }, prefersReducedMotion ? 0 : 260);
     if (lightboxOpener && typeof lightboxOpener.focus === 'function') lightboxOpener.focus();
     lightboxOpener = null;
 }
@@ -2677,7 +2744,7 @@ if (!isTouchDevice && customCursor && window.matchMedia('(hover: hover)').matche
 
 // iOS double-tap zoom guard
 let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
+canvasContainer.addEventListener('touchend', (e) => {
     const now = Date.now();
     if (now - lastTouchEnd <= 300) e.preventDefault();
     lastTouchEnd = now;
@@ -2686,6 +2753,27 @@ document.addEventListener('touchend', (e) => {
 // ==========================================
 // 20. Boot
 // ==========================================
+let gameModulePromise = null;
+let gameLaunching = false;
+
+function startMinigameModule() {
+    if (gameLaunching) return;
+    gameLaunching = true;
+    gameModulePromise ||= import('./game.js');
+    gameModulePromise
+        .then(module => module.startGame())
+        .catch(error => {
+            console.error('[KrostGame] Could not start the minigame.', error);
+            window.KrostGame?.stopGame();
+            showToast(t('gameLoadError'));
+            document.body.classList.remove('game-active', 'booting');
+            document.getElementById('game-screen').style.display = 'none';
+            runEntrance();
+            gameModulePromise = null;
+        })
+        .finally(() => { gameLaunching = false; });
+}
+
 function runBootSequence() {
     const bootScreen = document.getElementById('boot-screen');
     const bootStart = document.getElementById('boot-start');
@@ -2717,7 +2805,7 @@ function runBootSequence() {
         playEnterSound();
         document.body.classList.remove('booting');
         bootScreen.remove();
-        import('./game.js').then(m => m.startGame());
+        startMinigameModule();
     }
 
     function showReady() {
@@ -2790,7 +2878,7 @@ window.launchMinigame = function () {
     stopAttract();
     document.getElementById('boot-screen')?.remove();
     document.body.classList.remove('booting');
-    import('./game.js').then(m => m.startGame());
+    startMinigameModule();
 };
 
 document.getElementById('play-game-btn')?.addEventListener('click', () => window.launchMinigame());

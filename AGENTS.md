@@ -59,6 +59,9 @@ The visual system is deliberately **not** neon. When adding UI:
   before.
 - **Minigame modes never return outcomes.** They call the shared `addScore()` /
   `hurt()` helpers so scoring, particles, shake and lives stay in one place.
+  Bosses end themselves with `stageClear()`; never jump stages directly.
+- **Minigame spawns go beyond `spawnTop`, not `gameHeight / 2`.** The camera is
+  a tilted perspective, so the visible far edge is further than the field.
 - **The header play button must survive small screens.** Once the boot screen is
   skipped it is the only way back into the minigame.
 - **Media paths in `main.js` point at `.webp` only.** The PNG/JPG originals stay
