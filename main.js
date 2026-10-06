@@ -72,6 +72,50 @@ const projects = [
         }
     },
     {
+        id: "linguaspace",
+        category: "game",
+        color: "#b59a5e",
+        year: "2026",
+        role: { en: "Solo developer", es: "Desarrollo en solitario" },
+        platform: "WebXR · Pico 4 Ultra",
+        tags: ["Three.js", "A-Frame", "WebXR", "Gemini AI", "Serverless"],
+        cover: "Media/Simulador de ingles Web con threejs/shot-1.webp",
+        images: [
+            "Media/Simulador de ingles Web con threejs/shot-3.webp",
+            "Media/Simulador de ingles Web con threejs/shot-4.webp",
+            "Media/Simulador de ingles Web con threejs/shot-2.webp",
+            "Media/Simulador de ingles Web con threejs/shot-1.webp",
+            "Media/Simulador de ingles Web con threejs/shot-5.webp",
+            "Media/Simulador de ingles Web con threejs/shot-6.webp",
+            "Media/Simulador de ingles Web con threejs/shot-7.webp",
+            "Media/Simulador de ingles Web con threejs/shot-0.webp"
+        ],
+        en: {
+            title: "LinguaSpace",
+            subtitle: "VR English practice with AI guests",
+            short: "A 3D hotel lobby where an AI guest talks back, in English, by voice.",
+            desc: "A WebXR simulator where the student plays a hotel receptionist. An AI guest, driven by Google Gemini, holds a spoken conversation in English; the system detects which of six objectives the student has met, then scores the session and recommends what to improve. Teachers get a dashboard with sessions and common mistakes. It runs in desktop and mobile browsers and in VR headsets, with nothing to install.",
+            highlights: [
+                "Built end to end by one developer: 3D scene, conversation logic, 2D and VR interface, serverless backend and deployment.",
+                "Structured-JSON prompt makes the model play a believable guest (four random personalities) and track the booking state and missions at once.",
+                "Automatic evaluation on five criteria, plus a teacher dashboard with CSV export and class insights. Screenshots use sandbox data.",
+                "Speech recognition made to work on the Pico 4 Ultra browser through server-side transcription with a typed fallback."
+            ]
+        },
+        es: {
+            title: "LinguaSpace",
+            subtitle: "Práctica de inglés en VR con huéspedes IA",
+            short: "Un lobby de hotel en 3D donde un huésped con IA te responde, en inglés y por voz.",
+            desc: "Simulador WebXR donde el estudiante hace de recepcionista de hotel. Un huésped controlado por Google Gemini conversa con él en inglés por voz; el sistema detecta cuáles de las seis misiones va cumpliendo y, al final, puntúa la sesión y recomienda qué mejorar. Los docentes tienen un panel con las sesiones y los errores más comunes. Funciona en navegador de escritorio, móvil y visores VR, sin instalar nada.",
+            highlights: [
+                "Desarrollo completo por una sola persona: escena 3D, lógica conversacional, interfaz 2D y VR, backend serverless y despliegue.",
+                "Un prompt con esquema JSON hace que el modelo actúe como un huésped creíble (cuatro personalidades aleatorias) y a la vez siga el estado de la reserva y las misiones.",
+                "Evaluación automática en cinco criterios y panel docente con exportación a CSV y métricas de clase. Las capturas usan datos de demostración.",
+                "Reconocimiento de voz funcionando en el navegador del Pico 4 Ultra mediante transcripción en servidor, con respaldo por texto."
+            ]
+        }
+    },
+    {
         id: "vr-hotel-cartagena",
         category: "game",
         color: "#c2954e",
@@ -603,7 +647,7 @@ const ui = {
         grainOn: "Film grain on.",
         grainOff: "Film grain off.",
         shuffle: "Accent shuffled.",
-        colophon: "Vanilla JS, Three.js and GSAP. Eight cards on an arc, procedural audio, and a minigame hiding behind the logo.",
+        colophon: "Vanilla JS, Three.js and GSAP. Ten cards on an arc, procedural audio, and a minigame hiding behind the logo.",
         noWebGL: "This browser can't run WebGL, so the 3D shelf is unavailable. Every project is still listed below."
     },
     es: {
@@ -675,7 +719,7 @@ const ui = {
         grainOn: "Grano activado.",
         grainOff: "Grano desactivado.",
         shuffle: "Acento cambiado.",
-        colophon: "JS sin frameworks, Three.js y GSAP. Ocho tarjetas en un arco, audio procedural y un minijuego escondido detrás del logo.",
+        colophon: "JS sin frameworks, Three.js y GSAP. Diez tarjetas en un arco, audio procedural y un minijuego escondido detrás del logo.",
         noWebGL: "Este navegador no puede ejecutar WebGL, así que la estantería 3D no está disponible. Todos los proyectos siguen listados abajo."
     }
 };
