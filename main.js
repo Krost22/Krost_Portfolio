@@ -116,6 +116,102 @@ const projects = [
         }
     },
     {
+        id: "delvefolk",
+        category: "game",
+        color: "#b0567a",
+        year: "2026",
+        role: { en: "Co-developer", es: "Codesarrollador" },
+        platform: "WebGL · Itch.io",
+        company: { en: "Two-person team", es: "Equipo de dos" },
+        tags: ["Unity", "Co-op 1-4P", "Dungeon Crawler", "Low-poly", "Game Jam"],
+        cover: "Media/Delvefolk/cover.webp",
+        images: [
+            "Media/Delvefolk/Delvefolk Card.webp",
+            "Media/Delvefolk/Delvefolk Key Art.webp",
+            "Media/Delvefolk/Delvefolk Gameplay.webp",
+            "Media/Delvefolk/Delvefolk Sala de Preparacion.webp"
+        ],
+        link: "https://adrede.itch.io/delvefolk",
+        linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
+        credits: [
+            { name: "Eduardo Mogollón", role: { en: "Co-developer", es: "Codesarrollador" } },
+            { name: "Adrian De La Hoz Osorio", role: { en: "Co-developer", es: "Codesarrollador" } }
+        ],
+        en: {
+            title: "Delvefolk",
+            subtitle: "Co-op dungeon crawler · HeroHub jam",
+            short: "Local co-op for 1–4 players: 8 adventurers armed with kitchen and cleaning tools.",
+            desc: "A low-poly co-op dungeon crawler for 1 to 4 local players on keyboard and gamepads, built in Unity for the HeroHub game jam by GameJam+ together with developer Adrian De La Hoz Osorio. Each player picks one of 8 adventurers, each with their own special ability, and heads down floor by floor through a dungeon full of slimes and goblins. There are no real weapons, only cleaning and kitchen tools turned into elemental ones.",
+            highlights: [
+                "Made for the HeroHub game jam by GameJam+, where it was well received and stood out for how fun it is.",
+                "Five elemental weapons (Mop, Infernal Frying Pan, Rake, Spore Umbrella, Quantum Vacuum), each with a basic hit and a charged special.",
+                "A slot machine on many floors rolls enemy rewards, a temporary upgrade and the floor's element, which reskins it and grants the matching weapon."
+            ]
+        },
+        es: {
+            title: "Delvefolk",
+            subtitle: "Dungeon crawler cooperativo · HeroHub jam",
+            short: "Cooperativo local de 1 a 4 jugadores: 8 aventureros armados con utensilios de cocina y limpieza.",
+            desc: "Dungeon crawler cooperativo low-poly para 1 a 4 jugadores en local, con teclado y mandos, hecho en Unity para la game jam HeroHub de GameJam+ junto al desarrollador Adrian De La Hoz Osorio. Cada jugador elige uno de 8 aventureros, cada uno con su propia habilidad especial, y baja piso a piso por una mazmorra llena de slimes y goblins. No hay armas de verdad, solo objetos de limpieza y cocina convertidos en armas elementales.",
+            highlights: [
+                "Hecho para la game jam HeroHub de GameJam+, donde tuvo un buen recibimiento y destacó en diversión.",
+                "Cinco armas elementales (Trapeador, Sartén Infernal, Rastrillo, Paraguas de Esporas, Aspiradora Cuántica), cada una con golpe básico y especial cargado.",
+                "Una tragaperras en muchos pisos sortea recompensas, una mejora temporal y el elemento del piso, que cambia su aspecto y regala el arma correspondiente."
+            ]
+        }
+    },
+    {
+        id: "pong",
+        category: "game",
+        color: "#5f7fc0",
+        year: "2026",
+        role: { en: "Solo developer", es: "Desarrollo en solitario" },
+        platform: "HTML5 · Android",
+        tags: ["Pixel Art", "HTML5", "Android", "Roguelike", "4 games in 1"],
+        cover: "Media/Pong/cover.webp",
+        images: [
+            "Media/Pong/Pong 4 Modos.webp",
+            "Media/Pong/Pong Moderno Goles de Fuego.webp",
+            "Media/Pong/Pong RogueLike.webp",
+            "Media/Pong/Pong Card KrostNoid.webp",
+            "Media/Pong/Pong Pista de Hielo.webp",
+            "Media/Pong/Pong Poster.webp",
+            "Media/Pong/Pong Cover.webp"
+        ],
+        videos: [
+            { src: "Media/Pong/Pong Clasico Gameplay.mp4", poster: "Media/Pong/Pong Clasico Gameplay.webp" },
+            { src: "Media/Pong/Pong Moderno Gameplay.mp4", poster: "Media/Pong/Pong Moderno Gameplay.webp" },
+            { src: "Media/Pong/Pong RogueLike Gameplay.mp4", poster: "Media/Pong/Pong RogueLike Gameplay.webp" },
+            { src: "Media/Pong/Pong KrostNoid Gameplay.mp4", poster: "Media/Pong/Pong KrostNoid Gameplay.webp" }
+        ],
+        link: "https://krostgames.itch.io/pong",
+        linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
+        en: {
+            title: "Pong",
+            subtitle: "4 games in 1",
+            short: "Classic, Modern, RogueLike and KrostNoid — the first video game, reimagined in pixel art.",
+            desc: "A pixel-art reimagining of the first game in history, with four modes: the original black-and-white Pong, a Modern mode with fire balls and power-ups, a roguelike run with upgrade cards and bosses, and KrostNoid, a brick breaker with enemy ships. It runs in desktop and mobile browsers, in portrait or landscape, with keyboard or touch, and there is also an Android version.",
+            highlights: [
+                "Modern mode: a grass court that bends and flattens under the ball, fire goals that burn the rival's turf, and gift power-ups like a frozen court that turns into ice hockey.",
+                "RogueLike: a 3-floor run (Grass, Ice, Volcano) with bosses, branching rooms and 17 stacking upgrade cards; progress saves between rooms.",
+                "KrostNoid: a fast brick breaker with enemy ships, score combos and 8 capsules such as laser, multiball and fireball.",
+                "Classic mode against a CPU that gets 10% harder every 3 goals, or 2 players on the same device; high scores saved in the browser."
+            ]
+        },
+        es: {
+            title: "Pong",
+            subtitle: "4 juegos en 1",
+            short: "Clásico, Moderno, RogueLike y KrostNoid: el primer videojuego, reinventado en pixel art.",
+            desc: "Una reinvención en pixel art del primer videojuego de la historia, con cuatro modos: el Pong original en blanco y negro, un modo Moderno con fuego y power-ups, una aventura roguelike con cartas de mejora y jefes, y KrostNoid, un rompeladrillos con naves enemigas. Funciona en el navegador de ordenador y móvil, en vertical u horizontal, con teclado o pantalla táctil, y también tiene versión para Android.",
+            highlights: [
+                "Modo Moderno: cancha de césped que se aparta y se aplasta al paso de la pelota, goles de fuego que queman el césped rival y regalos con power-ups como el congelado, que convierte la cancha en hockey sobre hielo.",
+                "RogueLike: una run de 3 pisos (Césped, Hielo y Volcán) con jefes, caminos a elegir y 17 cartas de mejora acumulables; la partida se guarda entre salas.",
+                "KrostNoid: rompeladrillos rápido con naves enemigas, combos que multiplican los puntos y 8 cápsulas como láser, multibola y bola de fuego.",
+                "Modo Clásico contra una COM que sube un 10% de dificultad cada 3 goles, o 2 jugadores en el mismo dispositivo; récords guardados en el navegador."
+            ]
+        }
+    },
+    {
         id: "vr-hotel-cartagena",
         category: "game",
         color: "#c2954e",

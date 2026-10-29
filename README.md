@@ -14,7 +14,7 @@ A single page with no build step. Projects sit on a 3D shelf you can drag, flip
 and filter, rendered with Three.js. Everything else — layout, i18n, audio, the
 minigame — is plain ES modules.
 
-- **8 projects** across VR, AR, multiplayer, 360° video, Unity Editor tools and
+- **12 projects** across VR, AR, multiplayer, 360° video, Unity Editor tools and
   published WebGL games, each with year, role, platform, client and highlights.
 - **Bilingual** (EN/ES), resolved from your browser language and remembered.
 - **Card art composed at runtime**: designed key art is shown whole, screenshots
