@@ -4,7 +4,7 @@ A single-page, zero-dependency portfolio built with **Vanilla HTML, CSS & JavaSc
 
 ## Highlights
 
-- **Three.js + GSAP** infinite-loop horizontal arc carousel of 8 project cards (`PlaneGeometry`) that rotate, scale, and emit a subtle glow.
+- **Three.js + GSAP** infinite-loop horizontal arc carousel of 10 project cards (`PlaneGeometry`) that rotate, scale, and emit a subtle glow.
 - **Dynamic theming**: each project auto-generates a color palette that recolors the entire page via CSS custom properties.
 - **Procedural placeholders**: projects without screenshots get a generated geometric card texture instead of a broken image.
 - **Language toggle** (EN/ES) — project descriptions, about section, and accessibility labels switch instantly.
