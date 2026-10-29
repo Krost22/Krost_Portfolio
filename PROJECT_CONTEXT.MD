@@ -30,6 +30,8 @@ Krost_Portfolio/
 │  ├─ UnityLocalTTS/
 │  ├─ LoopClip/
 │  ├─ 360 virtual tours/
+│  ├─ Delvefolk/
+│  ├─ Pong/
 │  └─ Itchio/          # Placeholder for future itch.io card screenshots
 ├─ README.md           # High-level overview (currently outdated)
 ├─ AGENTS.md           # Agent memory / architecture notes
