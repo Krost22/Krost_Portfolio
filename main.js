@@ -118,6 +118,40 @@ const projects = [
         }
     },
     {
+        id: "delvefolk",
+        category: "game",
+        color: "#2EC27E",
+        tags: ["Unity", "Game Jam", "GameJam+ HeroHub", "Co-op Dev"],
+        images: [],
+        link: "https://adrede.itch.io/delvefolk",
+        linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
+        en: {
+            title: "Delvefolk",
+            desc: "Game created during the HeroHub game jam by GameJam+, co-developed in Unity with fellow developer Adrian De La Hoz Osorio. It was well received, standing out especially for how fun it is to play."
+        },
+        es: {
+            title: "Delvefolk",
+            desc: "Juego creado durante la game jam HeroHub de GameJam+, co-desarrollado en Unity junto al desarrollador Adrian De La Hoz Osorio. Tuvo un buen recibimiento, destacando especialmente en diversión."
+        }
+    },
+    {
+        id: "pong",
+        category: "game",
+        color: "#3D8BFF",
+        tags: ["Unity", "Arcade", "Retro", "Itch.io"],
+        images: [],
+        link: "https://krostgames.itch.io/pong",
+        linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
+        en: {
+            title: "Pong",
+            desc: "My take on the arcade classic, published on Itch.io. Fast paddle-and-ball matches focused on responsive controls and tight game feel."
+        },
+        es: {
+            title: "Pong",
+            desc: "Mi versión del clásico arcade, publicada en Itch.io. Partidas rápidas de paletas y pelota enfocadas en controles responsivos y buena sensación de juego."
+        }
+    },
+    {
         id: "itchio-games",
         category: "game",
         color: "#FA5C5C",
@@ -127,11 +161,11 @@ const projects = [
         linkLabel: { en: "Visit Itch.io", es: "Ver en Itch.io" },
         en: {
             title: "Games on Itch.io",
-            desc: "Collection of playable Unity games published on Itch.io: Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter, and Whack-a-Food! WebGL builds ready to play in the browser."
+            desc: "Collection of playable Unity games published on Itch.io: Pong, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter, and Whack-a-Food! WebGL builds ready to play in the browser."
         },
         es: {
             title: "Juegos en Itch.io",
-            desc: "Colección de juegos Unity jugables publicados en Itch.io: Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!. Builds WebGL listos para jugar en el navegador."
+            desc: "Colección de juegos Unity jugables publicados en Itch.io: Pong, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!. Builds WebGL listos para jugar en el navegador."
         }
     }
 ];
@@ -1696,6 +1730,8 @@ const projectChords = [
     [196.00, 246.94, 293.66],   // Audio Tool — low
     [329.63, 392.00, 493.88],   // 360 Tours — airy
     [440.00, 554.37, 659.25],   // Mobile Games — energetic
+    [196.00, 233.08, 293.66],   // Delvefolk — adventurous minor
+    [392.00, 493.88, 587.33],   // Pong — bright arcade major
     [246.94, 293.66, 369.99]    // Itch.io Games — playful red major
 ];
 
