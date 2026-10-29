@@ -120,35 +120,36 @@ const projects = [
     {
         id: "delvefolk",
         category: "game",
-        color: "#2EC27E",
-        tags: ["Unity", "Game Jam", "GameJam+ HeroHub", "Co-op Dev"],
-        images: [],
+        color: "#B83A3A",
+        tags: ["Unity", "Co-op 1-4P", "Dungeon Crawler", "Game Jam"],
+        images: ["Media/Delvefolk/Delvefolk Card.webp", "Media/Delvefolk/Delvefolk Key Art.webp", "Media/Delvefolk/Delvefolk Gameplay.webp", "Media/Delvefolk/Delvefolk Sala de Preparacion.webp"],
         link: "https://adrede.itch.io/delvefolk",
         linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
         en: {
             title: "Delvefolk",
-            desc: "Game created during the HeroHub game jam by GameJam+, co-developed in Unity with fellow developer Adrian De La Hoz Osorio. It was well received, standing out especially for how fun it is to play."
+            desc: "Low-poly co-op dungeon crawler for 1 to 4 local players (keyboard and gamepads), made in Unity for the HeroHub game jam by GameJam+ together with developer Adrian De La Hoz Osorio. Pick one of 8 adventurers with their own special ability and fight slimes and goblins using cleaning and kitchen tools turned into elemental weapons, like the Infernal Frying Pan or the Quantum Vacuum that sucks up enemies and shoots them back. A slot machine changes each floor's element and rewards. Well received at the jam, standing out for how fun it is."
         },
         es: {
             title: "Delvefolk",
-            desc: "Juego creado durante la game jam HeroHub de GameJam+, co-desarrollado en Unity junto al desarrollador Adrian De La Hoz Osorio. Tuvo un buen recibimiento, destacando especialmente en diversión."
+            desc: "Dungeon crawler cooperativo low-poly para 1 a 4 jugadores en local (teclado y mandos), hecho en Unity para la game jam HeroHub de GameJam+ junto al desarrollador Adrian De La Hoz Osorio. Elige uno de 8 aventureros con su propia habilidad especial y enfrenta slimes y goblins con objetos de limpieza y cocina convertidos en armas elementales, como la Sartén Infernal o la Aspiradora Cuántica que absorbe enemigos y los dispara. Una tragaperras cambia el elemento y las recompensas de cada piso. Tuvo un buen recibimiento en la jam, destacando en diversión."
         }
     },
     {
         id: "pong",
         category: "game",
-        color: "#3D8BFF",
-        tags: ["Unity", "Arcade", "Retro", "Itch.io"],
-        images: [],
+        color: "#FFD23F",
+        tags: ["Pixel Art", "HTML5", "Android", "4 Games in 1"],
+        images: ["Media/Pong/Pong Card KrostNoid.webp", "Media/Pong/Pong Cover.webp", "Media/Pong/Pong 4 Modos.webp", "Media/Pong/Pong Moderno Goles de Fuego.webp", "Media/Pong/Pong RogueLike.webp", "Media/Pong/Pong Pista de Hielo.webp", "Media/Pong/Pong Poster.webp"],
+        videos: ["Media/Pong/Pong Clasico Gameplay.mp4", "Media/Pong/Pong Moderno Gameplay.mp4", "Media/Pong/Pong RogueLike Gameplay.mp4", "Media/Pong/Pong KrostNoid Gameplay.mp4"],
         link: "https://krostgames.itch.io/pong",
         linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
         en: {
-            title: "Pong",
-            desc: "My take on the arcade classic, published on Itch.io. Fast paddle-and-ball matches focused on responsive controls and tight game feel."
+            title: "Pong — 4 Games in 1",
+            desc: "A pixel-art reimagining of the first game in history. Classic mode recreates the original black-and-white Pong; Modern adds a grass court that reacts to the ball, fire goals and power-ups; RogueLike is a 3-floor run with 17 stacking upgrade cards and bosses (The Wall, the Ice King and the Dragon); KrostNoid is a fast brick breaker with enemy ships, combos and capsules. Plays in desktop and mobile browsers, portrait or landscape, with keyboard or touch, plus an Android version."
         },
         es: {
-            title: "Pong",
-            desc: "Mi versión del clásico arcade, publicada en Itch.io. Partidas rápidas de paletas y pelota enfocadas en controles responsivos y buena sensación de juego."
+            title: "Pong — 4 juegos en 1",
+            desc: "Una reinvención en pixel art del primer videojuego de la historia. El modo Clásico recrea el Pong original en blanco y negro; Moderno añade una cancha de césped que reacciona a la pelota, goles de fuego y power-ups; RogueLike es una run de 3 pisos con 17 cartas de mejora acumulables y jefes (El Muro, el Rey de Hielo y el Dragón); KrostNoid es un rompeladrillos rápido con naves enemigas, combos y cápsulas. Se juega en el navegador de ordenador y móvil, en vertical u horizontal, con teclado o táctil, y tiene versión para Android."
         }
     },
     {
@@ -161,11 +162,11 @@ const projects = [
         linkLabel: { en: "Visit Itch.io", es: "Ver en Itch.io" },
         en: {
             title: "Games on Itch.io",
-            desc: "Collection of playable Unity games published on Itch.io: Pong, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter, and Whack-a-Food! WebGL builds ready to play in the browser."
+            desc: "Collection of playable games published on Itch.io: Pong, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter, and Whack-a-Food! WebGL builds ready to play in the browser."
         },
         es: {
             title: "Juegos en Itch.io",
-            desc: "Colección de juegos Unity jugables publicados en Itch.io: Pong, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!. Builds WebGL listos para jugar en el navegador."
+            desc: "Colección de juegos jugables publicados en Itch.io: Pong, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!. Builds WebGL listos para jugar en el navegador."
         }
     }
 ];
