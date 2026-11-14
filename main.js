@@ -72,6 +72,63 @@ const projects = [
         }
     },
     {
+        id: "saldo-negro",
+        category: "game",
+        color: "#9d68b8",
+        year: "2026",
+        role: { en: "Co-developer", es: "Codesarrollador" },
+        platform: "WebGL · Itch.io",
+        company: { en: "Two-person team", es: "Equipo de dos" },
+        tags: ["Unity", "Pixel Art", "Roguelite", "Narrative", "Game Jam"],
+        cover: "Media/Saldo Negro/cover.webp",
+        images: [
+            "Media/Saldo Negro/01-trading-futuro-exe.webp",
+            "Media/Saldo Negro/02-ultimas-velas.webp",
+            "Media/Saldo Negro/03-el-encapuchado.webp",
+            "Media/Saldo Negro/04-dia-de-la-suerte.webp",
+            "Media/Saldo Negro/05-ruleta-de-la-fortuna.webp",
+            "Media/Saldo Negro/06-diario-del-futuro.webp",
+            "Media/Saldo Negro/07-es-mia.webp",
+            "Media/Saldo Negro/08-mensajin.webp"
+        ],
+        videos: [
+            { src: "Media/Saldo Negro/clip-01-operacion-ganadora.mp4", poster: "Media/Saldo Negro/clip-01-operacion-ganadora.webp" },
+            { src: "Media/Saldo Negro/clip-02-ultimas-velas-crash.mp4", poster: "Media/Saldo Negro/clip-02-ultimas-velas-crash.webp" },
+            { src: "Media/Saldo Negro/clip-03-el-encapuchado.mp4", poster: "Media/Saldo Negro/clip-03-el-encapuchado.webp" },
+            { src: "Media/Saldo Negro/clip-06-ruleta-de-la-fortuna.mp4", poster: "Media/Saldo Negro/clip-06-ruleta-de-la-fortuna.webp" }
+        ],
+        link: "https://krostgames.itch.io/saldo-negro",
+        linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
+        credits: [
+            { name: "Eduardo Mogollón", role: { en: "Co-developer", es: "Codesarrollador" } },
+            { name: "Adrian De La Hoz Osorio", role: { en: "Co-developer", es: "Codesarrollador" } }
+        ],
+        en: {
+            title: "Saldo Negro",
+            subtitle: "Trading roguelite · Unity Game Jam 2026",
+            short: "Seven days to pay off $250 with a trading app that charges more than money.",
+            desc: "An economic trading roguelite with a narrative mystery, in arcade pixel art, made with Adrede for the Official 2026 Unity Game Jam on the theme Lucky Number. You went into debt for a ridiculous console and have 7 days to pay $250. Then a hooded stranger hands you FUTURO.exe, a trading app that promises easy money and takes something worth more than money. The game is in Spanish, with an English version on the way.",
+            highlights: [
+                "Read the chart's hint, bet up or down and cash out before the last candles turn: on the final candles time slows down and a heartbeat plays.",
+                "Days with a 7 bring luck, and the 77th pays double: Golden Rain, the Wheel of Fortune and Don Siete's Golden Market.",
+                "Four markets to unlock (Health, Tech, Business and Mining), each with its own black market, plus upgrades, a shop, chats in Mensajín and a secret language to decode.",
+                "Fully playable with the mouse, with optional keyboard shortcuts; progress saves itself in the browser."
+            ]
+        },
+        es: {
+            title: "Saldo Negro",
+            subtitle: "Roguelite de trading · Unity Game Jam 2026",
+            short: "Siete días para pagar $250 con una app de trading que cobra algo más que dinero.",
+            desc: "Roguelite económico de trading con misterio narrativo, en pixel art arcade, hecho junto a Adrede para la Official 2026 Unity Game Jam con el tema Lucky Number. Te endeudaste por una consola absurda y tienes 7 días para pagar $250. Entonces aparece un encapuchado y te regala FUTURO.exe, una app de trading que promete dinero fácil y que se cobra algo más valioso que el dinero. El juego está en español; la versión en inglés viene en camino.",
+            highlights: [
+                "Mira la pista de la gráfica, apuesta a que subirá o bajará y cobra antes de que las últimas velas te den un susto: el tiempo se frena y late un corazón.",
+                "Los días con 7 traen suerte, y el 77 vale doble: Lluvia de Oro, la Ruleta de la Fortuna y el Mercado Dorado de Don Siete.",
+                "Cuatro mercados por desbloquear (Salud, Tecnología, Negocios y Minería), cada uno con su mercado negro, además de mejoras, tienda, chats en Mensajín y un idioma secreto que descifrar.",
+                "Todo se juega con el ratón, con atajos de teclado opcionales; la partida se guarda sola en el navegador."
+            ]
+        }
+    },
+    {
         id: "linguaspace",
         category: "game",
         color: "#b59a5e",
@@ -491,13 +548,16 @@ const projects = [
         category: "game",
         color: "#c4605a",
         year: "2020 — 2026",
-        role: { en: "Solo developer", es: "Desarrollo en solitario" },
+        // Solo projects and game-jam teams (Oil Be Back, Whack a Mole) mixed.
+        role: { en: "Developer", es: "Desarrollador" },
         platform: "WebGL · Itch.io",
         tags: ["Unity", "WebGL", "Itch.io", "Game Jams"],
         cover: "Media/Itchio/Itchio logo.webp",
+        // The card face fits five rows of two; it lists what is live on Itch.io
+        // today. Games taken down there still have their folder in the panel.
         coverList: [
-            "Oil Be Back", "Lumber Drop", "The Echo Loop", "Sumo Eggs", "Balloon Drop",
-            "Clic The Cube", "Play Fetch", "Soccer Shooter", "Whack-a-Food!"
+            "Tactical Chess", "Whack a Mole", "Oil Be Back", "Lumber Drop", "The Echo Loop",
+            "Sumo Eggs", "Balloon Drop", "Clic The Cube", "Play Fetch"
         ],
         images: [
             "Media/Itchio/Itchio vertical.webp",
@@ -507,6 +567,34 @@ const projects = [
         // marked "itch" are quoted from the game's own Itch.io page; the rest
         // describe only what the screenshots actually show.
         gallerySets: [
+            {
+                id: "tactical-chess",
+                name: "Tactical Chess",
+                link: "https://krostgames.itch.io/tactical-chess",
+                cover: "Media/Itchio/Tactical Chess/cover.webp",
+                en: "Chess on a 4×8 board with no queen and no castling: you deploy your own back row, then play the AI or pass the phone.",
+                es: "Ajedrez en un tablero de 4×8 sin reina ni enroque: despliegas tu propia primera fila y juegas contra la IA o pasando el teléfono.",
+                images: [
+                    "Media/Itchio/Tactical Chess/shot-1.webp",
+                    "Media/Itchio/Tactical Chess/shot-2.webp",
+                    "Media/Itchio/Tactical Chess/shot-3.webp"
+                ]
+            },
+            {
+                id: "whack-a-mole",
+                name: "Whack a Mole",
+                link: "https://krostgames.itch.io/whack-a-mole",
+                cover: "Media/Itchio/Whack a Mole/cover.webp",
+                en: "Deeper & Deeper game jam, team of four: dig down as Guacamole the mole before the lava catches up.",
+                es: "Game jam Deeper & Deeper, equipo de cuatro: pica hacia abajo con Guacamole el topo antes de que lo alcance la lava.",
+                images: [
+                    "Media/Itchio/Whack a Mole/shot-1.webp",
+                    "Media/Itchio/Whack a Mole/shot-2.webp",
+                    "Media/Itchio/Whack a Mole/shot-3.webp",
+                    "Media/Itchio/Whack a Mole/shot-4.webp",
+                    "Media/Itchio/Whack a Mole/shot-5.webp"
+                ]
+            },
             {
                 id: "lumber-drop",
                 name: "Lumber Drop",
@@ -592,7 +680,6 @@ const projects = [
             {
                 id: "soccer-shooter",
                 name: "Soccer Shooter",
-                link: "https://krostgames.itch.io/soccer-shooter",
                 cover: "Media/Itchio/soccer Shooter/cover.webp",
                 en: "Penalty-kick shooting game.",
                 es: "Juego de tiros a portería.",
@@ -601,7 +688,6 @@ const projects = [
             {
                 id: "whack-a-food",
                 name: "Whack-a-Food!",
-                link: "https://krostgames.itch.io/whack-a-food",
                 cover: "Media/Itchio/Whack-a-food!/cover.webp",
                 en: "Grid whack-a-mole with food and three difficulty settings.",
                 es: "Whack-a-mole en cuadrícula con comida y tres dificultades.",
@@ -624,20 +710,20 @@ const projects = [
         linkLabel: { en: "Play on Itch.io", es: "Jugar en Itch.io" },
         en: {
             title: "Games on Itch.io",
-            subtitle: "Nine WebGL builds",
-            desc: "A shelf of small, finished Unity games published as WebGL builds: Oil Be Back, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter and Whack-a-Food!",
+            subtitle: "Eleven browser games",
+            desc: "A shelf of small, finished games built for the browser: Tactical Chess, Whack a Mole, Oil Be Back, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter and Whack-a-Food!",
             highlights: [
-                "Nine games shipped and playable in the browser — no download, no install.",
+                "Eleven games built to play in the browser — no download, no install.",
                 "A mix of game-jam entries and Unity Learn pathway challenges taken to a finished state.",
                 "Each one scoped to a single mechanic, tuned for fast first load in WebGL."
             ]
         },
         es: {
             title: "Juegos en Itch.io",
-            subtitle: "Nueve builds WebGL",
-            desc: "Una estantería de juegos Unity pequeños y terminados, publicados como builds WebGL: Oil Be Back, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!",
+            subtitle: "Once juegos de navegador",
+            desc: "Una estantería de juegos pequeños y terminados, hechos para el navegador: Tactical Chess, Whack a Mole, Oil Be Back, Lumber Drop, The Echo Loop, Sumo Eggs, Balloon Drop, Clic The Cube, Play Fetch, Soccer Shooter y Whack-a-Food!",
             highlights: [
-                "Nueve juegos publicados y jugables en el navegador: sin descargas ni instalación.",
+                "Once juegos hechos para jugar en el navegador: sin descargas ni instalación.",
                 "Una mezcla de game jams y retos de la ruta Unity Learn, llevados hasta terminarlos.",
                 "Cada uno acotado a una sola mecánica y ajustado para carga rápida en WebGL."
             ]
@@ -743,7 +829,7 @@ const ui = {
         grainOn: "Film grain on.",
         grainOff: "Film grain off.",
         shuffle: "Accent shuffled.",
-        colophon: "Vanilla JS, Three.js and GSAP. Ten cards on an arc, procedural audio, and a minigame hiding behind the logo.",
+        colophon: "Vanilla JS, Three.js and GSAP. Thirteen cards on an arc, procedural audio, and a minigame hiding behind the logo.",
         noWebGL: "This browser can't run WebGL, so the 3D shelf is unavailable. Every project is still listed below."
     },
     es: {
@@ -815,7 +901,7 @@ const ui = {
         grainOn: "Grano activado.",
         grainOff: "Grano desactivado.",
         shuffle: "Acento cambiado.",
-        colophon: "JS sin frameworks, Three.js y GSAP. Diez tarjetas en un arco, audio procedural y un minijuego escondido detrás del logo.",
+        colophon: "JS sin frameworks, Three.js y GSAP. Trece tarjetas en un arco, audio procedural y un minijuego escondido detrás del logo.",
         noWebGL: "Este navegador no puede ejecutar WebGL, así que la estantería 3D no está disponible. Todos los proyectos siguen listados abajo."
     }
 };
@@ -2064,11 +2150,22 @@ const frameMeshes = [];
 const ARC_RADIUS = 5.0;
 const ARC_SPAN_DEG = isTouchDevice ? 62 : 108;
 const DEPTH_MULT = 1.35;
-let ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / Math.max(1, filteredCount - 1));
+// The arc was tuned for a shelf of this many cards. Past it the spacing stays
+// put instead of shrinking: dividing the span by every project squeezed 13
+// cards to 9° apart, so neighbours showed a third of their face and the outer
+// ones piled up as slivers. Extra cards now sit fully behind their neighbours.
+const FANNED_CARDS = 8;
+
+function angleForCount(count) {
+    const fanned = Math.min(count, FANNED_CARDS);
+    return THREE.MathUtils.degToRad(ARC_SPAN_DEG / Math.max(1, fanned - 1));
+}
+
+let ANGLE_PER_CARD = angleForCount(filteredCount);
 let HALF_SPAN = filteredCount / 2;
 
 function updateCarouselParams() {
-    ANGLE_PER_CARD = THREE.MathUtils.degToRad(ARC_SPAN_DEG / Math.max(1, filteredCount - 1));
+    ANGLE_PER_CARD = angleForCount(filteredCount);
     HALF_SPAN = filteredCount / 2;
 }
 
@@ -2136,7 +2233,11 @@ function getCardTransform(wrappedOffset) {
     const x = ARC_RADIUS * Math.sin(angle);
     const z = ARC_RADIUS * (Math.cos(angle) - 1) * DEPTH_MULT;
     const abs = Math.abs(wrappedOffset);
-    const scale = Math.max(0.32, 1.025 - Math.pow(abs / 3, 1.32) * 0.4);
+    // Cards past the fanned range shrink away over one step rather than
+    // stacking as slivers at the edges (the narrow mobile arc never hides them
+    // behind their neighbours). A shelf of eight or fewer never reaches this.
+    const fade = THREE.MathUtils.clamp(FANNED_CARDS / 2 + 1 - abs, 0, 1);
+    const scale = Math.max(0.001, Math.max(0.32, 1.025 - Math.pow(abs / 3, 1.32) * 0.4) * fade);
     const rotY = Math.atan2(-x, 5 - z);
     return { x, z, scale, rotY };
 }
@@ -2264,7 +2365,8 @@ function pickCard(clientX, clientY) {
     pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
-    const candidates = carouselItems.filter(mesh => mesh.visible);
+    // Folded-away cards still exist at a near-zero scale; they are not targets.
+    const candidates = carouselItems.filter(mesh => mesh.visible && mesh.userData.baseScale > 0.05);
     const hits = raycaster.intersectObjects(candidates, true);
     for (const hit of hits) {
         let object = hit.object;
